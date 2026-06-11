@@ -1,19 +1,20 @@
-
-import { Injectable } from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {environment} from '../../environments/environment.development';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {catchError, Observable, tap, throwError} from 'rxjs';
-import {UserRequest} from '../layout/authentification/dto/request/UserRequest';
+import {PROFIL, UserRequest} from '../layout/authentification/dto/request/UserRequest';
 import {UserResponse} from '../layout/authentification/dto/response/UserResponse';
 import {AuthRequest} from '../layout/authentification/dto/request/AuthRequest';
+import {UserInfo} from '../layout/authentification/dto/response/UserInfo';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
 
   private readonly apiUrl: string = `${environment.ApiUrl}/auth/`;
-
+  currentUserProfil = signal<string | null>(localStorage.getItem('user_profil'));
 
   constructor(private http: HttpClient, private router:Router) {}
 
@@ -22,7 +23,7 @@ export class AuthService {
       .pipe(
         tap(res => {
           this.storeAuthData(res);
-          this.router.navigate(['']);
+          this.router.navigate(['/login']);
         }),
         catchError(this.handleError)
       )
@@ -34,11 +35,12 @@ export class AuthService {
         tap(res => {
           this.storeAuthData(res);
           const profil = res.profil;
+          this.currentUserProfil.set(profil);
 
-          if(profil === "LOCATION_CLASSIQUE"){
+          if(profil === PROFIL.classique){
             this.router.navigate(['/dashboard/classic']);
           }
-          else if(profil === "LOCATION_SEJOUR"){
+          else if(profil === PROFIL.airbn){
             this.router.navigate(['/dashboard/airbn']);
           }
 
@@ -60,7 +62,7 @@ export class AuthService {
       .pipe(
         tap(res => {
           localStorage.setItem('token', res.token);
-          this.router.navigate(['']);
+          this.router.navigate(['/login']);
         }),
         catchError((error) => {
           // Refresh token expiré : déconnexion forcée
@@ -70,14 +72,18 @@ export class AuthService {
       )
   }
 
+  getMe():Observable<UserInfo>{
+    return this.http.get<UserInfo>(`${this.apiUrl}me`);
+  }
+
   logout(): void {
-    // Informer Spring Boot (optionnel avec JWT stateless)
-    this.http.post(`${this.apiUrl}/logout`, {}).subscribe();
-    // Supprimer tous les tokens du localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
-    // Rediriger vers la page de login
-    this.router.navigate(['']);
+    localStorage.removeItem('user_profil');
+    console.log('🗑️ Tokens supprimés, navigation...');
+    this.router.navigate(['/login']).then(success => {
+      console.log('Navigation réussie ?', success); // false = bloquée par une guard
+    });
   }
 
 
@@ -105,6 +111,7 @@ export class AuthService {
   private storeAuthData(response: UserResponse): void {
     localStorage.setItem('token',  response.token);
     localStorage.setItem('refreshToken', response.refreshToken)
+    localStorage.setItem('user_profil', response.profil);
   }
 
   // Décoder le token JWT pour lire la date d'expiration (sans vérifier la signature)

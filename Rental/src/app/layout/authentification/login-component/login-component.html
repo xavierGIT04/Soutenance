@@ -2,11 +2,10 @@
 
   <div class="auth-frame-wrapper" style="background-image: url(/assets/images/auth.jpg);">
     <div class="inner-wrap">
-      <div class="mb-4 text-center">
-
-          <img class="visible-light" src="/assets/images/logo-text.svg" alt="Rental logo">
-
+      <div class="mb-4 flex justify-center text-center">
+        <img class="visible-light" src="/assets/images/logo-text.svg" alt="Rental logo">
       </div>
+
       <div class="text-center mb-5">
         <h5 class="mb-1">Bienvenu sur Rental</h5>
         <p>Connectez-vous pour accéder à votre dashboard.</p>
@@ -14,7 +13,7 @@
       <form (submit)="onSubmit($event)" >
         <div class="mb-4">
           <label class="form-label" for="telephone">Telephone</label>
-          <input type="tel" class="form-control" [formField]="loginForm.telephone" id="telephone" placeholder="90 00 00 00">
+          <input type="tel"  class="form-control" [formField]="loginForm.telephone" id="telephone" placeholder="90 00 00 00">
           @if (loginForm.telephone().invalid() && loginForm.telephone().touched()) {
             <div class="error">
               @for (error of loginForm.telephone().errors(); track error.kind) {
@@ -26,15 +25,15 @@
         <div class="mb-4">
           <label class="form-label" for="loginPassword">Mot de passe</label>
           <div class="password-wrapper">
-            <input type="password" class="form-control password-input" [formField]="loginForm.code" id="loginPassword" placeholder="********">
+            <input type="password" class="form-control password-input" [formField]="loginForm.codeProprietaire" id="loginPassword" placeholder="********">
             <button type="button" id="togglePassword" class="toggle-password" aria-pressed="false" aria-label="Show password" title="Show password">
               <i class="close fi fi-rr-eye-crossed" aria-hidden="true"></i>
               <i class="open fi fi-rr-eye" aria-hidden="true"></i>
             </button>
           </div>
-          @if (loginForm.code().invalid() && loginForm.code().touched()) {
+          @if (loginForm.codeProprietaire().invalid() && loginForm.codeProprietaire().touched()) {
             <div class="error">
-              @for (error of loginForm.code().errors(); track error.kind) {
+              @for (error of loginForm.codeProprietaire().errors(); track error.kind) {
                 <span>{{ error.message }}</span>
               }
             </div>
@@ -43,8 +42,14 @@
         <div class="mb-3">
           <button type="submit" value="Submit" [disabled]="loginForm().invalid()" class="btn btn-primary w-100">Login</button>
         </div>
-        <p class="mb-0 text-center">Vous ne possédez pas un compte? <a class="text-dark" href="http://../authentication/register.html">Créez en un</a>
+        <p class="mb-0 text-center">Vous ne possédez pas un compte? <a class="text-dark" [routerLink]="['/signUp']">Créez en un</a>
         </p>
+
+        @if (submitError()) {
+          <div class="alert alert-danger" style="color: red; margin: 10px 0;">
+            ⚠️ {{ submitError() }}
+          </div>
+        }
       </form>
     </div>
   </div>

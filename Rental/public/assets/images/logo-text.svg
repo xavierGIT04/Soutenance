@@ -1,22 +1,5 @@
-<svg width="148" height="32" viewBox="0 0 148 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g transform="scale(0.875)">
-    <path fill-rule="evenodd" clip-rule="evenodd"
-          d="M3.5 32L7.5 29.2L11.5 26.4V16V0H3.5V5.5V11H8.5V5.5H11.5V20.5L8.5 22.7V14.5H3.5V27V32Z"
-          fill="#0D919C"/>
-    <path fill-rule="evenodd" clip-rule="evenodd"
-          d="M28.5 32L24.5 29.2L20.5 26.4V16V0H28.5V5.5V11H23.5V5.5H20.5V20.5L23.5 22.7V14.5H28.5V27V32Z"
-          fill="#0D919C" opacity="0.75"/>
-  </g>
-  <text x="38" y="23"
-        font-family="Inter, system-ui, sans-serif"
-        font-size="20"
-        font-weight="600"
-        letter-spacing="-0.4"
-        fill="#0D919C">Rent</text>
-  <text x="81" y="23"
-        font-family="Inter, system-ui, sans-serif"
-        font-size="20"
-        font-weight="400"
-        letter-spacing="-0.2"
-        fill="#0D919C">al</text>
+<svg width="220" height="32" viewBox="0 0 142 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 32L7.5 29.2L11.5 26.4V16V0H3.5V5.5V11H8.5V5.5H11.5V20.5L8.5 22.7V14.5H3.5V27V32Z" fill="#0D919C"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M32.5 32L28.5 29.2L24.5 26.4V16V0H32.5V5.5V11H27.5V5.5H24.5V20.5L27.5 22.7V14.5H32.5V27V32Z" fill="#0D919C" opacity="0.75"/>
+  <text x="42" y="25" font-family="Inter, system-ui, sans-serif" font-size="30" font-weight="600" letter-spacing="-0.4" fill="#0D919C">Rental</text>
 </svg>

@@ -10,26 +10,32 @@ import {DashbordAirbnComponent} from './layout/profil_airbn/dashbord-airbn-compo
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'login',
     component: LoginComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: 'signUp',
     component: RegisterComponent,
-    canActivate: [AuthGuard]
   },
+  // Redirection racine → login
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  // Routes protégées
   {
     path: 'dashboard',
-    component:MainComponent,
+    component: MainComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'classic',
-        component:DashbordClassiqueComponent
+        component: DashbordClassiqueComponent
       },
       {
         path: 'airbn',
-        component:DashbordAirbnComponent
+        component: DashbordAirbnComponent
       }
     ]
   }
