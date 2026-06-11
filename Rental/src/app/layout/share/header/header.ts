@@ -13,24 +13,24 @@ import {RouterLink} from '@angular/router';
   styleUrl: './header.scss',
 })
 export class Header implements OnInit {
-  user: UserInfo = {} as UserInfo;
-  authService = inject(AuthService);
-  infos = signal<UserInfo>(this.user);
+  private authService = inject(AuthService);
+
+  infos = signal<UserInfo | null>(null);
+
+  ngOnInit(): void {
+    // 3. Récupération des données utilisateur
+    this.authService.getMe().subscribe({
+      next: (data) => {
+        this.infos.set(data);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération du profil :', error);
+      }
+    });
+  }
 
   logout(): void {
     this.authService.logout();
   }
-
-  ngOnInit(): void {
-    this.authService.getMe().subscribe({
-      next: data => {
-        this.infos.set(data);
-      },
-      error: error => {console.log(error);}
-    })
-
-    ;
-  }
-
 
 }

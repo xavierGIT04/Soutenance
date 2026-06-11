@@ -128,9 +128,16 @@
         <div class="dropdown text-end">
           <a href="#" class="d-flex align-items-center py-2" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
             <div class="text-end me-2 d-none d-lg-inline-block">
-              <div class="fw-bold text-dark">{{ (infos().nom)  | titlecase}}</div>
+              <div class="fw-bold text-dark">
+                @if(infos(); as userInfos){
+                  {{ (userInfos.nom)  | titlecase}}
+                }
+              </div>
               <small class="text-body d-block lh-sm">
-                <i class="fi fi-rr-angle-down text-3xs me-1"></i> {{ (infos().role) | titlecase }}
+                <i class="fi fi-rr-angle-down text-3xs me-1"></i>
+                @if(infos(); as userInfos){
+                  {{ (userInfos.role)  | titlecase}}
+                }
               </small>
             </div>
             <div class="avatar avatar-sm rounded-circle avatar-status-success">
@@ -144,7 +151,11 @@
               </div>
               <div class="ms-2">
                 <div class="fw-bold text-dark">John Carter </div>
-                <small class="text-body d-block lh-sm">{{ infos().telephone }}</small>
+                <small class="text-body d-block lh-sm">
+                  @if(infos(); as userInfos){
+                    {{ userInfos.telephone }}
+                  }
+                </small>
               </div>
             </li>
             <li>
