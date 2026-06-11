@@ -1,0 +1,127 @@
+
+import { Injectable } from '@angular/core';
+import {environment} from '../../environments/environment.development';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {catchError, Observable, tap, throwError} from 'rxjs';
+import {UserRequest} from '../layout/authentification/dto/request/UserRequest';
+import {UserResponse} from '../layout/authentification/dto/response/UserResponse';
+import {AuthRequest} from '../layout/authentification/dto/request/AuthRequest';
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+
+  private readonly apiUrl: string = `${environment.ApiUrl}/auth/`;
+
+
+  constructor(private http: HttpClient, private router:Router) {}
+
+  register(data:UserRequest):Observable<UserResponse>{
+    return this.http.post<UserResponse>(`${this.apiUrl}register`, data)
+      .pipe(
+        tap(res => {
+          this.storeAuthData(res);
+          this.router.navigate(['']);
+        }),
+        catchError(this.handleError)
+      )
+  }
+
+  login(credentials:AuthRequest):Observable<UserResponse>{
+    return this.http.post<UserResponse>(`${this.apiUrl}login`, credentials)
+      .pipe(
+        tap(res => {
+          this.storeAuthData(res);
+          const profil = res.profil;
+
+          if(profil === "LOCATION_CLASSIQUE"){
+            this.router.navigate(['/dashboard/classic']);
+          }
+          else if(profil === "LOCATION_SEJOUR"){
+            this.router.navigate(['/dashboard/airbn']);
+          }
+
+        }),
+        catchError(this.handleError)
+      )
+  }
+
+  refreshToken():Observable<{ token: string, expiresIn:string }>{
+
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if(!refreshToken){
+      this.logout();
+      return throwError(() => new Error('Pas de refresh token'));
+    }
+
+    return this.http.post<{ token: string, expiresIn:string }>(`${this.apiUrl}refresh`, {refreshToken})
+      .pipe(
+        tap(res => {
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['']);
+        }),
+        catchError((error) => {
+          // Refresh token expiré : déconnexion forcée
+          this.logout();
+          return throwError(() => error);
+        })
+      )
+  }
+
+  logout(): void {
+    // Informer Spring Boot (optionnel avec JWT stateless)
+    this.http.post(`${this.apiUrl}/logout`, {}).subscribe();
+    // Supprimer tous les tokens du localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    // Rediriger vers la page de login
+    this.router.navigate(['']);
+  }
+
+
+
+
+  // ===== MÉTHODES UTILITAIRES =====
+
+  // Vérifie si l'utilisateur est connecté
+  isLoggedIn(): boolean {
+    const token = this.getAccessToken();
+    if (!token) return false;
+    // Vérifier que le token n'est pas expiré
+    return !this.isTokenExpired(token);
+  }
+
+  getAccessToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getRefreshToken(): string | null {
+    return localStorage.getItem('refreshToken');
+  }
+
+  // Stocker les données après login/register
+  private storeAuthData(response: UserResponse): void {
+    localStorage.setItem('token',  response.token);
+    localStorage.setItem('refreshToken', response.refreshToken)
+  }
+
+  // Décoder le token JWT pour lire la date d'expiration (sans vérifier la signature)
+  private isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      // exp est en secondes (Unix timestamp)
+      return payload.exp * 1000 < Date.now();
+    } catch {
+      return true; // Token malformé → considéré expiré
+    }
+  }
+
+  private handleError(error: any): Observable<never> {
+    const message = error.error?.message || 'Erreur d\'authentification';
+    return throwError(() => new Error(message));
+  }
+
+
+}
