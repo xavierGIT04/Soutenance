@@ -3,7 +3,7 @@ import {environment} from '../../environments/environment.development';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {catchError, Observable, tap, throwError} from 'rxjs';
-import {PROFIL, UserRequest} from '../layout/authentification/dto/request/UserRequest';
+import {PROFIL, ROLE, UserRequest} from '../layout/authentification/dto/request/UserRequest';
 import {UserResponse} from '../layout/authentification/dto/response/UserResponse';
 import {AuthRequest} from '../layout/authentification/dto/request/AuthRequest';
 import {UserInfo} from '../layout/authentification/dto/response/UserInfo';
@@ -76,10 +76,23 @@ export class AuthService {
     return this.http.get<UserInfo>(`${this.apiUrl}me`);
   }
 
+  updateAvatar(avatar:String):Observable<UserInfo>{
+    return this.http.put<UserInfo>(`${this.apiUrl}update_avatar`, avatar);
+  }
+
+  updateInfos(_object:{code: string,nom:string,telephone:string,profil:PROFIL | undefined, role:ROLE }):Observable<UserInfo>{
+      const data = {code:_object.code, telephone:_object.telephone, nom:_object.nom}
+      return this.http.put<UserInfo>(`${this.apiUrl}update_info`, data)
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user_profil');
+    localStorage.removeItem('user_uuid');
+    localStorage.removeItem('nom');
+    localStorage.removeItem('telephone');
+    localStorage.removeItem('role');
     console.log('🗑️ Tokens supprimés, navigation...');
     this.router.navigate(['/login']).then(success => {
       console.log('Navigation réussie ?', success); // false = bloquée par une guard
@@ -112,6 +125,10 @@ export class AuthService {
     localStorage.setItem('token',  response.token);
     localStorage.setItem('refreshToken', response.refreshToken)
     localStorage.setItem('user_profil', response.profil);
+    localStorage.setItem('user_uuid', response.uuid);
+    localStorage.setItem('nom', response.nom);
+    localStorage.setItem('telephone', response.telephone);
+    localStorage.setItem('role', response.role);
   }
 
   // Décoder le token JWT pour lire la date d'expiration (sans vérifier la signature)

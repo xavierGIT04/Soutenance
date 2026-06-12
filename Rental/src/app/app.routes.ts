@@ -7,6 +7,7 @@ import {
   DashbordClassiqueComponent
 } from './layout/profil_classique/dashbord-classique-component/dashbord-classique-component';
 import {DashbordAirbnComponent} from './layout/profil_airbn/dashbord-airbn-component/dashbord-airbn-component';
+import {Profile} from './layout/share/profile/profile';
 
 export const routes: Routes = [
   {
@@ -31,11 +32,23 @@ export const routes: Routes = [
     children: [
       {
         path: 'classic',
-        component: DashbordClassiqueComponent
+        component: DashbordClassiqueComponent,
+        children:[
+          {
+            path: 'profile',
+            component: Profile,
+          }
+        ]
       },
       {
         path: 'airbn',
-        component: DashbordAirbnComponent
+        component: DashbordAirbnComponent,
+        children:[
+          {
+            path: 'profile',
+            component: Profile,
+          }
+        ]
       }
     ]
   }

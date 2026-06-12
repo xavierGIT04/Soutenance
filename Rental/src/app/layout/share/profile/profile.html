@@ -1,0 +1,137 @@
+<div class="app-page-head d-flex align-items-center justify-content-between">
+  <div class="clearfix">
+    <h1 class="app-page-title">Profile</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item">
+          <a href="index.html" class="text-body">
+            <i class="fi fi-rr-home"></i>Dashboard
+          </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xxl-4 col-lg-5 col-sm-12">
+    <div class="row">
+
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="mb-4">
+              <div class="d-flex align-items-center mb-4">
+                <div class="position-relative">
+                  <div class="avatar-container text-center">
+                    <img [src]="infos()?.avatar || '/assets/images/avatar/avatar1.webp'"
+                         alt="Avatar"
+                         class="avatar avatar-xl rounded-circle" />
+
+                    <div class="mt-2">
+                      <label for="upload-photo" class="btn btn-sm btn-outline-primary" style="cursor: pointer;">
+                        <i class="fi fi-rr-camera me-1"></i> Changer la photo
+                      </label>
+                      <input type="file" id="upload-photo" class="d-none" accept="image/*" (change)="onFileSelected($event)" />
+                    </div>
+                  </div>
+                </div>
+                <div class="ms-3">
+                  <h4 class="fw-bold mb-0">{{ infos()?.nom | titlecase }}</h4>
+                  <small class="mb-2">{{ infos()?.role | titlecase }}</small>
+                  <div class="d-flex flex-wrap gap-1 mt-2">
+                    <span class="badge badge-sm px-2 rounded-pill text-bg-primary">{{ infos()?.profil | titlecase }}</span>
+                  </div>
+                </div>
+              </div>
+             </div>
+            <div class="bg-light bg-opacity-75 p-3 rounded-2">
+              <div class="d-flex border-bottom pb-3 mb-3 justify-content-between align-items-center">
+                <h4 class="card-title mb-0">Informations basics</h4>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span class="mb-1">Nom:</span>
+                <p class="text-dark fw-semibold mb-0">{{ infos()?.nom | titlecase }}</p>
+              </div>
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span class="mb-1">Numéro:</span>
+                <p class="text-dark fw-semibold mb-0">+(228) {{ infos()?.telephone | phoneFormat }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xxl-8 col-lg-7 col-sm-12">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Paramètres de Compte</h4>
+          </div>
+          <div class="card-body">
+            <form (submit)="OnSubmit($event)">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Nom</label>
+                  <input type="text" class="form-control" [formField]="updateForm.nom" [placeholder]="infos()?.nom" >
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Numéro</label>
+                  <input type="tel" class="form-control" [formField]="updateForm.telephone" [placeholder]="infos()?.telephone">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Role</label>
+                  <input type="text" class="form-control" [value]="infos()?.role | titlecase" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Profil</label>
+                  <input type="tel" class="form-control" [value]="infos()?.profil | titlecase" disabled>
+                </div>
+              </div>
+              <div class="row mb-3">
+                  <label class="form-label">Nouveau mot de passe</label>
+                  <input type="password" class="form-control" [formField]="updateForm.code" placeholder="••••••••">
+              </div>
+              <div class="text-end">
+                <button type="submit" [disabled]="updateForm().invalid()" class="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-12">
+        <div class="card border border-danger bg-danger-subtle border-2">
+          <div class="card-header border-0 pb-0">
+            <h5 class="text-danger fw-bold mb-0">Danger</h5>
+            <small>Actions critiques qui affectent votre compte.</small>
+          </div>
+          <div class="card-body">
+            <div class="d-flex gap-3 justify-content-between align-items-start mb-4 flex-wrap">
+              <div class="pe-3">
+                <h6 class="text-danger mb-1">Supprimer votre compte</h6>
+                <p class="mb-0 small">cette action est <strong>irreversible</strong>
+                  Veuillez vous assurer que vous souhaitez vraiment supprimer votre compte.</p>
+              </div>
+              <button class="btn btn-danger">Supprimer</button>
+            </div>
+            <hr class="border-danger my-3">
+            <div class="d-flex gap-3 justify-content-between align-items-start flex-wrap">
+              <div class="pe-3">
+                <h6 class="text-primary mb-1">Exporter vos Données</h6>
+              </div>
+              <button class="btn btn-outline-primary">Exporter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

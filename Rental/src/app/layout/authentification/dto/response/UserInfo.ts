@@ -5,4 +5,5 @@ export interface UserInfo {
   profil: PROFIL;
   nom: string;
   telephone: string;
+  avatar: string;
 }
