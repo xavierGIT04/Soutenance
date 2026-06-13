@@ -23,8 +23,8 @@ export class AsideBar {
   authService = inject(AuthService);
 
   private allMenuItems: MenuItem[] = [
-    { label: 'Dashboard', icon: 'icon-house', link: '/dashboard/classic', allowedProfils: [PROFIL.classique] },
-    { label: 'Dashboard', icon: 'icon-calendar-days', link: '/dashboard/airbnb', allowedProfils: [PROFIL.airbn] },
+    { label: 'Dashboard', icon: 'fas fa-home', link: '/dashboard/classic', allowedProfils: [PROFIL.classique] },
+    { label: 'Dashboard', icon: 'fas fa-home', link: '/dashboard/airbnb', allowedProfils: [PROFIL.airbn] },
     { label: 'Propriétés', icon: 'fas fa-building', link: '/dashboard/classic/proprietes', allowedProfils: [PROFIL.classique] },
     { label: 'Logements', icon: 'fas fa-building', link: '/dashboard/airbnb/logements', allowedProfils: [PROFIL.airbn] },
   ];

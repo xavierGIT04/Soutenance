@@ -55,7 +55,7 @@ export class Header implements OnInit {
   protected lienProfil = computed(() => {
     let urlActuelle = ""
     if(this.infos()?.profil === PROFIL.airbn){
-      urlActuelle = "/dashboard/airbn";
+      urlActuelle = "/dashboard/airbnb";
     }else if(this.infos()?.profil === PROFIL.classique){
       urlActuelle = "/dashboard/classic";
     }

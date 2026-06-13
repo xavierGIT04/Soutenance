@@ -6,14 +6,13 @@ import {AirbnRequest} from '../dto/AirbnRequest';
 import {form, FormField, required, submit} from '@angular/forms/signals';
 import {HttpParams} from '@angular/common/http';
 import {BienEnum} from '../../../profil_classique/biens/dto/request/BienRequest';
-import {DecimalPipe, NgClass, NgIf} from '@angular/common';
+import {DecimalPipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-liste-component',
   imports: [
     FormField,
-    NgClass,
     RouterLink,
     DecimalPipe,
   ],
