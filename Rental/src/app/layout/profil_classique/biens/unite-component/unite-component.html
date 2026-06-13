@@ -1,0 +1,162 @@
+<div class="app-page-head d-flex flex-wrap gap-3 align-items-center justify-content-between">
+  <div class="clearfix">
+    <h1 class="app-page-title mb-0">Gestion des Unités</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a [routerLink]="['/dashboard/classic']" style="cursor: pointer;" class="text-body"><i class="fi fi-rr-home"></i> Dashboard</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/dashboard/classic/proprietes']" style="cursor: pointer;" class="text-body">Biens</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Unités</li>
+      </ol>
+    </nav>
+  </div>
+  <button (click)="openAddModal()" class="btn btn-primary waves-effect waves-light">
+    <i class="fi fi-rr-plus me-1"></i> Ajouter une Unité
+  </button>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm bg-success bg-opacity-10 text-success p-3 rounded">
+      <h6 class="mb-1">Unités Libres</h6>
+      <h3 class="mb-0 fw-bold">{{ countByStatut(StatutUnite.Libre) }}</h3>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm bg-danger bg-opacity-10 text-danger p-3 rounded">
+      <h6 class="mb-1">Unités Occupées</h6>
+      <h3 class="mb-0 fw-bold">{{ countByStatut(StatutUnite.Occupe) }}</h3>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm bg-warning bg-opacity-10 text-warning p-3 rounded">
+      <h6 class="mb-1">En Maintenance</h6>
+      <h3 class="mb-0 fw-bold">{{ countByStatut(StatutUnite.Maintenance) }}</h3>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+        <tr>
+          <th class="ps-3">Code</th>
+          <th>Bien Associé</th>
+          <th>Type</th>
+          <th>Tarification</th>
+          <th>Statut</th>
+          <th class="text-end pe-3">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (unite of listeUnites(); track unite.uuid) {
+            <tr>
+              <td class="ps-3 fw-bold text-dark">{{ unite.code_unite }}</td>
+              <td><span class="text-muted">{{ unite.bien_name }}</span></td>
+              <td>
+                <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill">
+                  {{ unite.type | titlecase }}
+                </span>
+              </td>
+              <td>
+                <div class="small">
+                  @if (unite.loyer_reference) {
+                    <div class="text-dark">Loyer : <strong>{{ unite.loyer_reference }} F CFA</strong>/mois</div>
+                  }
+                </div>
+              </td>
+              <td>
+                <span class="badge fw-bold px-3 py-2 rounded-pill small"
+                      [style.color]="
+                        unite.statut === StatutUnite.Libre ? '#198754' :
+                        unite.statut === StatutUnite.Occupe ? '#dc3545' :
+                        unite.statut === StatutUnite.Maintenance ? '#ffc107' : '#000'
+                      ">
+                  <i class="fi me-1"
+                     [ngClass]="{
+                       'fi-rr-circle-check': unite.statut === StatutUnite.Libre,
+                       'fi-rr-circle-cross': unite.statut === StatutUnite.Occupe,
+                       'fi-rr-settings': unite.statut === StatutUnite.Maintenance
+                     }">
+                  </i>
+                  {{ unite.statut }}
+                </span>
+              </td>
+              <td class="text-end pe-3">
+                <button (click)="chargerPourModification(unite)" class="btn btn-sm btn-icon btn-outline-warning rounded-circle" title="Modifier l'unité">
+                  <i class="fi fi-rr-edit"></i>
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="text-center py-5 text-muted">
+                <i class="fi fi-rr-ban display-4 d-block mb-2"></i>
+                Aucune unité trouvée pour ce bien.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+@if (isModalOpen()) {
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title fw-bold">
+            {{ uuidUniteEnCours() ? 'Modifier l\'unité' : 'Ajouter une nouvelle unité' }}
+          </h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <form (submit)="onSubmit($event)">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Code de l'unité</label>
+                <input type="text" [formField]="uniteForm.code_unite" class="form-control shadow-none" placeholder="Ex: APT-B4">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Type d'unité</label>
+                <select [formField]="uniteForm.type" class="form-select shadow-none">
+                  @for (t of typeOptions; track t.value) {
+                    <option [value]="t.value">{{ t.label }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 mb-3">
+                <label class="form-label fw-bold">Loyer de référence (Mensuel)</label>
+                <input type="number" [formField]="uniteForm.loyer_reference" class="form-control shadow-none" placeholder="Montant en F CFA">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Statut initial</label>
+              <select [formField]="uniteForm.statut" class="form-select shadow-none">
+                @for (s of statutOptions; track s.value) {
+                  <option [value]="s.value">{{ s.label }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Description / Notes</label>
+              <textarea [formField]="uniteForm.description" class="form-control shadow-none" rows="3" placeholder="Caractéristiques spécifiques..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+            <button type="submit" class="btn btn-primary" [disabled]="uniteForm().invalid()">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

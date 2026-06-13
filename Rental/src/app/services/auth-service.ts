@@ -41,7 +41,7 @@ export class AuthService {
             this.router.navigate(['/dashboard/classic']);
           }
           else if(profil === PROFIL.airbn){
-            this.router.navigate(['/dashboard/airbn']);
+            this.router.navigate(['/dashboard/airbnb']);
           }
 
         }),

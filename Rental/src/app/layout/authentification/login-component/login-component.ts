@@ -30,6 +30,7 @@ export class LoginComponent {
     required(fieldPath.telephone, {message: "le numéro est obligatoire"});
     required(fieldPath.codeProprietaire, {message: "le code est obligatoire"});
     maxLength(fieldPath.telephone, 8)
+    maxLength(fieldPath.codeProprietaire, 5)
   });
 
   onSubmit(event: SubmitEvent) {
