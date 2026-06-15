@@ -1,0 +1,264 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-body">
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <select
+              class="form-select form-select-sm bg-light border-0 shadow-none"
+              style="min-width: 250px;"
+              [value]="contratUuidFiltre()"
+              (change)="contratUuidFiltre.set($any($event.target).value); loadEcheancesContrat()"
+            >
+              <option value="">— Toutes les échéances en retard —</option>
+              @for (c of contratsActifs(); track c.uuid) {
+                <option [value]="c.uuid">{{ c.locataireNom }} (Unité: {{ c.codeUnite }})</option>
+              }
+            </select>
+
+            <div class="btn-group btn-group-sm border rounded-3 p-0.5 bg-light">
+              <button type="button" class="btn shadow-none border-0 rounded-2" [class.btn-white]="filtre() === 'toutes'" (click)="filtre.set('toutes')">Toutes</button>
+              <button type="button" class="btn shadow-none border-0 rounded-2" [class.btn-white]="filtre() === 'non_soldees'" (click)="filtre.set('non_soldees')">Dues</button>
+              <button type="button" class="btn shadow-none border-0 rounded-2" [class.btn-white]="filtre() === 'soldees'" (click)="filtre.set('soldees')">Soldées</button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-sm d-flex align-items-center gap-1 px-3 shadow-none text-white" (click)="ouvrirAddEcheance()">
+            <i class="ri-add-line"></i> Créer une échéance
+          </button>
+        </div>
+
+        @if (loading()) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        }
+
+        @if (!loading() && filteredEcheances().length === 0) {
+          <div class="text-center py-5">
+            <i class="ri-calendar-todo-line text-muted" style="font-size: 48px;"></i>
+            <p class="text-muted mt-3 mb-1">Aucune échéance trouvée</p>
+            <small class="text-muted">Aucune ligne ne correspond à vos critères actuels de filtrage.</small>
+          </div>
+        }
+
+        @if (!loading() && filteredEcheances().length > 0) {
+          <div class="table-responsive">
+            <table class="table align-middle table-hover table-nowrap mb-0">
+              <thead class="table-light">
+              <tr>
+                <th>Unité Logement</th>
+                <th>Date d'échéance</th>
+                <th>Montant dû</th>
+                <th>Reste à payer</th>
+                <th>Statut</th>
+                <th class="text-end">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (echeance of filteredEcheances(); track echeance.uuid) {
+                  <tr>
+                    <td>
+                      <span class="fw-semibold text-dark">{{ echeance.codeUnite }}</span>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center gap-1.5 text-muted">
+                        <i class="ri-calendar-line"></i>
+                        <span>{{ echeance.dateEcheance | date:'dd/MM/yyyy' }}</span>
+                      </div>
+                    </td>
+                    <td><span class="fw-medium">{{ +echeance.montantDu | number }} F</span></td>
+                    <td>
+                      <span class="fw-bold" [class.text-danger]="+echeance.montantRestant > 0" [class.text-success]="+echeance.montantRestant === 0">
+                        {{ +echeance.montantRestant | number }} F
+                      </span>
+                    </td>
+                    <td>
+                      <span class="badge border fw-bold rounded-pill" [ngClass]="getStatutClass(echeance.statut)">
+                        {{ getStatutLabel(echeance.statut) }}
+                      </span>
+                    </td>
+                    <td class="text-end">
+                      <div class="d-inline-flex gap-1">
+                        <button class="btn btn-sm btn-light shadow-none" title="Historique des versements" (click)="voirPaiements(echeance)">
+                          <i class="ri-history-line"></i> Traces
+                        </button>
+                        @if (echeance.statut !== 'PAYE') {
+                          <button class="btn btn-sm btn-success text-white shadow-none d-inline-flex align-items-center gap-0.5" (click)="ouvrirPaiementEspeces(echeance)">
+                            <i class="ri-money-cfa-box-line"></i> Encaisser
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (showPaiementsModal()) {
+  <div class="modal-backdrop-custom" (click)="closePaiementsModal()"></div>
+  <div class="modal d-block" tabindex="-1" style="z-index: 1055;">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header border-bottom bg-light rounded-top-4">
+          <h5 class="modal-title fw-bold text-dark">
+            <i class="ri-file-list-3-line text-primary me-1"></i>Historique des paiements
+          </h5>
+          <button type="button" class="btn-close shadow-none" (click)="closePaiementsModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="p-3 bg-light rounded-3 mb-3 border d-flex justify-content-between align-items-center">
+            <div>
+              <small class="text-muted d-block">Total Initial Échéance</small>
+              <span class="fw-bold fs-5 text-dark">{{ +selectedEcheance()!.montantDu | number }} F</span>
+            </div>
+            <div class="text-end">
+              <small class="text-muted d-block">Reste dû à ce jour</small>
+              <span class="fw-bold fs-5 text-danger">{{ resteAPayer() | number }} F</span>
+            </div>
+          </div>
+
+          @if (paiementsLoading()) {
+            <div class="text-center py-4">
+              <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+            </div>
+          }
+
+          @if (!paiementsLoading() && paiements().length === 0) {
+            <p class="text-muted text-center py-3 small mb-0">Aucun versement n'a encore été enregistré pour cette échéance.</p>
+          }
+
+          @if (!paiementsLoading() && paiements().length > 0) {
+            <div class="list-group list-group-flush border rounded-3 overflow-hidden">
+              @for (p of paiements(); track p.uuid) {
+                <div class="list-group-item d-flex justify-content-between align-items-center py-2.5">
+                  <div>
+                    <span class="fw-semibold text-dark d-block">{{ p.montant | number }} FCFA</span>
+                    <small class="text-muted fs-12">{{ p.datePaiement | date:'dd/MM/yyyy à HH:mm' }} • <span class="badge bg-secondary-subtle text-secondary small fs-10">{{ p.modePaiement }}</span></small>
+                  </div>
+                  @if (p.recuUrl) {
+                    <a [href]="p.recuUrl" target="_blank" class="btn btn-sm btn-outline-primary px-2.5 py-1 rounded-2 shadow-none small fs-12">
+                      <i class="ri-file-pdf-line"></i> Quittance
+                    </a>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showPaiementEspecesModal()) {
+  <div class="modal-backdrop-custom" (click)="closePaiementEspecesModal()"></div>
+  <div class="modal d-block" tabindex="-1" style="z-index: 1055;">
+    <div class="modal-dialog modal-dialog-centered modal-sm" (click)="$event.stopPropagation()">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold text-success">
+            <i class="ri-cash-line me-1"></i>Encaisser Espèces
+          </h5>
+          <button type="button" class="btn-close shadow-none" (click)="closePaiementEspecesModal()"></button>
+        </div>
+        <form (submit)="soumettrePaiementEspeces($event)">
+          <div class="modal-body">
+            @if (paiementEspecesSuccess()) {
+              <div class="alert alert-success border-0 py-2 small mb-3">{{ paiementEspecesSuccess() }}</div>
+            }
+            @if (paiementEspecesError()) {
+              <div class="alert alert-danger border-0 py-2 small mb-3">{{ paiementEspecesError() }}</div>
+            }
+
+            <div class="mb-2">
+              <label class="form-label fw-bold">Montant Versé (FCFA) <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input
+                  type="number"
+                  [formField]="paiementForm.montant"
+                  class="form-control shadow-none fw-bold text-dark fs-5"
+                  placeholder="Ex: 50000"
+
+                />
+                <span class="input-group-text bg-light text-muted fw-bold">F</span>
+              </div>
+              <small class="text-muted d-block mt-1.5 fs-12">Reste initial dû : <strong>{{ +selectedEcheance()!.montantRestant | number }} F</strong></small>
+            </div>
+          </div>
+          <div class="modal-footer border-top bg-light rounded-bottom-4">
+            <button type="button" class="btn btn-light btn-sm" [disabled]="paiementEspecesLoading()" (click)="closePaiementEspecesModal()">Annuler</button>
+            <button type="submit" class="btn btn-success btn-sm text-white px-3" [disabled]="paiementEspecesLoading() || paiementForm().invalid()">
+              @if (paiementEspecesLoading()) {
+                <span class="spinner-border spinner-border-sm"></span>
+              } @else {
+                <span>Valider</span>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showAddEcheanceModal()) {
+  <div class="modal-backdrop-custom" (click)="closeAddEcheanceModal()"></div>
+  <div class="modal d-block" tabindex="-1" style="z-index: 1055;">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold">
+            <i class="ri-calendar-plus-line me-1 text-primary"></i>Créer un appel d'échéance forcé
+          </h5>
+          <button type="button" class="btn-close shadow-none" (click)="closeAddEcheanceModal()"></button>
+        </div>
+        <form (submit)="soumettreAddEcheance($event)">
+          <div class="modal-body">
+            @if (addEcheanceSuccess()) {
+              <div class="alert alert-success border-0 py-2 small mb-3">{{ addEcheanceSuccess() }}</div>
+            }
+            @if (addEcheanceError()) {
+              <div class="alert alert-danger border-0 py-2 small mb-3">{{ addEcheanceError() }}</div>
+            }
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Contrat / Locataire cible <span class="text-danger">*</span></label>
+              <select [formField]="addEcheanceForm.contrat_id" class="form-select shadow-none">
+                <option value="">— Choisir le contrat —</option>
+                @for (c of contratsActifs(); track c.uuid) {
+                  <option [value]="c.uuid">{{ c.locataireNom }} (Unité: {{ c.codeUnite }} - Loyer: {{ +c.loyer | number }} F)</option>
+                }
+              </select>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <label class="form-label fw-bold">Date d'échéance <span class="text-danger">*</span></label>
+                <input type="date" [formField]="addEcheanceForm.dateEcheance" class="form-control shadow-none" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer border-top bg-light rounded-bottom-4">
+            <button type="button" class="btn btn-light" [disabled]="addEcheanceLoading()" (click)="closeAddEcheanceModal()">Annuler</button>
+            <button type="submit" class="btn btn-primary text-white px-4" [disabled]="addEcheanceLoading() || addEcheanceForm().invalid()">
+              @if (addEcheanceLoading()) {
+                <span class="spinner-border spinner-border-sm"></span>
+              } @else {
+                <span>Lancer l'appel</span>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

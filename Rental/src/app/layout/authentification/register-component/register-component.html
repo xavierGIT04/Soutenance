@@ -24,8 +24,21 @@
           }
         </div>
         <div class="mb-4">
-          <label class="form-label" for="registerEmail">Votre numéro de téléphone</label>
-          <input type="tel" class="form-control" [formField]="registerForm.telephone" id="registerEmail" placeholder="90 00 00 00">
+          <label class="form-label fw-bold">
+            Téléphone <span class="text-danger">*</span>
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light text-muted border-end-0 fw-medium">+228</span>
+            <input
+              type="tel"
+              [formField]="registerForm.telephone"
+              class="form-control shadow-none"
+              placeholder="90 00 00 00"
+            />
+          </div>
+          <small class="text-muted d-block mt-1.5 fs-12">
+            Ce numéro vous servira d'identifiant unique de connexion.
+          </small>
           @if (registerForm.telephone().invalid() && registerForm.telephone().touched()) {
             <div class="error">
               @for (error of registerForm.telephone().errors(); track error.kind) {
@@ -34,6 +47,7 @@
             </div>
           }
         </div>
+
         <div class="mb-4">
           <label class="form-label mb-2">Votre profil</label>
           <select class="form-select" [formField]="registerForm.profil" >

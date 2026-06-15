@@ -1,0 +1,51 @@
+<!-- Page Header -->
+<div class="app-page-head d-flex flex-wrap gap-3 align-items-center justify-content-between">
+  <div class="clearfix">
+    <h1 class="app-page-title mb-0">Grille des Baux</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a [routerLink]="['/dashboard/classic']" style="cursor: pointer;" class="text-body"><i class="fi fi-rr-home"></i> Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Baux</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<!-- Tabs Navigation -->
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body pb-0">
+        <ul class="nav nav-tabs nav-tabs-custom nav-justified bail-tabs" role="tablist">
+          @for (tab of tabs; track tab.label) {
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [class.active]="activeTab === tab.key"
+                (click)="setTab(tab.key)"
+                role="tab"
+                style="cursor: pointer;"
+              >
+                <i class="{{ tab.icon }} me-1"></i>
+                <span class="d-none d-sm-block">{{ tab.label }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab Content -->
+<div class="tab-content mt-2">
+  @if (activeTab === 'locataires') {
+    <app-locataires-tab/>
+  }
+  @if(activeTab === 'contrats'){
+    <app-contrats-tab/>
+  }
+  @if(activeTab === 'echeances'){
+    <app-echeances-tab/>
+  }
+</div>

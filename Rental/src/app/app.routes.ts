@@ -11,6 +11,7 @@ import {Profile} from './layout/share/profile/profile';
 import {ListeComponent as classique} from './layout/profil_classique/biens/liste-component/liste-component';
 import {ListeComponent as airbn } from './layout/profil_airbn/airbn/liste-component/liste-component';
 import {UniteComponent} from './layout/profil_classique/biens/unite-component/unite-component';
+import {BailComponent} from './layout/profil_classique/bails/bail-component/bail-component';
 
 export const routes: Routes = [
   {
@@ -48,6 +49,10 @@ export const routes: Routes = [
           {
             path: 'proprietes/:id/unites',
             component: UniteComponent
+          },
+          {
+            path: 'baux',
+            component: BailComponent
           }
         ]
       },

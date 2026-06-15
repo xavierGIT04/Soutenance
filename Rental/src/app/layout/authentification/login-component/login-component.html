@@ -12,8 +12,18 @@
       </div>
       <form (submit)="onSubmit($event)" >
         <div class="mb-4">
-          <label class="form-label" for="telephone">Telephone</label>
-          <input type="tel"  class="form-control" [formField]="loginForm.telephone" id="telephone" placeholder="90 00 00 00">
+          <label class="form-label fw-bold">
+            Téléphone <span class="text-danger">*</span>
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light text-muted border-end-0 fw-medium">+228</span>
+            <input
+              type="tel"
+              [formField]="loginForm.telephone"
+              class="form-control shadow-none"
+              placeholder="90 00 00 00"
+            />
+          </div>
           @if (loginForm.telephone().invalid() && loginForm.telephone().touched()) {
             <div class="error">
               @for (error of loginForm.telephone().errors(); track error.kind) {

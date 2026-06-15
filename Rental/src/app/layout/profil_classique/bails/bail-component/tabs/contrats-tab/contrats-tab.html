@@ -1,0 +1,270 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-body">
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+          <div class="position-relative">
+            <input
+              type="text"
+              class="form-control form-control-sm bg-light border-0"
+              placeholder="Rechercher un contrat..."
+              [value]="searchTerm()"
+              (input)="searchTerm.set($any($event.target).value)"
+              style="padding-left: 36px; min-width: 240px;"
+            />
+            <i class="ri-search-line position-absolute top-50 translate-middle-y text-muted" style="left: 10px;"></i>
+          </div>
+
+          <button class="btn btn-primary btn-sm d-flex align-items-center gap-1" (click)="openCreateModal()">
+            <i class="ri-add-line"></i> Nouveau contrat
+          </button>
+        </div>
+
+        @if (loading()) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+        }
+
+        @if (!loading() && filteredContrats().length === 0) {
+          <div class="text-center py-5">
+            <i class="ri-file-text-line text-muted" style="font-size: 48px;"></i>
+            <p class="text-muted mt-3 mb-1">Aucun contrat trouvé</p>
+            <small class="text-muted">Créez un contrat pour un locataire existant.</small>
+          </div>
+        }
+
+        @if (!loading() && filteredContrats().length > 0) {
+          <div class="table-responsive">
+            <table class="table align-middle table-hover table-nowrap mb-0">
+              <thead class="table-light">
+              <tr>
+                <th>Locataire</th>
+                <th>Unité</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Loyer mensuel</th>
+                <th>Statut</th>
+                <th class="text-end">Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (contrat of filteredContrats(); track contrat.uuid) {
+                  <tr>
+                    <td>
+                      <p class="mb-0 fw-semibold">{{ contrat.locataireNom }}</p>
+                      <small class="text-muted">{{ contrat.locataireTelephone }}</small>
+                    </td>
+                    <td>
+                      <span class="badge bg-light text-dark border fw-medium">{{ contrat.codeUnite }}</span>
+                    </td>
+                    <td>{{ contrat.dateDebut | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ contrat.dateSortie ? (contrat.dateSortie | date:'dd/MM/yyyy') : '—' }}</td>
+                    <td><span class="fw-semibold text-dark">{{ +contrat.loyer | number }} FCFA</span></td>
+                    <td>
+                      <span class="badge rounded-pill fw-bold border"
+                            [style.color]="getStatutColor(contrat.statut)"
+                            [style.border-color]="getStatutColor(contrat.statut)"
+                            [ngClass]="getStatutClass(contrat.statut)">
+                        {{ getStatutLabel(contrat.statut) }}
+                      </span>
+                    </td>
+                    <td class="text-end">
+                      @if (contrat.statut === 'ACTIF') {
+                        <button
+                          class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 shadow-none"
+                          (click)="openResilierModal(contrat)"
+                        >
+                          <i class="ri-close-circle-line"></i> Résilier
+                        </button>
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (showCreateModal()) {
+  <div class="modal-backdrop-custom" (click)="closeCreateModal()"></div>
+
+  <div class="modal d-block" tabindex="-1" style="z-index: 1055;">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold">
+            <i class="ri-file-add-line me-2 text-primary"></i>Nouveau contrat de bail
+          </h5>
+          <button class="btn-close shadow-none" (click)="closeCreateModal()"></button>
+        </div>
+
+        <form (submit)="submitCreate($event)">
+          <div class="modal-body">
+
+            @if (createSuccess()) {
+              <div class="alert alert-success border-0 py-2 small mb-3">
+                <i class="ri-checkbox-circle-line me-1"></i>{{ createSuccess() }}
+              </div>
+            }
+            @if (createError()) {
+              <div class="alert alert-danger border-0 py-2 small mb-3">
+                <i class="ri-error-warning-line me-1"></i>{{ createError() }}
+              </div>
+            }
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Locataire <span class="text-danger">*</span></label>
+                <select [formField]="creationForm.locataireUuid" class="form-select shadow-none">
+                  <option value="">— Sélectionner un locataire —</option>
+                  @for (l of locataires(); track l.telephone) {
+                    <option [value]="l.uuid">{{ l.nom }} ({{ l.telephone }})</option>
+                  }
+                </select>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Unité Logement <span class="text-danger">*</span></label>
+                <select [formField]="creationForm.uniteUuid" (change)="onUniteChange($any($event.target).value)" class="form-select shadow-none">
+                  <option value="">— Sélectionner un local libre —</option>
+                  @for (u of unitesLibres(); track u.uuid) {
+                    <option [value]="u.uuid"> {{ u.type }} - {{ u.code_unite }} - {{ u.bien_name }} (Ref: {{ u.loyer_reference }} F)</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Loyer mensuel convenu (FCFA) <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    [formField]="creationForm.loyer"
+                    class="form-control shadow-none"
+                    placeholder="Ex: 75000"
+                  />
+                  <span class="input-group-text bg-light text-muted fw-medium">FCFA</span>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Jour d'échéance mensuel <span class="text-danger">*</span></label>
+                <select [formField]="creationForm.jourEcheance" class="form-select shadow-none">
+                  <option value="">— Choisir le jour —</option>
+                  @for (jour of joursDuMois; track jour) {
+                    <option [value]="jour">Chaque {{ jour }} du mois</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Date de début / Prise d'effet <span class="text-danger">*</span></label>
+                <input
+                  type="date"
+                  [formField]="creationForm.dateDebut"
+                  class="form-control shadow-none"
+                />
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Date de fin <span class="text-muted">(optionnelle)</span></label>
+                <input
+                  type="date"
+                  [formField]="creationForm.dateSortie"
+                  class="form-control shadow-none"
+                />
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label fw-bold">Clauses ou conditions particulières</label>
+              <textarea
+                [formField]="creationForm.conditions"
+                class="form-control shadow-none"
+                rows="3"
+                placeholder="Ex: Avances versées, cautions, conditions particulières du préavis...">
+              </textarea>
+            </div>
+
+          </div>
+
+          <div class="modal-footer border-top bg-light rounded-bottom-4">
+            <button type="button" class="btn btn-light" [disabled]="createLoading()" (click)="closeCreateModal()">Annuler</button>
+            <button
+              type="submit"
+              class="btn btn-primary d-flex align-items-center gap-1 px-4"
+              [disabled]="createLoading() || creationForm().invalid()"
+            >
+              @if (createLoading()) {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span>Enregistrement...</span>
+              } @else {
+                <i class="ri-save-line"></i>
+                <span>Créer le contrat</span>
+              }
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+}
+
+@if (showResilierModal()) {
+  <div class="modal-backdrop-custom" (click)="closeResilierModal()"></div>
+
+  <div class="modal d-block" tabindex="-1" style="z-index: 1055;">
+    <div class="modal-dialog modal-dialog-centered modal-sm" (click)="$event.stopPropagation()">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+
+        <div class="modal-header border-0 pb-0">
+          <button class="btn-close shadow-none ms-auto" (click)="closeResilierModal()"></button>
+        </div>
+
+        <div class="modal-body text-center pt-0">
+          <i class="ri-error-warning-line text-danger" style="font-size: 48px;"></i>
+          <h5 class="fw-bold mt-2">Résilier ce contrat ?</h5>
+          <p class="text-muted small mb-0">
+            Le contrat de <strong>{{ selectedContrat()?.locataireNom }}</strong> liant l'unité
+            <strong>{{ selectedContrat()?.codeUnite }}</strong> sera marqué comme résilié.
+            Cette action est irréversible.
+          </p>
+          @if (resilierError()) {
+            <div class="alert alert-danger border-0 py-2 mt-3 text-start small">
+              <i class="ri-error-warning-line me-1"></i>{{ resilierError() }}
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer border-0 justify-content-center gap-2 pb-4">
+          <button class="btn btn-light px-4" [disabled]="resilierLoading()" (click)="closeResilierModal()">Annuler</button>
+          <button
+            class="btn btn-danger px-4 d-flex align-items-center gap-1 shadow-none"
+            (click)="confirmerResiliation()"
+            [disabled]="resilierLoading()"
+          >
+            @if (resilierLoading()) {
+              <span class="spinner-border spinner-border-sm"></span>
+              <span>Résiliation...</span>
+            } @else {
+              <span>Confirmer</span>
+            }
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}

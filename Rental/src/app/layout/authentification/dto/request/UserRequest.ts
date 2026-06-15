@@ -1,6 +1,7 @@
 export enum PROFIL {
   classique = "LOCATION_CLASSIQUE",
   airbn = "LOCATION_SEJOUR",
+  user="USER"
 
 }
 export enum ROLE {

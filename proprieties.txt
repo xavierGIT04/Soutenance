@@ -16,3 +16,8 @@ application.security.jwt.expiration=900000
 application.security.jwt.refresh-expiration=604800000
 
 server.port=8080
+
+spring.jackson.time-zone=Africa/Lome
+server.tomcat.timezone=Africa/Lome
+ 
+logging.level.com.ipnet.rentalapi.Gbails.scheduler=DEBUG
