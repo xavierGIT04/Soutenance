@@ -1,13 +1,143 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>contrat-detail</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="transparent">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/dashboard" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Détail du contrat</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">contrat-detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="detail-wrapper">
+
+    @if (loading()) {
+      <div class="app-card skeleton-card">
+        <ion-skeleton-text [animated]="true" style="width:60%;height:20px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:40%;height:16px;margin-top:10px;"></ion-skeleton-text>
+        <ion-skeleton-text [animated]="true" style="width:80%;height:14px;margin-top:8px;"></ion-skeleton-text>
+      </div>
+
+    } @else if (!contrat()) {
+      <div class="empty-state">
+        <ion-icon name="document-text-outline"></ion-icon>
+        <p>Contrat introuvable.</p>
+      </div>
+
+    } @else {
+      <!-- Carte identité -->
+      <div class="app-card identity-card">
+        <div class="identity-top">
+          <div class="identity-icon">
+            <ion-icon name="business-outline"></ion-icon>
+          </div>
+          <div class="identity-info">
+            <h2>{{ contrat()!.codeUnite }}</h2>
+            <p>{{ contrat()!.typeUnite }}</p>
+          </div>
+          <ion-chip [color]="getStatutContratColor(contrat()!.statut)" class="status-chip">
+            {{ getStatutContratLabel(contrat()!.statut) }}
+          </ion-chip>
+        </div>
+      </div>
+
+      <!-- Informations contrat -->
+      <div class="app-card info-card">
+        <h3 class="card-section-title">Informations</h3>
+
+        <div class="info-row">
+          <ion-icon name="wallet-outline"></ion-icon>
+          <span class="info-label">Loyer mensuel</span>
+          <span class="info-value amount-text">{{ contrat()!.loyer | fcfa }}</span>
+        </div>
+
+        <div class="info-row">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span class="info-label">Jour d'échéance</span>
+          <span class="info-value">{{ contrat()!.jourEcheance }}<sup>e</sup> du mois</span>
+        </div>
+
+        <div class="info-row">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span class="info-label">Début du bail</span>
+          <span class="info-value">{{ formatDate(contrat()!.dateDebut) }}</span>
+        </div>
+
+        @if (contrat()!.dateSortie) {
+          <div class="info-row">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <span class="info-label">Fin du bail</span>
+            <span class="info-value">{{ formatDate(contrat()!.dateSortie) }}</span>
+          </div>
+        }
+
+        @if (contrat()!.duree) {
+          <div class="info-row">
+            <ion-icon name="time-outline"></ion-icon>
+            <span class="info-label">Durée</span>
+            <span class="info-value">{{ contrat()!.duree }} mois</span>
+          </div>
+        }
+
+        <div class="info-row">
+          <ion-icon name="person-outline"></ion-icon>
+          <span class="info-label">Locataire</span>
+          <span class="info-value">{{ contrat()!.locataireNom }}</span>
+        </div>
+
+        <div class="info-row">
+          <ion-icon name="call-outline"></ion-icon>
+          <span class="info-label">Téléphone</span>
+          <span class="info-value">{{ contrat()!.locataireTelephone | phoneFormat }}</span>
+        </div>
+
+        @if (contrat()!.condition) {
+          <div class="info-row conditions-row">
+            <ion-icon name="document-text-outline"></ion-icon>
+            <span class="info-label">Conditions</span>
+            <span class="info-value conditions-text">{{ contrat()!.condition }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Échéances -->
+      <div class="echeances-section">
+        <h3 class="section-title">Échéances</h3>
+
+        @if (loadingEcheances()) {
+          @for (i of [1,2,3]; track i) {
+            <div class="app-card skeleton-card">
+              <ion-skeleton-text [animated]="true" style="width:50%;height:14px;"></ion-skeleton-text>
+            </div>
+          }
+        } @else if (echeances().length === 0) {
+          <div class="empty-state small">
+            <p>Aucune échéance générée pour ce contrat.</p>
+          </div>
+        } @else {
+          @for (e of echeances(); track e.uuid) {
+            <div class="app-card echeance-card" (click)="voirEcheance(e)">
+              <div class="echeance-row">
+                <ion-icon
+                  [name]="getStatutEcheanceIcon(e.statut)"
+                  [color]="getStatutEcheanceColor(e.statut)"
+                  class="echeance-icon"
+                ></ion-icon>
+                <div class="echeance-info">
+                  <p class="echeance-mois">{{ formatMois(e.dateEcheance) }}</p>
+                  <p class="echeance-restant">
+                    Restant : {{ e.montantRestant | fcfa }}
+                  </p>
+                </div>
+                <ion-chip
+                  [color]="getStatutEcheanceColor(e.statut)"
+                  class="status-chip small-chip"
+                >{{ getStatutEcheanceLabel(e.statut) }}</ion-chip>
+                <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
 </ion-content>

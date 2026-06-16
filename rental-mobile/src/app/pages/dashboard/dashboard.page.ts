@@ -1,6 +1,5 @@
-import {Component, OnInit, computed, signal, inject} from '@angular/core';
+import { Component, OnInit, computed, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import {
   IonContent,
   IonHeader,
@@ -25,8 +24,6 @@ import { BailService } from '../../core/services/bail-service';
 import { AuthService } from '../../core/services/auth-service';
 import { BailResponse, BailEnum } from '../../core/models/bail.model';
 import { FcfaPipe } from '../../pipes/fcfa-pipe-pipe';
-import { PhoneFormatPipe } from '../../pipes/phone-format-pipe-pipe';
-import {ToastService} from "../../core/services/toast-service";
 
 @Component({
   selector: 'app-dashboard',
@@ -50,18 +47,18 @@ export class DashboardPage implements OnInit {
 
   loading = signal(true);
   contrats = signal<BailResponse[]>([]);
-  private bailService = inject(BailService)
-  protected authService = inject(AuthService)
-  private router = inject(Router)
+  private bailService = inject(BailService);
+  protected authService = inject(AuthService);
+  private router = inject(Router);
 
-
-  contratsActifs = computed(() => this.contrats().filter((c) => c.statut === BailEnum.Actif));
+  contratsActifs = computed(() =>
+    this.contrats().filter((c) => c.statut === BailEnum.Actif),
+  );
   loyerTotalMensuel = computed(() =>
     this.contratsActifs().reduce((sum, c) => sum + (+c.loyer || 0), 0),
   );
 
-  constructor(
-  ) {
+  constructor() {
     addIcons({
       homeOutline,
       chevronForwardOutline,
@@ -98,19 +95,19 @@ export class DashboardPage implements OnInit {
 
   getStatutLabel(statut: BailEnum): string {
     switch (statut) {
-      case BailEnum.Actif: return 'Actif';
+      case BailEnum.Actif:       return 'Actif';
       case BailEnum.Resiliation: return 'En résiliation';
-      case BailEnum.Termine: return 'Terminé';
-      default: return statut;
+      case BailEnum.Termine:     return 'Terminé';
+      default:                   return statut;
     }
   }
 
   getStatutColor(statut: BailEnum): string {
     switch (statut) {
-      case BailEnum.Actif: return 'success';
+      case BailEnum.Actif:       return 'success';
       case BailEnum.Resiliation: return 'warning';
-      case BailEnum.Termine: return 'medium';
-      default: return 'medium';
+      case BailEnum.Termine:     return 'medium';
+      default:                   return 'medium';
     }
   }
 }

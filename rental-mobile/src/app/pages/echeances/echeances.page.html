@@ -1,13 +1,101 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>echeances</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="transparent">
+    <div class="page-header">
+      <h1 class="app-page-title">Mes échéances</h1>
+      @if (echeancesEnRetard().length > 0) {
+        <ion-badge color="danger">{{ echeancesEnRetard().length }} en retard</ion-badge>
+      }
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">echeances</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-refresher slot="fixed" (ionRefresh)="charger($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="echeances-wrapper">
+
+    @if (loading()) {
+      @for (i of [1,2,3]; track i) {
+        <div class="app-card skeleton-card">
+          <ion-skeleton-text [animated]="true" style="width:50%;height:16px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width:35%;height:14px;margin-top:8px;"></ion-skeleton-text>
+        </div>
+      }
+    } @else if (echeances().length === 0) {
+      <div class="empty-state">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <p>Aucune échéance trouvée.</p>
+      </div>
+
+    } @else {
+
+      @if (echeancesEnRetard().length > 0) {
+        <div class="section-bloc retard-bloc">
+          <h3 class="section-label danger">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            En retard
+          </h3>
+          @for (e of echeancesEnRetard(); track e.uuid) {
+            <div class="app-card echeance-card" (click)="voirEcheance(e)">
+              <ng-container *ngTemplateOutlet="echeanceRow; context: { e: e }"></ng-container>
+            </div>
+          }
+        </div>
+      }
+
+      @if (echeancesEnAttente().length > 0) {
+        <div class="section-bloc">
+          <h3 class="section-label">
+            <ion-icon name="time-outline"></ion-icon>
+            À régler
+          </h3>
+          @for (e of echeancesEnAttente(); track e.uuid) {
+            <div class="app-card echeance-card" (click)="voirEcheance(e)">
+              <ng-container *ngTemplateOutlet="echeanceRow; context: { e: e }"></ng-container>
+            </div>
+          }
+        </div>
+      }
+
+      @if (echeancesPaye().length > 0) {
+        <div class="section-bloc">
+          <h3 class="section-label success">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            Payées
+          </h3>
+          @for (e of echeancesPaye(); track e.uuid) {
+            <div class="app-card echeance-card faded" (click)="voirEcheance(e)">
+              <ng-container *ngTemplateOutlet="echeanceRow; context: { e: e }"></ng-container>
+            </div>
+          }
+        </div>
+      }
+
+    }
+  </div>
 </ion-content>
+
+<!-- Template réutilisable pour une ligne d'échéance -->
+<ng-template #echeanceRow let-e="e">
+  <div class="echeance-row">
+    <div class="echeance-icon">
+      <ion-icon [name]="getStatutIcon(e.statut)" [color]="getStatutColor(e.statut)"></ion-icon>
+    </div>
+    <div class="echeance-info">
+      <p class="echeance-unite">{{ e.codeUnite }}</p>
+      <p class="echeance-date">{{ formatDate(e.dateEcheance) }}</p>
+    </div>
+    <div class="echeance-right">
+      <p class="echeance-montant">{{ e.montantRestant | fcfa }}</p>
+      @if (e.statut !== StatutEcheance.Paye) {
+        <p class="echeance-total">/ {{ e.montantDu | fcfa }}</p>
+      }
+      <ion-chip [color]="getStatutColor(e.statut)" class="status-chip">
+        {{ getStatutLabel(e.statut) }}
+      </ion-chip>
+    </div>
+    <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+  </div>
+</ng-template>

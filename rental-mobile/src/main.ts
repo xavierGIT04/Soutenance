@@ -5,16 +5,18 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
-import {provideHttpClient, withInterceptors} from "@angular/common/http";
-import {jwtInterceptor} from "./app/core/interceptors/jwtInterceptor";
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
+import { jwtInterceptor } from "./app/core/interceptors/jwtInterceptor";
+import { errorInterceptor } from "./app/core/interceptors/errorInterceptor";
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection(),{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideZoneChangeDetection(),
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(
-      withInterceptors([jwtInterceptor]) // Ajoutez tous vos intercepteurs dans ce tableau
-    )
+      withInterceptors([jwtInterceptor, errorInterceptor])
+    ),
   ],
 });

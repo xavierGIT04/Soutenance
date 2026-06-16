@@ -1,0 +1,176 @@
+.detail-wrapper {
+  padding: 12px 16px 40px;
+}
+
+.identity-card {
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.identity-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.identity-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--ion-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 22px;
+    color: var(--ion-color-primary);
+  }
+}
+
+.identity-info {
+  flex: 1;
+
+  h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ion-color-tertiary);
+    margin: 0 0 2px;
+  }
+
+  p {
+    font-size: 13px;
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+.info-card {
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.card-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 14px;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(8, 54, 58, 0.06);
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  ion-icon {
+    font-size: 17px;
+    color: var(--ion-color-primary);
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .info-label {
+    font-size: 13px;
+    color: var(--ion-color-medium);
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+
+  .info-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ion-color-tertiary);
+    text-align: right;
+    flex: 1;
+  }
+
+  &.conditions-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    .conditions-text {
+      text-align: left;
+      font-weight: 400;
+      line-height: 1.5;
+      margin-top: 4px;
+      width: 100%;
+    }
+  }
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ion-color-tertiary);
+  margin: 20px 0 10px 4px;
+}
+
+.echeances-section {
+  margin-top: 8px;
+}
+
+.echeance-card {
+  padding: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.echeance-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.echeance-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.echeance-info {
+  flex: 1;
+
+  .echeance-mois {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ion-color-tertiary);
+    margin: 0 0 2px;
+    text-transform: capitalize;
+  }
+
+  .echeance-restant {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+.small-chip {
+  font-size: 10px;
+  height: 20px;
+  margin: 0;
+}
+
+.chevron {
+  color: var(--ion-color-medium);
+  font-size: 16px;
+}
+
+.empty-state.small {
+  padding: 20px 0;
+  font-size: 13px;
+}

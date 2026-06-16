@@ -1,13 +1,81 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profil</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="transparent">
+    <div class="page-header">
+      <h1 class="app-page-title">Mon profil</h1>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="profil-wrapper">
+
+    <!-- Avatar et nom -->
+    <div class="app-card avatar-card">
+      <div class="avatar-circle">
+        @if (user()?.avatar) {
+          <img [src]="user()!.avatar" alt="Avatar" />
+        } @else {
+          <span class="initiales">{{ getInitiales() }}</span>
+        }
+      </div>
+      <div class="avatar-info">
+        <h2 class="user-name">{{ user()?.nom ?? '—' }}</h2>
+        <p class="user-role">Locataire</p>
+      </div>
+    </div>
+
+    <!-- Informations -->
+    <div class="app-card info-card">
+      <h3 class="card-label">Informations du compte</h3>
+
+      <div class="info-row">
+        <div class="info-icon">
+          <ion-icon name="person-outline"></ion-icon>
+        </div>
+        <div class="info-content">
+          <span class="info-sub">Nom complet</span>
+          <span class="info-val">{{ user()?.nom ?? '—' }}</span>
+        </div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-icon">
+          <ion-icon name="call-outline"></ion-icon>
+        </div>
+        <div class="info-content">
+          <span class="info-sub">Téléphone</span>
+          <span class="info-val">{{ user()?.telephone ? formatTelephone(user()!.telephone) : '—' }}</span>
+        </div>
+      </div>
+
+      <div class="info-row last">
+        <div class="info-icon">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+        </div>
+        <div class="info-content">
+          <span class="info-sub">Rôle</span>
+          <span class="info-val">Locataire</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Déconnexion -->
+    <ion-button
+      expand="block"
+      fill="outline"
+      color="danger"
+      shape="round"
+      class="logout-btn"
+      (click)="demanderDeconnexion()"
+    >
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      Se déconnecter
+    </ion-button>
+
+    <p class="footer-hint">
+      Rental — Espace locataire<br>
+      Vos identifiants sont gérés par votre propriétaire.
+    </p>
+
+  </div>
 </ion-content>

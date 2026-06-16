@@ -1,13 +1,52 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>notifications</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="transparent">
+    <div class="page-header">
+      <h1 class="app-page-title">Notifications</h1>
+      @if (notifState.unreadCount() > 0) {
+        <ion-chip color="danger" class="count-chip">
+          {{ notifState.unreadCount() }} non lue{{ notifState.unreadCount() > 1 ? 's' : '' }}
+        </ion-chip>
+      }
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">notifications</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="notif-wrapper">
+
+    @if (notifState.notifications().length === 0) {
+      <div class="empty-state">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <p>Vous êtes à jour ! Aucune notification non lue.</p>
+      </div>
+    } @else {
+      @for (notif of notifState.notifications(); track notif.uuid) {
+        <div
+          class="app-card notif-card"
+          [class.unread]="!notif.estLu"
+          (click)="marquerLue(notif.uuid, $event)"
+        >
+          <div class="notif-row">
+            <div class="notif-icon-wrap" [attr.data-color]="getColor(notif.typeNotification)">
+              <ion-icon
+                [name]="getIcon(notif.typeNotification)"
+                [color]="getColor(notif.typeNotification)"
+              ></ion-icon>
+            </div>
+            <div class="notif-body">
+              <div class="notif-meta">
+                <p class="notif-titre">{{ notif.titre }}</p>
+                <span class="notif-date">{{ formatDate(notif.dateEnvoi) }}</span>
+              </div>
+              <p class="notif-message">{{ notif.message }}</p>
+            </div>
+          </div>
+          @if (!notif.estLu) {
+            <span class="unread-dot"></span>
+          }
+        </div>
+      }
+    }
+
+  </div>
 </ion-content>
