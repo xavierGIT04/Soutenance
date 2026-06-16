@@ -21,3 +21,10 @@ spring.jackson.time-zone=Africa/Lome
 server.tomcat.timezone=Africa/Lome
  
 logging.level.com.ipnet.rentalapi.Gbails.scheduler=DEBUG
+
+
+spring.datasource.url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASSWORD}
+fedapay.callback.url=https://${BACK_URL}/api/bail/webhook/fedapay
+https://rental-api-ubpk.onrender.com
