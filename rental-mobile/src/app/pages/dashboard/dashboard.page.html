@@ -1,0 +1,85 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="transparent">
+    <div class="header-content">
+      <div>
+        <p class="greeting">Bonjour </p>
+        <h1 class="user-name">{{ authService.currentUser()?.nom || '...' }}</h1>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="chargerContrats($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="dashboard-wrapper">
+
+    <!-- Carte résumé -->
+    <div class="summary-card">
+      <div class="summary-icon">
+        <ion-icon name="wallet-outline"></ion-icon>
+      </div>
+      <div class="summary-text">
+        <p class="summary-label">Loyer mensuel total</p>
+        @if (loading()) {
+          <ion-skeleton-text [animated]="true" style="width: 120px; height: 24px;"></ion-skeleton-text>
+        } @else {
+          <p class="summary-amount">{{ loyerTotalMensuel() | fcfa }}</p>
+        }
+      </div>
+      <div class="summary-count">
+        <span class="count-number">{{ contratsActifs().length }}</span>
+        <span class="count-label">contrat(s) actif(s)</span>
+      </div>
+    </div>
+
+    <h2 class="section-title">Mes contrats de bail</h2>
+
+    @if (loading()) {
+      @for (i of [1,2]; track i) {
+        <div class="app-card skeleton-card">
+          <ion-skeleton-text [animated]="true" style="width: 60%; height: 18px;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 40%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+        </div>
+      }
+    } @else if (contrats().length === 0) {
+      <div class="empty-state">
+        <ion-icon name="business-outline"></ion-icon>
+        <p>Aucun contrat de bail associé à votre compte pour le moment.</p>
+      </div>
+    } @else {
+      @for (contrat of contrats(); track contrat.uuid) {
+        <div class="app-card contrat-card" (click)="voirContrat(contrat.uuid)">
+          <div class="contrat-card-top">
+            <div class="contrat-icon">
+              <ion-icon name="business-outline"></ion-icon>
+            </div>
+            <div class="contrat-info">
+              <h3>{{ contrat.codeUnite }}</h3>
+              <p>{{ contrat.typeUnite }}</p>
+            </div>
+            <ion-chip [color]="getStatutColor(contrat.statut)" class="status-chip">
+              {{ getStatutLabel(contrat.statut) }}
+            </ion-chip>
+          </div>
+
+          <div class="contrat-card-bottom">
+            <div class="info-line">
+              <ion-icon name="calendar-number-outline"></ion-icon>
+              <span>Échéance le {{ contrat.jourEcheance }} de chaque mois</span>
+            </div>
+            <div class="info-line amount-line">
+              <span class="amount-text">{{ contrat.loyer | fcfa }}</span>
+              <span class="per-month">/mois</span>
+            </div>
+          </div>
+
+          <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+        </div>
+      }
+    }
+
+  </div>
+</ion-content>

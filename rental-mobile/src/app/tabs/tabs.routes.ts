@@ -1,36 +1,32 @@
 import { Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 
-export const routes: Routes = [
+export const tabsRoutes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
-        loadComponent: () =>
-          import('../tab1/tab1.page').then((m) => m.Tab1Page),
+        path: 'dashboard',
+        loadComponent: () => import('../pages/dashboard/dashboard.page').then((m) => m.DashboardPage),
       },
       {
-        path: 'tab2',
-        loadComponent: () =>
-          import('../tab2/tab2.page').then((m) => m.Tab2Page),
+        path: 'echeances',
+        loadComponent: () => import('../pages/echeances/echeances.page').then((m) => m.EcheancesPage),
       },
       {
-        path: 'tab3',
-        loadComponent: () =>
-          import('../tab3/tab3.page').then((m) => m.Tab3Page),
+        path: 'notifications',
+        loadComponent: () => import('../pages/notifications/notifications.page').then((m) => m.NotificationsPage),
+      },
+      {
+        path: 'profil',
+        loadComponent: () => import('../pages/profil/profil.page').then((m) => m.ProfilPage),
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: 'dashboard',
         pathMatch: 'full',
       },
     ],
-  },
-  {
-    path: '',
-    redirectTo: '/tabs/tab1',
-    pathMatch: 'full',
   },
 ];

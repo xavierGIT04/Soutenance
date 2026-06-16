@@ -1,2 +1,117 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+/*
+ * Thème Rental — Locataire
+ * Couleurs reprises de l'application web propriétaire (UrbanHub / Rental)
+ */
+
+:root {
+  /* ===== Primary : teal (identique au web) ===== */
+  --ion-color-primary: #0D919C;
+  --ion-color-primary-rgb: 13, 145, 156;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #0b8089;
+  --ion-color-primary-tint: #259da6;
+
+  /* ===== Secondary : corail ===== */
+  --ion-color-secondary: #FF815E;
+  --ion-color-secondary-rgb: 255, 129, 94;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #e07253;
+  --ion-color-secondary-tint: #ff8e6e;
+
+  /* ===== Tertiary : dark teal ===== */
+  --ion-color-tertiary: #08363A;
+  --ion-color-tertiary-rgb: 8, 54, 58;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #073033;
+  --ion-color-tertiary-tint: #214a4e;
+
+  /* ===== Success / Warning / Danger / Info (alignés au web) ===== */
+  --ion-color-success: #59C86B;
+  --ion-color-success-rgb: 89, 200, 107;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #4eb05e;
+  --ion-color-success-tint: #6acd7a;
+
+  --ion-color-warning: #FEDB33;
+  --ion-color-warning-rgb: 254, 219, 51;
+  --ion-color-warning-contrast: #2b2300;
+  --ion-color-warning-contrast-rgb: 43, 35, 0;
+  --ion-color-warning-shade: #e0c12d;
+  --ion-color-warning-tint: #fedf47;
+
+  --ion-color-danger: #FF401C;
+  --ion-color-danger-rgb: 255, 64, 28;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #e03819;
+  --ion-color-danger-tint: #ff5333;
+
+  --ion-color-info: #02B4FA;
+  --ion-color-info-rgb: 2, 180, 250;
+  --ion-color-info-contrast: #ffffff;
+  --ion-color-info-contrast-rgb: 255, 255, 255;
+  --ion-color-info-shade: #029ed9;
+  --ion-color-info-tint: #1bbcfa;
+
+  --ion-color-light: #EBF3F4;
+  --ion-color-light-rgb: 235, 243, 244;
+  --ion-color-light-contrast: #08363A;
+  --ion-color-light-contrast-rgb: 8, 54, 58;
+  --ion-color-light-shade: #cfd6d7;
+  --ion-color-light-tint: #eef5f6;
+
+  --ion-color-medium: #97A1C0;
+  --ion-color-medium-rgb: 151, 161, 192;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #858eaa;
+  --ion-color-medium-tint: #a2abc7;
+
+  --ion-color-dark: #08363A;
+  --ion-color-dark-rgb: 8, 54, 58;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #073033;
+  --ion-color-dark-tint: #214a4e;
+
+  /* ===== Variables d'app personnalisées ===== */
+  --app-background: #EBF3F4;
+  --app-card-radius: 18px;
+  --app-font: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --ion-font-family: var(--app-font);
+  --ion-background-color: var(--app-background);
+  --ion-toolbar-background: #ffffff;
+  --ion-item-background: #ffffff;
+}
+
+.ion-color-primary {
+  --ion-color-base: var(--ion-color-primary);
+  --ion-color-base-rgb: var(--ion-color-primary-rgb);
+  --ion-color-contrast: var(--ion-color-primary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-primary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-primary-shade);
+  --ion-color-tint: var(--ion-color-primary-tint);
+}
+
+.ion-color-secondary {
+  --ion-color-base: var(--ion-color-secondary);
+  --ion-color-base-rgb: var(--ion-color-secondary-rgb);
+  --ion-color-contrast: var(--ion-color-secondary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-secondary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-secondary-shade);
+  --ion-color-tint: var(--ion-color-secondary-tint);
+}
+
+.ion-color-tertiary {
+  --ion-color-base: var(--ion-color-tertiary);
+  --ion-color-base-rgb: var(--ion-color-tertiary-rgb);
+  --ion-color-contrast: var(--ion-color-tertiary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-tertiary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-tertiary-shade);
+  --ion-color-tint: var(--ion-color-tertiary-tint);
+}
