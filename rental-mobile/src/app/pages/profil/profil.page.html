@@ -2,6 +2,11 @@
   <ion-toolbar color="transparent">
     <div class="page-header">
       <h1 class="app-page-title">Mon profil</h1>
+      @if (!editMode()) {
+        <button class="edit-fab" (click)="startEdit()">
+          <ion-icon name="create-outline"></ion-icon>
+        </button>
+      }
     </div>
   </ion-toolbar>
 </ion-header>
@@ -9,57 +14,145 @@
 <ion-content [fullscreen]="true">
   <div class="profil-wrapper">
 
-    <!-- Avatar et nom -->
-    <div class="app-card avatar-card">
-      <div class="avatar-circle">
-        @if (user()?.avatar) {
-          <img [src]="user()!.avatar" alt="Avatar" />
+    <!-- ── Avatar ─────────────────────────────────────────────── -->
+    <div class="avatar-section">
+      <div class="avatar-wrap" (click)="triggerAvatarPicker()">
+        @if (uploadingAvatar()) {
+          <div class="avatar-circle uploading">
+            <ion-spinner name="crescent" color="light"></ion-spinner>
+          </div>
+        } @else if (user()?.avatar) {
+          <img class="avatar-circle" [src]="user()!.avatar" alt="Avatar" />
         } @else {
-          <span class="initiales">{{ getInitiales() }}</span>
+          <div class="avatar-circle initiales-circle">
+            <span>{{ getInitiales() }}</span>
+          </div>
         }
+        <div class="avatar-camera-badge">
+          <ion-icon name="camera-outline"></ion-icon>
+        </div>
       </div>
+
       <div class="avatar-info">
         <h2 class="user-name">{{ user()?.nom ?? '—' }}</h2>
-        <p class="user-role">Locataire</p>
+        <span class="user-role-badge">Locataire</span>
       </div>
     </div>
 
-    <!-- Informations -->
-    <div class="app-card info-card">
-      <h3 class="card-label">Informations du compte</h3>
+    <!-- ── Mode lecture ────────────────────────────────────────── -->
+    @if (!editMode()) {
+      <div class="app-card info-card">
+        <h3 class="card-label">Informations du compte</h3>
 
-      <div class="info-row">
-        <div class="info-icon">
-          <ion-icon name="person-outline"></ion-icon>
+        <div class="info-row">
+          <div class="info-icon">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="info-content">
+            <span class="info-sub">Nom complet</span>
+            <span class="info-val">{{ user()?.nom ?? '—' }}</span>
+          </div>
         </div>
-        <div class="info-content">
-          <span class="info-sub">Nom complet</span>
-          <span class="info-val">{{ user()?.nom ?? '—' }}</span>
+
+        <div class="info-row">
+          <div class="info-icon">
+            <ion-icon name="call-outline"></ion-icon>
+          </div>
+          <div class="info-content">
+            <span class="info-sub">Téléphone</span>
+            <span class="info-val">
+              {{ user()?.telephone ? formatTelephone(user()!.telephone) : '—' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="info-row last">
+          <div class="info-icon">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+          </div>
+          <div class="info-content">
+            <span class="info-sub">Rôle</span>
+            <span class="info-val">Locataire</span>
+          </div>
         </div>
       </div>
+    }
 
-      <div class="info-row">
-        <div class="info-icon">
-          <ion-icon name="call-outline"></ion-icon>
+    <!-- ── Mode édition ────────────────────────────────────────── -->
+    @if (editMode()) {
+      <div class="app-card edit-card">
+        <h3 class="card-label">Modifier mes informations</h3>
+
+        <div class="field-group">
+          <label class="field-label">Nom complet</label>
+          <div class="input-wrap">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-input
+              [(ngModel)]="editNom"
+              placeholder="Votre nom"
+              class="ion-no-padding"
+            ></ion-input>
+          </div>
         </div>
-        <div class="info-content">
-          <span class="info-sub">Téléphone</span>
-          <span class="info-val">{{ user()?.telephone ? formatTelephone(user()!.telephone) : '—' }}</span>
+
+        <div class="field-group">
+          <label class="field-label">Téléphone</label>
+          <div class="input-wrap">
+            <ion-icon name="call-outline"></ion-icon>
+            <ion-input
+              [(ngModel)]="editTelephone"
+              type="tel"
+              inputmode="numeric"
+              placeholder="90 00 00 00"
+              class="ion-no-padding"
+            ></ion-input>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Code d'accès actuel <span class="required">*</span></label>
+          <div class="input-wrap">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+            <ion-input
+              [(ngModel)]="editCode"
+              type="password"
+              placeholder="••••••"
+              class="ion-no-padding"
+            ></ion-input>
+          </div>
+          <p class="field-hint">Requis pour confirmer les modifications.</p>
+        </div>
+
+        <div class="edit-actions">
+          <ion-button
+            fill="outline"
+            shape="round"
+            color="medium"
+            (click)="cancelEdit()"
+            [disabled]="savingInfos()"
+          >
+            <ion-icon name="close-outline" slot="start"></ion-icon>
+            Annuler
+          </ion-button>
+
+          <ion-button
+            shape="round"
+            (click)="saveInfos()"
+            [disabled]="savingInfos()"
+          >
+            @if (savingInfos()) {
+              <ion-spinner name="crescent" slot="start"></ion-spinner>
+              Enregistrement...
+            } @else {
+              <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+              Enregistrer
+            }
+          </ion-button>
         </div>
       </div>
+    }
 
-      <div class="info-row last">
-        <div class="info-icon">
-          <ion-icon name="shield-checkmark-outline"></ion-icon>
-        </div>
-        <div class="info-content">
-          <span class="info-sub">Rôle</span>
-          <span class="info-val">Locataire</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Déconnexion -->
+    <!-- ── Déconnexion ─────────────────────────────────────────── -->
     <ion-button
       expand="block"
       fill="outline"
@@ -73,7 +166,7 @@
     </ion-button>
 
     <p class="footer-hint">
-      Rental — Espace locataire<br>
+      Rental — Espace locataire<br />
       Vos identifiants sont gérés par votre propriétaire.
     </p>
 

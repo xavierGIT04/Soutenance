@@ -47,7 +47,7 @@ export class LoginPage {
     required(fieldPath.telephone, { message: 'Le numéro est obligatoire' });
     required(fieldPath.codeProprietaire, { message: 'Le code est obligatoire' });
     maxLength(fieldPath.telephone, 8);
-    maxLength(fieldPath.codeProprietaire, 5);
+    maxLength(fieldPath.codeProprietaire, 8);
   });
 
   constructor(
