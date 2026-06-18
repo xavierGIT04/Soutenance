@@ -1,0 +1,244 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.2.9 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.2.9">
+  <diagram id="obj_diag" name="Diagramme d&#39;Objets - 01 Juin 2025">
+    <mxGraphModel dx="872" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" value="Exemple d&#39;une Structure des Instances (01 Juin 2025)" vertex="1">
+          <mxGeometry height="36" width="800" x="330" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="band_haute" parent="1" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;fontStyle=1;fontSize=16;rounded=1;" value="COUCHE HAUTE — Administrateur &amp;amp; Patrimoine" vertex="1">
+          <mxGeometry height="28" width="1380" x="60" y="72" as="geometry" />
+        </mxCell>
+        <mxCell id="obj_proprio" parent="1" style="swimlane;startSize=30;fontStyle=1;align=center;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;" value="wakeGbandi : Utilisateur" vertex="1">
+          <mxGeometry height="155" width="300" x="540" y="112" as="geometry" />
+        </mxCell>
+        <mxCell id="proprio_sep" parent="obj_proprio" style="line;strokeColor=#6c8ebf;fillColor=none;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="proprio_f1" parent="obj_proprio" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="uuid = &quot;a1b2c3d4-0001-0000...&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="proprio_f2" parent="obj_proprio" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="nomComplet = &quot;Kofi Agbénou&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="proprio_f3" parent="obj_proprio" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="telephone = &quot;+22890112233&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="proprio_f4" parent="obj_proprio" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="role = &quot;PROPRIETAIRE&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="101" as="geometry" />
+        </mxCell>
+        <mxCell id="proprio_f5" parent="obj_proprio" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="profil = &quot;LOCATION_CLASSIQUE&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="123" as="geometry" />
+        </mxCell>
+        <mxCell id="obj_bien" parent="1" style="swimlane;startSize=30;fontStyle=1;align=center;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=16;" value="immeubleGbandi : BienImmobilier" vertex="1">
+          <mxGeometry height="133" width="300" x="540" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="bien_sep" parent="obj_bien" style="line;strokeColor=#d79b00;fillColor=none;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="bien_f1" parent="obj_bien" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="uuid = &quot;b1c2d3e4-0001-0000...&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="bien_f2" parent="obj_bien" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="titre = &quot;Immeuble Agbénou Hédranawoé&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="bien_f3" parent="obj_bien" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="adresse = &quot;Rue des Cocotiers, Lomé, Togo&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="bien_f4" parent="obj_bien" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="typeBien = &quot;IMMEUBLE&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="101" as="geometry" />
+        </mxCell>
+        <mxCell id="obj_unite" parent="1" style="swimlane;startSize=30;fontStyle=1;align=center;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=16;" value="uniteA01 : Unite" vertex="1">
+          <mxGeometry height="133" width="300" x="540" y="496" as="geometry" />
+        </mxCell>
+        <mxCell id="unite_sep" parent="obj_unite" style="line;strokeColor=#d79b00;fillColor=none;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="unite_f1" parent="obj_unite" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="uuid = &quot;c1d2e3f4-0001-0000...&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="unite_f2" parent="obj_unite" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="codeUnite = &quot;A01&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="unite_f3" parent="obj_unite" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="typeUnite = &quot;APPARTEMENT_T3&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="unite_f4" parent="obj_unite" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="prixMensuel = 50 000 FCFA | statutOccupation = &quot;OCCUPE&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="101" as="geometry" />
+        </mxCell>
+        <mxCell id="band_med" parent="1" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=center;verticalAlign=middle;fontStyle=1;fontSize=16;rounded=1;" value="COUCHE MÉDIANE — Contrat &amp;amp; Facturation" vertex="1">
+          <mxGeometry height="28" width="1380" x="60" y="686" as="geometry" />
+        </mxCell>
+        <mxCell id="obj_bail" parent="1" style="swimlane;startSize=30;fontStyle=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;" value="bailAma : ContratBail" vertex="1">
+          <mxGeometry height="177" width="300" x="400" y="726" as="geometry" />
+        </mxCell>
+        <mxCell id="bail_sep" parent="obj_bail" style="line;strokeColor=#82b366;fillColor=none;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="bail_f1" parent="obj_bail" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="uuid = &quot;d1e2f3a4-0001-0000...&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="bail_f2" parent="obj_bail" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="dateDebut = &quot;01/03/2025&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="bail_f3" parent="obj_bail" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="dateFin = &quot;28/02/2026&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="bail_f4" parent="obj_bail" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="loyerBase = 50 000 FCFA" vertex="1">
+          <mxGeometry height="22" width="300" y="101" as="geometry" />
+        </mxCell>
+        <mxCell id="bail_f5" parent="obj_bail" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="cautionVersee = 150 000 FCFA" vertex="1">
+          <mxGeometry height="22" width="300" y="123" as="geometry" />
+        </mxCell>
+        <mxCell id="bail_f6" parent="obj_bail" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="statutContrat = &quot;ACTIF&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="obj_echeance" parent="1" style="swimlane;startSize=30;fontStyle=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;" value="echeanceJuin2025 : Echeance" vertex="1">
+          <mxGeometry height="177" width="300" x="800" y="726" as="geometry" />
+        </mxCell>
+        <mxCell id="ech_sep" parent="obj_echeance" style="line;strokeColor=#d6b656;fillColor=none;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ech_f1" parent="obj_echeance" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="uuid = &quot;e1f2a3b4-0001-0000...&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ech_f2" parent="obj_echeance" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="periodeMois = &quot;06/2025&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="ech_f3" parent="obj_echeance" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="montantDu = 50 000 FCFA" vertex="1">
+          <mxGeometry height="22" width="300" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="ech_f4" parent="obj_echeance" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="montantPaye = 30 000 FCFA" vertex="1">
+          <mxGeometry height="22" width="300" y="101" as="geometry" />
+        </mxCell>
+        <mxCell id="ech_f5" parent="obj_echeance" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="statutEcheance = &quot;PARTIELLEMENT_PAYEE&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="123" as="geometry" />
+        </mxCell>
+        <mxCell id="ech_f6" parent="obj_echeance" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="dateLimite = &quot;10/06/2025&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="band_bas" parent="1" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;fontStyle=1;fontSize=16;rounded=1;" value="COUCHE BASSE — Locataire, Transaction &amp;amp; Alerte" vertex="1">
+          <mxGeometry height="28" width="1380" x="60" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="obj_locataire" parent="1" style="swimlane;startSize=30;fontStyle=1;align=center;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;" value="amaDossou : Utilisateur" vertex="1">
+          <mxGeometry height="155" width="300" x="200" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="loc_sep" parent="obj_locataire" style="line;strokeColor=#6c8ebf;fillColor=none;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="loc_f1" parent="obj_locataire" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="uuid = &quot;a1b2c3d4-0002-0000...&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="loc_f2" parent="obj_locataire" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="nomComplet = &quot;Ama Dossou&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="loc_f3" parent="obj_locataire" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="telephone = &quot;+22892556677&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="loc_f4" parent="obj_locataire" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="role = &quot;LOCATAIRE&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="101" as="geometry" />
+        </mxCell>
+        <mxCell id="loc_f5" parent="obj_locataire" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="profil = &quot;LOCATION_CLASSIQUE&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="123" as="geometry" />
+        </mxCell>
+        <mxCell id="obj_paiement" parent="1" style="swimlane;startSize=30;fontStyle=1;align=center;fillColor=#f8cecc;strokeColor=#b85450;fontSize=16;" value="payMobileMoney1 : Paiement" vertex="1">
+          <mxGeometry height="177" width="300" x="580" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="paie_sep" parent="obj_paiement" style="line;strokeColor=#b85450;fillColor=none;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="paie_f1" parent="obj_paiement" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="uuid = &quot;f1a2b3c4-0001-0000...&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="paie_f2" parent="obj_paiement" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="montantVerse = 30 000 FCFA" vertex="1">
+          <mxGeometry height="22" width="300" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="paie_f3" parent="obj_paiement" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="modePaiement = &quot;MOBILE_MONEY&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="paie_f4" parent="obj_paiement" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="dateTransaction = &quot;05/06/2025 14:23&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="101" as="geometry" />
+        </mxCell>
+        <mxCell id="paie_f5" parent="obj_paiement" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="referenceFedaPay = &quot;transaction_fp_998877&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="123" as="geometry" />
+        </mxCell>
+        <mxCell id="paie_f6" parent="obj_paiement" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="statutPaiement = &quot;SUCCESS&quot;" vertex="1">
+          <mxGeometry height="22" width="300" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="obj_notif" parent="1" style="swimlane;startSize=30;fontStyle=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=16;" value="notifConfirmLoyer : Notification" vertex="1">
+          <mxGeometry height="177" width="320" x="960" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="notif_sep" parent="obj_notif" style="line;strokeColor=#9673a6;fillColor=none;fontSize=16;" value="" vertex="1">
+          <mxGeometry height="5" width="320" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="notif_f1" parent="obj_notif" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="uuid = &quot;a9b8c7d6-0001-0000...&quot;" vertex="1">
+          <mxGeometry height="22" width="320" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="notif_f2" parent="obj_notif" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="canal = &quot;PUSH&quot;" vertex="1">
+          <mxGeometry height="22" width="320" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="notif_f3" parent="obj_notif" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="titre = &quot;Paiement partiel reçu&quot;" vertex="1">
+          <mxGeometry height="22" width="320" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="notif_f4" parent="obj_notif" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="contenu = &quot;Votre paiement de 30 000 FCFA a été validé. Reste dû : 20 000 FCFA.&quot;" vertex="1">
+          <mxGeometry height="22" width="320" y="101" as="geometry" />
+        </mxCell>
+        <mxCell id="notif_f5" parent="obj_notif" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="estLu = false" vertex="1">
+          <mxGeometry height="22" width="320" y="123" as="geometry" />
+        </mxCell>
+        <mxCell id="notif_f6" parent="obj_notif" style="text;html=1;align=left;verticalAlign=top;spacingLeft=10;whiteSpace=wrap;overflow=hidden;fontSize=16;" value="dateEnvoi = &quot;05/06/2025 14:24&quot;" vertex="1">
+          <mxGeometry height="22" width="320" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="lnk_bien_proprio" edge="1" parent="1" source="obj_bien" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontSize=16;fontStyle=2;" target="obj_proprio" value="proprietaire ›">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lnk_unite_bien" edge="1" parent="1" source="obj_unite" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#d79b00;fontColor=#d79b00;fontSize=16;fontStyle=2;startArrow=none;startFill=0;" target="obj_bien" value="bien ›">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lnk_bail_unite" edge="1" parent="1" source="obj_bail" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#82b366;fontColor=#82b366;fontSize=16;fontStyle=2;" target="obj_unite" value="concerne">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="650" />
+              <mxPoint x="690" y="650" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lnk_bail_loc" edge="1" parent="1" source="obj_bail" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#82b366;fontColor=#82b366;fontSize=16;fontStyle=2;" target="obj_locataire" value="signe">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="940" />
+              <mxPoint x="350" y="940" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lnk_loc_proprio" edge="1" parent="1" source="obj_locataire" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontSize=16;fontStyle=2;dashed=1;" target="obj_proprio" value="createdBy ›">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lnk_ech_bail" edge="1" parent="1" source="obj_echeance" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#d6b656;fontColor=#d6b656;fontSize=16;fontStyle=2;" target="obj_bail" value="contratBail ›">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lnk_paie_ech" edge="1" parent="1" source="obj_paiement" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#b85450;fontColor=#b85450;fontSize=16;fontStyle=2;" target="obj_echeance" value="echeance ›">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="950" />
+              <mxPoint x="910" y="950" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lnk_notif_loc" edge="1" parent="1" source="obj_notif" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=open;endFill=0;strokeColor=#9673a6;fontColor=#9673a6;fontSize=16;fontStyle=2;" target="obj_locataire" value="destinataire ›">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1120" y="1240" />
+              <mxPoint x="350" y="1240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

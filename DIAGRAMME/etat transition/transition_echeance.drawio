@@ -1,0 +1,109 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.2.9 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.2.9">
+  <diagram name="Etats-Echeance" id="echeance-state-diagram">
+    <mxGraphModel dx="2526" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=17;fontStyle=1;" value="Etats : Echeance (StatutEcheance)" vertex="1">
+          <mxGeometry height="40" width="500" x="427" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="start" parent="1" style="ellipse;aspect=fixed;fillColor=#222222;strokeColor=#222222;fontSize=13;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="650" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="en_attente" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#222222;align=left;spacingLeft=10;verticalAlign=top;fontSize=13;" value="&lt;b&gt;EN_ATTENTE&lt;/b&gt;&lt;hr&gt;entry / montantDu ← loyer du contrat&lt;br&gt;entry / montantRestant ← montantDu&lt;br&gt;entry / Notification RELANCE_LOYER → locataire" vertex="1">
+          <mxGeometry height="90" width="350" x="490" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="partiellement_paye" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#222222;align=left;spacingLeft=10;verticalAlign=top;fontSize=12;" value="&lt;b&gt;PARTIELLEMENT_PAYE&lt;/b&gt;&lt;hr&gt;entry / montantRestant ← montantRestant − montantVersé&lt;br&gt;entry / Notification CONFIRMATION_PAIEMENT → locataire" vertex="1">
+          <mxGeometry height="90" width="350" x="-10" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="en_retard" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#222222;align=left;spacingLeft=10;verticalAlign=top;fontSize=13;" value="&lt;b&gt;EN_RETARD&lt;/b&gt;&lt;hr&gt;entry / Notification ALERTE_RETARD → locataire&lt;br&gt;do / Scheduler envoie relances périodiques" vertex="1">
+          <mxGeometry height="80" width="350" x="490" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="paye" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#222222;align=left;spacingLeft=10;verticalAlign=top;fontSize=13;" value="&lt;b&gt;PAYE&lt;/b&gt;&lt;hr&gt;entry / montantRestant ← 0&lt;br&gt;entry / Notification CONFIRMATION_PAIEMENT → locataire" vertex="1">
+          <mxGeometry height="80" width="350" x="970" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="end" parent="1" style="ellipse;aspect=fixed;fillColor=#222222;strokeColor=#222222;strokeWidth=3;fontSize=13;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="1035" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="end_outer" parent="1" style="ellipse;aspect=fixed;fillColor=none;strokeColor=#222222;strokeWidth=3;fontSize=13;" value="" vertex="1">
+          <mxGeometry height="46" width="46" x="1027" y="612" as="geometry" />
+        </mxCell>
+        <mxCell id="t_start_attente" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;" target="en_attente" value="EcheanceService.creerEcheance()&lt;br&gt;ou Scheduler mensuel&lt;br&gt;/ Persistance Echeance en BD">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t_attente_partiel" edge="1" parent="1" source="en_attente" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="partiellement_paye" value="PaiementService.enregistrerPaiement()&lt;br&gt;[montantVersé &amp;lt; montantRestant]&lt;br&gt;/ EcheanceService.appliquerPaiement()">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="210" />
+              <mxPoint x="170" y="210" />
+              <mxPoint x="170" y="420" />
+              <mxPoint x="165" y="420" />
+            </Array>
+            <mxPoint x="165" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_attente_paye" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="paye" value="PaiementService.enregistrerPaiement()&lt;br&gt;[montantVersé = montantRestant]&lt;br&gt;/ EcheanceService.appliquerPaiement()">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1140" y="210" />
+              <mxPoint x="1140" y="405" />
+              <mxPoint x="1145" y="405" />
+            </Array>
+            <mxPoint x="840" y="210" as="sourcePoint" />
+            <mxPoint x="1145" y="405" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_attente_retard" edge="1" parent="1" source="en_attente" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="en_retard" value="Scheduler — EcheanceService.marquerEcheancesEnRetard()&lt;br&gt;[dateEcheance &amp;lt; today]">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t_partiel_paye" edge="1" parent="1" source="partiellement_paye" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;entryX=-0.009;entryY=0.875;entryDx=0;entryDy=0;entryPerimeter=0;" value="PaiementService.enregistrerPaiement()&lt;br&gt;[montantVersé = montantRestant]&lt;br&gt;/ EcheanceService.appliquerPaiement()">
+          <mxGeometry relative="1" x="0.0052" y="-30" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="153" y="595" />
+              <mxPoint x="903" y="595" />
+              <mxPoint x="903" y="516" />
+              <mxPoint x="960" y="516" />
+              <mxPoint x="960" y="500" />
+            </Array>
+            <mxPoint x="158.15" y="524.96" as="sourcePoint" />
+            <mxPoint x="969.9999999999999" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_partiel_retard" edge="1" parent="1" style="html=1;fontSize=13;align=center;exitX=0.994;exitY=0.663;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;exitPerimeter=0;" target="en_retard" value="Scheduler — EcheanceService.marquerEcheancesEnRetard()&lt;br&gt;[dateEcheance &amp;lt; today]">
+          <mxGeometry relative="1" x="0.737" y="-30" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="337.9000000000001" y="499.99999999999994" as="sourcePoint" />
+            <mxPoint x="490" y="496.96" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_retard_partiel" edge="1" parent="1" style="html=1;fontSize=13;align=center;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.125;entryDx=0;entryDy=0;entryPerimeter=0;" target="partiellement_paye" value="PaiementService.enregistrerPaiement()&lt;br&gt;[montantVersé &amp;lt; montantRestant]&lt;br&gt;/ EcheanceService.appliquerPaiement()">
+          <mxGeometry relative="1" x="0.0667" y="-50" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="490" y="440" as="sourcePoint" />
+            <mxPoint x="340" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_retard_paye" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" value="PaiementService.enregistrerPaiement()&lt;br&gt;[montantVersé = montantRestant]&lt;br&gt;/ EcheanceService.appliquerPaiement()">
+          <mxGeometry relative="1" x="0.2308" y="50" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="840" y="430" as="sourcePoint" />
+            <mxPoint x="970" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_paye_end" edge="1" parent="1" source="paye" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;" target="end" value="Archivage / Clôture de l&#39;échéance">
+          <mxGeometry relative="1" x="-0.0071" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1055" y="590" />
+              <mxPoint x="1055" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note_box" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontSize=13;fillColor=#ffffc0;strokeColor=#444444;align=left;spacingLeft=8;" value="&lt;b&gt;Contrainte de sécurité :&lt;/b&gt;&lt;br&gt;Un paiement ne peut pas dépasser montantRestant.&lt;br&gt;EcheanceService lève IllegalArgumentException&lt;br&gt;si montantVersé &amp;gt; montantRestant." vertex="1">
+          <mxGeometry height="80" width="310" x="80" y="640" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

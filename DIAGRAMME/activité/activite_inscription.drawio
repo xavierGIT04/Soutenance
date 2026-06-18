@@ -4,7 +4,7 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="roQhSPC6YZWK1N30UW3o-1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" value="Diagramme d&#39;Activité : Inscription (Register)" vertex="1">
+        <mxCell id="roQhSPC6YZWK1N30UW3o-1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;Diagramme d&#39;Activité : Inscription (Register)&lt;/font&gt;" vertex="1">
           <mxGeometry height="40" width="700" x="430" y="70" as="geometry" />
         </mxCell>
         <mxCell id="roQhSPC6YZWK1N30UW3o-2" parent="1" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" value="Client" vertex="1">
@@ -22,38 +22,38 @@
         <mxCell id="roQhSPC6YZWK1N30UW3o-6" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" value="" vertex="1">
           <mxGeometry height="40" width="40" x="340" y="170" as="geometry" />
         </mxCell>
-        <mxCell id="roQhSPC6YZWK1N30UW3o-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Remplir formulaire&#xa;(nom, téléphone, code, rôle, profil)" vertex="1">
+        <mxCell id="roQhSPC6YZWK1N30UW3o-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Remplir formulaire&lt;br&gt;(nom, téléphone, code, rôle, profil)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="175" x="265" y="235" as="geometry" />
         </mxCell>
-        <mxCell id="roQhSPC6YZWK1N30UW3o-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="POST /api/auth/register" vertex="1">
+        <mxCell id="roQhSPC6YZWK1N30UW3o-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;POST /api/auth/register&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="175" x="515" y="235" as="geometry" />
         </mxCell>
-        <mxCell id="roQhSPC6YZWK1N30UW3o-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Route publique — authService.register(request)" vertex="1">
+        <mxCell id="roQhSPC6YZWK1N30UW3o-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Route publique — authService.register(request)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="175" x="515" y="315" as="geometry" />
         </mxCell>
-        <mxCell id="roQhSPC6YZWK1N30UW3o-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="findByTelephone(téléphone)" vertex="1">
+        <mxCell id="roQhSPC6YZWK1N30UW3o-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;findByTelephone(téléphone)&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="175" x="995" y="315" as="geometry" />
         </mxCell>
-        <mxCell id="roQhSPC6YZWK1N30UW3o-11" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Téléphone déjà utilisé?" vertex="1">
-          <mxGeometry height="80" width="150" x="767" y="390" as="geometry" />
+        <mxCell id="roQhSPC6YZWK1N30UW3o-11" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Téléphone déjà utilisé?&lt;/font&gt;" vertex="1">
+          <mxGeometry height="100" width="157" x="760" y="370" as="geometry" />
         </mxCell>
-        <mxCell id="roQhSPC6YZWK1N30UW3o-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="DataIntegrityViolationException → 409 Conflict" vertex="1">
+        <mxCell id="roQhSPC6YZWK1N30UW3o-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;DataIntegrityViolationException → 409 Conflict&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="175" x="995" y="400" as="geometry" />
         </mxCell>
         <mxCell id="roQhSPC6YZWK1N30UW3o-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Créer Utilisateur:&#xa;setNomComplet, setUsername(tel),&#xa;setPassword(BCrypt.encode(code)),&#xa;setRole, setProfil" vertex="1">
-          <mxGeometry height="80" width="175" x="755" y="500" as="geometry" />
+          <mxGeometry height="80" width="190" x="740" y="500" as="geometry" />
         </mxCell>
         <mxCell id="roQhSPC6YZWK1N30UW3o-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="utilisateurRepository.save(newUser)" vertex="1">
-          <mxGeometry height="50" width="175" x="995" y="515" as="geometry" />
+          <mxGeometry height="55" width="190" x="990" y="515" as="geometry" />
         </mxCell>
-        <mxCell id="roQhSPC6YZWK1N30UW3o-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="generateToken() → JWT&#xa;generateRefreshToken()" vertex="1">
+        <mxCell id="roQhSPC6YZWK1N30UW3o-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;generateToken() → JWT&lt;br&gt;generateRefreshToken()&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="175" x="755" y="620" as="geometry" />
         </mxCell>
-        <mxCell id="roQhSPC6YZWK1N30UW3o-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Retourner AuthResponse&#xa;(uuid, token, refreshToken, role, profil)" vertex="1">
+        <mxCell id="roQhSPC6YZWK1N30UW3o-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Retourner AuthResponse&lt;br&gt;(uuid, token, refreshToken, role, profil)&lt;/font&gt;" vertex="1">
           <mxGeometry height="70" width="175" x="515" y="620" as="geometry" />
         </mxCell>
-        <mxCell id="roQhSPC6YZWK1N30UW3o-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Stocker JWT + refreshToken&#xa;Rediriger vers login ou dashboard" vertex="1">
-          <mxGeometry height="60" width="175" x="265" y="620" as="geometry" />
+        <mxCell id="roQhSPC6YZWK1N30UW3o-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Stocker JWT + refreshToken&lt;br&gt;Rediriger vers login ou dashboard&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="195" x="265" y="610" as="geometry" />
         </mxCell>
         <mxCell id="roQhSPC6YZWK1N30UW3o-18" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#ffffff;strokeWidth=3;" value="" vertex="1">
           <mxGeometry height="40" width="40" x="1085" y="760" as="geometry" />

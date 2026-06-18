@@ -1,37 +1,37 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.2.9 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.2.9">
   <diagram id="payment-diagram" name="Activité - Paiement Mobile">
-    <mxGraphModel dx="2984" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1600" math="0" shadow="0">
+    <mxGraphModel dx="2765" dy="2171" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1600" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" value="Diagramme d&#39;Activité : Paiement Mobile (FedaPay)" vertex="1">
-          <mxGeometry height="40" width="1500" x="50" y="10" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" value="&lt;font style=&quot;font-size: 36px;&quot;&gt;Diagramme d&#39;Activité : Paiement Mobile (FedaPay)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="1500" x="30" y="-20" as="geometry" />
         </mxCell>
-        <mxCell id="sl_loc" parent="1" style="swimlane;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontStyle=1;fontSize=12;" value="Locataire (Application mobile)" vertex="1">
+        <mxCell id="sl_loc" parent="1" style="swimlane;startSize=30;fillColor=#F5E9CA;strokeColor=#666666;fontColor=#333333;fontStyle=1;fontSize=12;" value="Locataire (Application mobile)" vertex="1">
           <mxGeometry height="1580" width="410" x="-90" y="60" as="geometry" />
         </mxCell>
         <mxCell id="p_start" parent="sl_loc" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" value="" vertex="1">
           <mxGeometry height="30" width="30" x="130" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="p1" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Consulter ses échéances" vertex="1">
+        <mxCell id="p1" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Consulter ses échéances&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="190" x="50" y="120" as="geometry" />
         </mxCell>
-        <mxCell id="p2" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Sélectionner une échéance à payer" vertex="1">
+        <mxCell id="p2" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Sélectionner une échéance à payer&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="200" x="45" y="200" as="geometry" />
         </mxCell>
-        <mxCell id="p3" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Initier le paiement Mobile" vertex="1">
+        <mxCell id="p3" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Initier le paiement Mobile&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="160" x="65" y="280" as="geometry" />
         </mxCell>
-        <mxCell id="p4" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Redirection vers la page FedaPay" vertex="1">
+        <mxCell id="p4" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Redirection vers la page FedaPay&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="200" x="45" y="535" as="geometry" />
         </mxCell>
-        <mxCell id="p5" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Saisir le numéro (Flooz/TMoney) et valider" vertex="1">
+        <mxCell id="p5" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Saisir le numéro (Flooz/TMoney) et valider&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="230" x="30" y="640" as="geometry" />
         </mxCell>
-        <mxCell id="p6" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Confirmer le code OTP USSD sur son téléphone" vertex="1">
+        <mxCell id="p6" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Confirmer le code OTP USSD sur son téléphone&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="250" x="20" y="730" as="geometry" />
         </mxCell>
-        <mxCell id="p_notif" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Recevoir la notification" vertex="1">
+        <mxCell id="p_notif" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Recevoir la notification&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="180" x="55" y="1380" as="geometry" />
         </mxCell>
         <mxCell id="p_end" parent="sl_loc" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=3;double=1;" value="" vertex="1">
@@ -58,49 +58,49 @@
         <mxCell id="sl_back" parent="1" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#000000;fontStyle=1;fontSize=12;" value="Backend Rental" vertex="1">
           <mxGeometry height="1580" width="680" x="330" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="b1" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Générer une transaction en attente&#xa;(Paiement status=PENDING, ref=UUID)" vertex="1">
-          <mxGeometry height="55" width="270" x="190" y="320" as="geometry" />
+        <mxCell id="b1" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Générer une transaction en attente&lt;br&gt;(Paiement status=PENDING, ref=UUID)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="95" width="280" x="180" y="280" as="geometry" />
         </mxCell>
-        <mxCell id="b2" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Créer la requête de paiement FedaPay" vertex="1">
+        <mxCell id="b2" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Créer la requête de paiement FedaPay&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="260" x="195" y="415" as="geometry" />
         </mxCell>
-        <mxCell id="b3" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Retourner l&#39;URL FedaPay au mobile" vertex="1">
+        <mxCell id="b3" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Retourner l&#39;URL FedaPay au mobile&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="260" x="195" y="585" as="geometry" />
         </mxCell>
-        <mxCell id="b4" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Recevoir et intercepter le Webhook" vertex="1">
+        <mxCell id="b4" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Recevoir et intercepter le Webhook&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="260" x="195" y="910" as="geometry" />
         </mxCell>
-        <mxCell id="b5" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Vérifier l&#39;authenticité de la signature" vertex="1">
+        <mxCell id="b5" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Vérifier l&#39;authenticité de la signature&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="260" x="195" y="990" as="geometry" />
         </mxCell>
-        <mxCell id="b_dec1" parent="sl_back" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Signature valide ?" vertex="1">
+        <mxCell id="b_dec1" parent="sl_back" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Signature valide ?&lt;/font&gt;" vertex="1">
           <mxGeometry height="80" width="180" x="225" y="1065" as="geometry" />
         </mxCell>
-        <mxCell id="b_reject" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#f8cecc;strokeColor=#b85450;" value="Rejeter la requête&#xa;(401 Unauthorized)" vertex="1">
+        <mxCell id="b_reject" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Rejeter la requête&lt;br&gt;(401 Unauthorized)&lt;/font&gt;" vertex="1">
           <mxGeometry height="55" width="185" x="460" y="1078" as="geometry" />
         </mxCell>
         <mxCell id="b_end_rej" parent="sl_back" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=3;double=1;" value="" vertex="1">
           <mxGeometry height="30" width="30" x="530" y="1158" as="geometry" />
         </mxCell>
-        <mxCell id="b6" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Extraire l&#39;ID de transaction et le statut" vertex="1">
+        <mxCell id="b6" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Extraire l&#39;ID de transaction et le statut&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="260" x="195" y="1185" as="geometry" />
         </mxCell>
-        <mxCell id="b_dec2" parent="sl_back" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Statut == &quot;approved&quot; ?" vertex="1">
+        <mxCell id="b_dec2" parent="sl_back" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Statut == &quot;approved&quot; ?&lt;/font&gt;" vertex="1">
           <mxGeometry height="80" width="200" x="215" y="1262.5" as="geometry" />
         </mxCell>
-        <mxCell id="b7" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Mettre à jour le statut du paiement (SUCCESS)" vertex="1">
+        <mxCell id="b7" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Mettre à jour le statut du paiement (SUCCESS)&lt;/font&gt;" vertex="1">
           <mxGeometry height="55" width="160" x="20" y="1180" as="geometry" />
         </mxCell>
-        <mxCell id="b8" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Mettre à jour le statut de l&#39;échéance (PAYEE)" vertex="1">
+        <mxCell id="b8" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Mettre à jour le statut de l&#39;échéance (PAYEE)&lt;/font&gt;" vertex="1">
           <mxGeometry height="55" width="160" x="20" y="1320" as="geometry" />
         </mxCell>
-        <mxCell id="b9" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Envoyer une notification de confirmation&#xa;(Push via NotificationService)" vertex="1">
+        <mxCell id="b9" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Envoyer une notification de confirmation&lt;br&gt;(Push via NotificationService)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="160" x="20" y="1430" as="geometry" />
         </mxCell>
-        <mxCell id="b10" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Mettre à jour le statut du paiement (FAILED)" vertex="1">
+        <mxCell id="b10" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Mettre à jour le statut du paiement (FAILED)&lt;/font&gt;" vertex="1">
           <mxGeometry height="55" width="200" x="470" y="1275" as="geometry" />
         </mxCell>
-        <mxCell id="b11" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Envoyer une notification d&#39;échec au locataire" vertex="1">
+        <mxCell id="b11" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Envoyer une notification d&#39;échec au locataire&lt;/font&gt;" vertex="1">
           <mxGeometry height="55" width="200" x="450" y="1360" as="geometry" />
         </mxCell>
         <mxCell id="b_merge" parent="sl_back" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
@@ -160,25 +160,25 @@
         <mxCell id="sl_feda" parent="1" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;fontStyle=1;fontSize=12;" value="FedaPay" vertex="1">
           <mxGeometry height="1580" width="560" x="1030" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="f1" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Générer le lien/token de paiement" vertex="1">
+        <mxCell id="f1" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Générer le lien/token de paiement&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="240" x="150" y="448" as="geometry" />
         </mxCell>
-        <mxCell id="f2" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Traiter la transaction financière" vertex="1">
+        <mxCell id="f2" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Traiter la transaction financière&lt;/font&gt;" vertex="1">
           <mxGeometry height="45" width="240" x="145" y="745" as="geometry" />
         </mxCell>
-        <mxCell id="f_dec1" parent="sl_feda" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Transaction réussie ?" vertex="1">
+        <mxCell id="f_dec1" parent="sl_feda" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Transaction réussie ?&lt;/font&gt;" vertex="1">
           <mxGeometry height="80" width="180" x="175" y="835" as="geometry" />
         </mxCell>
-        <mxCell id="f3" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Générer l&#39;événement transaction.approved" vertex="1">
+        <mxCell id="f3" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Générer l&#39;événement transaction.approved&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="220" x="20" y="960" as="geometry" />
         </mxCell>
-        <mxCell id="f5" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Envoyer le Webhook&#xa;(POST /api/payments/webhook)" vertex="1">
+        <mxCell id="f5" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Envoyer le Webhook&lt;br&gt;(POST /api/payments/webhook)&lt;/font&gt;" vertex="1">
           <mxGeometry height="55" width="220" x="20" y="1040" as="geometry" />
         </mxCell>
-        <mxCell id="f4" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Générer l&#39;événement transaction.declined" vertex="1">
+        <mxCell id="f4" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Générer l&#39;événement transaction.declined&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="220" x="300" y="960" as="geometry" />
         </mxCell>
-        <mxCell id="f6" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Envoyer le Webhook&#xa;(POST /api/payments/webhook)" vertex="1">
+        <mxCell id="f6" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Envoyer le Webhook&lt;br&gt;(POST /api/payments/webhook)&lt;/font&gt;" vertex="1">
           <mxGeometry height="55" width="220" x="300" y="1040" as="geometry" />
         </mxCell>
         <mxCell id="f_merge" parent="sl_feda" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">

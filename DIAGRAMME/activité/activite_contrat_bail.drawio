@@ -4,7 +4,7 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="3uffX4nWiterIzNsyrVV-1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" value="Diagramme d&#39;Activité : Création d&#39;un Contrat de Bail" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;Diagramme d&#39;Activité : Création d&#39;un Contrat de Bail&lt;/font&gt;" vertex="1">
           <mxGeometry height="40" width="700" x="650" y="350" as="geometry" />
         </mxCell>
         <mxCell id="3uffX4nWiterIzNsyrVV-2" parent="1" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" value="Propriétaire" vertex="1">
@@ -28,52 +28,52 @@
         <mxCell id="3uffX4nWiterIzNsyrVV-8" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" value="" vertex="1">
           <mxGeometry height="40" width="40" x="540" y="450" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Sélectionner locataire + unité libre + paramètres bail" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Sélectionner locataire + unité libre + paramètres bail&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="160" x="480" y="520" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="POST /api/bail/add&#xa;(JWT Proprietaire)" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;POST /api/bail/add&lt;br&gt;(JWT Proprietaire)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="160" x="700" y="520" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="@PreAuthorize(&#39;hasRole(PROPRIETAIRE)&#39;)" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;hasRole(PROPRIETAIRE)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="160" x="700" y="610" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-12" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Autorisé?" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-12" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Autorisé?&lt;/font&gt;" vertex="1">
           <mxGeometry height="70" width="130" x="715" y="700" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="HTTP 403 Forbidden" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;HTTP 403 Forbidden&lt;/font&gt;" vertex="1">
           <mxGeometry height="40" width="160" x="700" y="800" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="findByUuid(locataireUuid)" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;findByUuid(locataireUuid)&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="160" x="1330" y="705" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-15" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Locataire trouvé?" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-15" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Locataire trouvé?&lt;/font&gt;" vertex="1">
           <mxGeometry height="70" width="150" x="915" y="700" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="RuntimeException: Locataire introuvable → 500" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;RuntimeException: Locataire introuvable → 500&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="160" x="910" y="800" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="findByUuid(uniteUuid)" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;findByUuid(uniteUuid)&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="160" x="1330" y="790" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-18" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Unité trouvée?" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-18" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Unité trouvée?&lt;/font&gt;" vertex="1">
           <mxGeometry height="70" width="150" x="915" y="870" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Créer ContratBail:&#xa;setLocataire, setUnite, setLoyer,&#xa;setJourEcheance, setDateDebut,&#xa;unite.setStatut(OCCUPEE)" vertex="1">
-          <mxGeometry height="90" width="165" x="910" y="970" as="geometry" />
+        <mxCell id="3uffX4nWiterIzNsyrVV-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Créer ContratBail:&lt;br&gt;setLocataire, setUnite, setLoyer,&lt;br&gt;setJourEcheance, setDateDebut,&lt;br&gt;unite.setStatut(OCCUPEE)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="165" x="910" y="970" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="contratBailRepository.save(bail)" vertex="1">
-          <mxGeometry height="50" width="160" x="1330" y="985" as="geometry" />
+        <mxCell id="3uffX4nWiterIzNsyrVV-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;contratBailRepository.save(bail)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="180" x="1320" y="960" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="creerNotification(INFO:&#xa;&#39;Contrat de bail créé&#39;)" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;creerNotification(INFO:&lt;br&gt;&#39;Contrat de bail créé&#39;)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="160" x="1120" y="1070" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="notificationRepository.save(notif)" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;notificationRepository.save(notif)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="170" x="1330" y="1080" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Retourner BailResponse&#xa;(uuid, locataire, unité, loyer, statut...)" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Retourner BailResponse&lt;br&gt;(uuid, locataire, unité, loyer, statut...)&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="165" x="700" y="1160" as="geometry" />
         </mxCell>
-        <mxCell id="3uffX4nWiterIzNsyrVV-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Afficher confirmation de création" vertex="1">
+        <mxCell id="3uffX4nWiterIzNsyrVV-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Afficher confirmation de création&lt;/font&gt;" vertex="1">
           <mxGeometry height="50" width="160" x="480" y="1160" as="geometry" />
         </mxCell>
         <mxCell id="3uffX4nWiterIzNsyrVV-25" edge="1" parent="1" source="3uffX4nWiterIzNsyrVV-8" target="3uffX4nWiterIzNsyrVV-9">

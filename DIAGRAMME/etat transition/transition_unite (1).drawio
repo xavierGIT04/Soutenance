@@ -1,0 +1,77 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.2.9 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.2.9">
+  <diagram name="Etats-Unite" id="unite-state-diagram">
+    <mxGraphModel dx="872" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontStyle=1;" value="&lt;font style=&quot;font-size: 17px;&quot;&gt;états : Unite (StatutUnite)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="500" x="527" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="start" parent="1" style="ellipse;aspect=fixed;fillColor=#222222;strokeColor=#222222;fontSize=13;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="762" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="libre" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#222222;align=left;spacingLeft=10;verticalAlign=top;fontSize=13;" value="&lt;b&gt;LIBRE&lt;/b&gt;&lt;hr&gt;description / Unité disponible à la location. Apparaît dans /api/bail/unite_libre." vertex="1">
+          <mxGeometry height="70" width="380" x="587" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="occupee" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#222222;align=left;spacingLeft=10;verticalAlign=top;fontSize=13;" value="&lt;b&gt;OCCUPEE&lt;/b&gt;&lt;hr&gt;entry / Associée à un ContratBail ACTIF&lt;br&gt;description / Unité sous contrat de bail actif. Non disponible à la location." vertex="1">
+          <mxGeometry height="80" width="380" x="160" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="maintenance" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#222222;align=left;spacingLeft=10;verticalAlign=top;fontSize=13;" value="&lt;b&gt;MAINTENANCE&lt;/b&gt;&lt;hr&gt;description / Unité temporairement indisponible pour travaux." vertex="1">
+          <mxGeometry height="70" width="380" x="1010" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="t_start_libre" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;" target="libre" value="UniteService.create()&lt;br&gt;/ Unité créée avec statut LIBRE par défaut">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t_libre_occupee" edge="1" parent="1" source="libre" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="occupee" value="ContratBailService.addContrat()&lt;br&gt;/ unite.setStatut(StatutUnite.OCCUPEE)">
+          <mxGeometry relative="1" x="-0.088" y="-35" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="587" y="235" />
+              <mxPoint x="350" y="235" />
+              <mxPoint x="350" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_occupee_libre" edge="1" parent="1" source="occupee" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="libre" value="ContratBailService.resilierContrat()&lt;br&gt;/ unite.setStatut(StatutUnite.LIBRE)">
+          <mxGeometry relative="1" x="0.1" y="30" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="520" y="430" />
+              <mxPoint x="520" y="290" />
+              <mxPoint x="570" y="290" />
+              <mxPoint x="570" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_libre_maintenance" edge="1" parent="1" source="libre" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="maintenance" value="PATCH /api/unite/changer_statut?statut=MAINTENANCE&lt;br&gt;[rôle PROPRIETAIRE]">
+          <mxGeometry relative="1" x="0.0888" y="36" as="geometry">
+            <mxPoint x="-26" y="-35" as="offset" />
+            <Array as="points">
+              <mxPoint x="1200" y="235" />
+              <mxPoint x="1200" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_maintenance_libre" edge="1" parent="1" source="maintenance" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="libre" value="PATCH /api/unite/changer_statut?statut=LIBRE&lt;br&gt;[rôle PROPRIETAIRE]">
+          <mxGeometry relative="1" x="0.1215" y="80" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1040" y="430" />
+              <mxPoint x="1040" y="270" />
+              <mxPoint x="980" y="270" />
+              <mxPoint x="980" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t_occupee_maintenance" edge="1" parent="1" source="occupee" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=13;align=center;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="maintenance" value="PATCH /api/unite/changer_statut?statut=MAINTENANCE&lt;br&gt;[rôle PROPRIETAIRE — après résiliation préalable]">
+          <mxGeometry relative="1" x="0.1" y="20" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note_box" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontSize=13;fillColor=#ffffc0;strokeColor=#444444;align=left;spacingLeft=8;" value="&lt;b&gt;Règle métier :&lt;/b&gt;&lt;br&gt;Une unité OCCUPEE ne peut pas être attribuée à un nouveau bail&lt;br&gt;sans résiliation préalable du bail en cours." vertex="1">
+          <mxGeometry height="70" width="340" x="410" y="570" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
