@@ -1,0 +1,256 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.2.9 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.2.9">
+  <diagram id="payment-diagram" name="Activité - Paiement Mobile">
+    <mxGraphModel dx="2984" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" value="Diagramme d&#39;Activité : Paiement Mobile (FedaPay)" vertex="1">
+          <mxGeometry height="40" width="1500" x="50" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_loc" parent="1" style="swimlane;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontStyle=1;fontSize=12;" value="Locataire (Application mobile)" vertex="1">
+          <mxGeometry height="1580" width="410" x="-90" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p_start" parent="sl_loc" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="130" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Consulter ses échéances" vertex="1">
+          <mxGeometry height="45" width="190" x="50" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Sélectionner une échéance à payer" vertex="1">
+          <mxGeometry height="45" width="200" x="45" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Initier le paiement Mobile" vertex="1">
+          <mxGeometry height="45" width="160" x="65" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="p4" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Redirection vers la page FedaPay" vertex="1">
+          <mxGeometry height="45" width="200" x="45" y="535" as="geometry" />
+        </mxCell>
+        <mxCell id="p5" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Saisir le numéro (Flooz/TMoney) et valider" vertex="1">
+          <mxGeometry height="45" width="230" x="30" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="p6" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Confirmer le code OTP USSD sur son téléphone" vertex="1">
+          <mxGeometry height="50" width="250" x="20" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="p_notif" parent="sl_loc" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Recevoir la notification" vertex="1">
+          <mxGeometry height="45" width="180" x="55" y="1380" as="geometry" />
+        </mxCell>
+        <mxCell id="p_end" parent="sl_loc" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=3;double=1;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="130" y="1440" as="geometry" />
+        </mxCell>
+        <mxCell id="ep1" edge="1" parent="sl_loc" source="p_start" style="edgeStyle=orthogonalEdgeStyle;" target="p1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ep2" edge="1" parent="sl_loc" source="p1" style="edgeStyle=orthogonalEdgeStyle;" target="p2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ep3" edge="1" parent="sl_loc" source="p2" style="edgeStyle=orthogonalEdgeStyle;" target="p3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ep4" edge="1" parent="sl_loc" source="p4" style="edgeStyle=orthogonalEdgeStyle;" target="p5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ep5" edge="1" parent="sl_loc" source="p5" style="edgeStyle=orthogonalEdgeStyle;" target="p6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ep6" edge="1" parent="sl_loc" source="p_notif" style="edgeStyle=orthogonalEdgeStyle;" target="p_end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_back" parent="1" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#000000;fontStyle=1;fontSize=12;" value="Backend Rental" vertex="1">
+          <mxGeometry height="1580" width="680" x="330" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Générer une transaction en attente&#xa;(Paiement status=PENDING, ref=UUID)" vertex="1">
+          <mxGeometry height="55" width="270" x="190" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Créer la requête de paiement FedaPay" vertex="1">
+          <mxGeometry height="45" width="260" x="195" y="415" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Retourner l&#39;URL FedaPay au mobile" vertex="1">
+          <mxGeometry height="45" width="260" x="195" y="585" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Recevoir et intercepter le Webhook" vertex="1">
+          <mxGeometry height="45" width="260" x="195" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Vérifier l&#39;authenticité de la signature" vertex="1">
+          <mxGeometry height="45" width="260" x="195" y="990" as="geometry" />
+        </mxCell>
+        <mxCell id="b_dec1" parent="sl_back" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Signature valide ?" vertex="1">
+          <mxGeometry height="80" width="180" x="225" y="1065" as="geometry" />
+        </mxCell>
+        <mxCell id="b_reject" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#f8cecc;strokeColor=#b85450;" value="Rejeter la requête&#xa;(401 Unauthorized)" vertex="1">
+          <mxGeometry height="55" width="185" x="460" y="1078" as="geometry" />
+        </mxCell>
+        <mxCell id="b_end_rej" parent="sl_back" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=3;double=1;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="530" y="1158" as="geometry" />
+        </mxCell>
+        <mxCell id="b6" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Extraire l&#39;ID de transaction et le statut" vertex="1">
+          <mxGeometry height="45" width="260" x="195" y="1185" as="geometry" />
+        </mxCell>
+        <mxCell id="b_dec2" parent="sl_back" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Statut == &quot;approved&quot; ?" vertex="1">
+          <mxGeometry height="80" width="200" x="215" y="1262.5" as="geometry" />
+        </mxCell>
+        <mxCell id="b7" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Mettre à jour le statut du paiement (SUCCESS)" vertex="1">
+          <mxGeometry height="55" width="160" x="20" y="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="b8" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Mettre à jour le statut de l&#39;échéance (PAYEE)" vertex="1">
+          <mxGeometry height="55" width="160" x="20" y="1320" as="geometry" />
+        </mxCell>
+        <mxCell id="b9" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Envoyer une notification de confirmation&#xa;(Push via NotificationService)" vertex="1">
+          <mxGeometry height="60" width="160" x="20" y="1430" as="geometry" />
+        </mxCell>
+        <mxCell id="b10" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Mettre à jour le statut du paiement (FAILED)" vertex="1">
+          <mxGeometry height="55" width="200" x="470" y="1275" as="geometry" />
+        </mxCell>
+        <mxCell id="b11" parent="sl_back" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Envoyer une notification d&#39;échec au locataire" vertex="1">
+          <mxGeometry height="55" width="200" x="450" y="1360" as="geometry" />
+        </mxCell>
+        <mxCell id="b_merge" parent="sl_back" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="60" width="60" x="300" y="1390" as="geometry" />
+        </mxCell>
+        <mxCell id="eb1" edge="1" parent="sl_back" source="b1" style="edgeStyle=orthogonalEdgeStyle;" target="b2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb2" edge="1" parent="sl_back" source="b4" style="edgeStyle=orthogonalEdgeStyle;" target="b5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb3" edge="1" parent="sl_back" source="b5" style="edgeStyle=orthogonalEdgeStyle;" target="b_dec1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb4" edge="1" parent="sl_back" source="b_dec1" style="edgeStyle=orthogonalEdgeStyle;" target="b_reject" value="Non">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb5" edge="1" parent="sl_back" source="b_reject" style="edgeStyle=orthogonalEdgeStyle;" target="b_end_rej">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb6" edge="1" parent="sl_back" source="b_dec1" style="edgeStyle=orthogonalEdgeStyle;" target="b6" value="Oui">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb7" edge="1" parent="sl_back" source="b6" style="edgeStyle=orthogonalEdgeStyle;" target="b_dec2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="320" y="1246" />
+              <mxPoint x="315" y="1246" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb8" edge="1" parent="sl_back" source="b_dec2" style="edgeStyle=orthogonalEdgeStyle;" target="b7" value="Oui">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="130" y="1300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb9" edge="1" parent="sl_back" source="b_dec2" style="edgeStyle=orthogonalEdgeStyle;" target="b10" value="Non / declined">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb10" edge="1" parent="sl_back" source="b7" style="edgeStyle=orthogonalEdgeStyle;" target="b8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb11" edge="1" parent="sl_back" source="b8" style="edgeStyle=orthogonalEdgeStyle;" target="b9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb12" edge="1" parent="sl_back" source="b9" style="edgeStyle=orthogonalEdgeStyle;" target="b_merge">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb13" edge="1" parent="sl_back" source="b10" style="edgeStyle=orthogonalEdgeStyle;" target="b11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eb14" edge="1" parent="sl_back" source="b11" style="edgeStyle=orthogonalEdgeStyle;" target="b_merge">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_feda" parent="1" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;fontStyle=1;fontSize=12;" value="FedaPay" vertex="1">
+          <mxGeometry height="1580" width="560" x="1030" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Générer le lien/token de paiement" vertex="1">
+          <mxGeometry height="45" width="240" x="150" y="448" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Traiter la transaction financière" vertex="1">
+          <mxGeometry height="45" width="240" x="145" y="745" as="geometry" />
+        </mxCell>
+        <mxCell id="f_dec1" parent="sl_feda" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Transaction réussie ?" vertex="1">
+          <mxGeometry height="80" width="180" x="175" y="835" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Générer l&#39;événement transaction.approved" vertex="1">
+          <mxGeometry height="50" width="220" x="20" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Envoyer le Webhook&#xa;(POST /api/payments/webhook)" vertex="1">
+          <mxGeometry height="55" width="220" x="20" y="1040" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Générer l&#39;événement transaction.declined" vertex="1">
+          <mxGeometry height="50" width="220" x="300" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="f6" parent="sl_feda" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" value="Envoyer le Webhook&#xa;(POST /api/payments/webhook)" vertex="1">
+          <mxGeometry height="55" width="220" x="300" y="1040" as="geometry" />
+        </mxCell>
+        <mxCell id="f_merge" parent="sl_feda" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="60" width="60" x="235" y="1130" as="geometry" />
+        </mxCell>
+        <mxCell id="ef1" edge="1" parent="sl_feda" source="f2" style="edgeStyle=orthogonalEdgeStyle;" target="f_dec1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef2" edge="1" parent="sl_feda" source="f_dec1" style="edgeStyle=orthogonalEdgeStyle;" target="f3" value="Oui">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef3" edge="1" parent="sl_feda" source="f_dec1" style="edgeStyle=orthogonalEdgeStyle;" target="f4" value="Non">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef4" edge="1" parent="sl_feda" source="f3" style="edgeStyle=orthogonalEdgeStyle;" target="f5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef5" edge="1" parent="sl_feda" source="f4" style="edgeStyle=orthogonalEdgeStyle;" target="f6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef6" edge="1" parent="sl_feda" source="f5" style="edgeStyle=orthogonalEdgeStyle;" target="f_merge">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef7" edge="1" parent="sl_feda" source="f6" style="edgeStyle=orthogonalEdgeStyle;" target="f_merge">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="410" y="1160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ec1" edge="1" parent="1" source="p3" style="edgeStyle=orthogonalEdgeStyle;" target="b1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ec2" edge="1" parent="1" source="b2" style="edgeStyle=orthogonalEdgeStyle;" target="f1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ec3" edge="1" parent="1" source="f1" style="edgeStyle=orthogonalEdgeStyle;" target="b3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1290" y="610" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ec4" edge="1" parent="1" source="b3" style="edgeStyle=orthogonalEdgeStyle;" target="p4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="668" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ec5" edge="1" parent="1" source="p6" style="edgeStyle=orthogonalEdgeStyle;" target="f2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ec6" edge="1" parent="1" source="f_merge" style="edgeStyle=orthogonalEdgeStyle;" target="b4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="990" y="1220" />
+              <mxPoint x="990" y="943" />
+              <mxPoint x="655" y="943" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ec7" edge="1" parent="1" source="b_merge" style="edgeStyle=orthogonalEdgeStyle;" target="p_notif">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="660" y="1600" />
+              <mxPoint x="290" y="1600" />
+              <mxPoint x="290" y="1463" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

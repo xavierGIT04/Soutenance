@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" version="21.0.0">
+  <diagram id="scheduler-diagram" name="Activité - Scheduler">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="Diagramme d'Activité : Scheduler (Tâche planifiée)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="10" width="1000" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ── Colonne 1 : Scheduler ── -->
+        <mxCell id="sl_sched" value="Scheduler (Tâche planifiée)" style="swimlane;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="20" y="60" width="280" height="1280" as="geometry" />
+        </mxCell>
+
+        <!-- ── Colonne 2 : Services Backend / Core API ── -->
+        <mxCell id="sl_backend" value="Services Backend / Core API" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#000000;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="310" y="60" width="760" height="1280" as="geometry" />
+        </mxCell>
+
+        <!-- ══ SCHEDULER LANE ══ -->
+        <mxCell id="start" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="sl_sched">
+          <mxGeometry x="120" y="60" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="s1" value="Déclenchement automatique&#xa;(Chaque 1er du mois à 00:00)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_sched">
+          <mxGeometry x="30" y="120" width="210" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="s2" value="Récupérer la liste de tous les contrats actifs&#xa;(BailRepository.findAllByStatut(ACTIF))" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_sched">
+          <mxGeometry x="20" y="220" width="230" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="s_retard" value="Marquer les échéances en retard&#xa;(EcheanceService.marquerEcheancesEnRetard())" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_sched">
+          <mxGeometry x="15" y="1000" width="245" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="end" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=3;double=1;" vertex="1" parent="sl_sched">
+          <mxGeometry x="120" y="1200" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ══ BACKEND LANE ══ -->
+        <!-- Loop join -->
+        <mxCell id="b_join" value="" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="335" y="210" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="b1" value="Sélectionner le contrat suivant" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="270" y="310" width="220" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="b2" value="Vérifier si une échéance existe déjà pour le mois actuel" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="240" y="395" width="280" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Decision: Échéance existante? -->
+        <mxCell id="b_dec1" value="Échéance déjà existante ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="270" y="490" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Oui: Logger alerte -->
+        <mxCell id="b_log" value="Logger une alerte&#xa;(Ignorer le contrat)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="30" y="510" width="190" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Non: Calculer montant -->
+        <mxCell id="b3" value="Calculer le montant brut&#xa;(Loyer de base + charges)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="510" y="500" width="210" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="b4" value="Créer l'entité Echeance&#xa;(statut=NON_PAYE, dateEcheance=01/MM/AAAA)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="510" y="590" width="220" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="b5" value="Sauvegarder l'échéance en base de données" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="510" y="680" width="220" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="b6" value="Appeler NotificationService.envoyerNotification()" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="510" y="760" width="220" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- Merge diamond -->
+        <mxCell id="b_merge" value="" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="340" y="840" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Decision: Autres contrats? -->
+        <mxCell id="b_dec2" value="Autres contrats&#xa;à traiter ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="310" y="940" width="170" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="b7" value="Bascule automatique au statut EN_RETARD&#xa;pour toutes les échéances non payées dépassées" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="200" y="1080" width="340" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="b8" value="Envoyer les notifications ALERTE_RETARD&#xa;pour chaque locataire concerné" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="sl_backend">
+          <mxGeometry x="200" y="1170" width="340" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ══ EDGES ══ -->
+        <!-- Scheduler internal -->
+        <mxCell id="es1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="start" target="s1" parent="sl_sched"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="es2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s1" target="s2" parent="sl_sched"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- s2 → b_join (cross-lane) -->
+        <mxCell id="ec1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s2" target="b_join" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- Backend internal -->
+        <mxCell id="eb1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b_join" target="b1" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b1" target="b2" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b2" target="b_dec1" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb4" value="Oui — doublon" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b_dec1" target="b_log" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb5" value="Non — à créer" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b_dec1" target="b3" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb6" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b3" target="b4" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb7" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b4" target="b5" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb8" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b5" target="b6" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb9" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b6" target="b_merge" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b_log" target="b_merge" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="eb11" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b_merge" target="b_dec2" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- dec2 Oui: loop back to b_join -->
+        <mxCell id="eb12" value="Oui" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" source="b_dec2" target="b_join" parent="sl_backend">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="980"/>
+              <mxPoint x="720" y="240"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- dec2 Non → s_retard (cross-lane) -->
+        <mxCell id="ec2" value="Non" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b_dec2" target="s_retard" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- s_retard → b7 (cross-lane) -->
+        <mxCell id="ec3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s_retard" target="b7" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="eb13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b7" target="b8" parent="sl_backend"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- b8 → end (cross-lane) -->
+        <mxCell id="ec4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="b8" target="end" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -47,16 +47,13 @@
           <mxGeometry height="30" width="150" y="56" as="geometry" />
         </mxCell>
         <mxCell id="gir83x334TMPknHetz07-17" parent="WIyWlLk6GJQsqaUBKTNV-1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" value="RoleEnum" vertex="1">
-          <mxGeometry height="116" width="110" x="-330" y="-20" as="geometry" />
+          <mxGeometry height="86" width="110" x="-330" y="-20" as="geometry" />
         </mxCell>
         <mxCell id="gir83x334TMPknHetz07-18" parent="gir83x334TMPknHetz07-17" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" value="LOCATAIRE" vertex="1">
           <mxGeometry height="30" width="110" y="26" as="geometry" />
         </mxCell>
         <mxCell id="gir83x334TMPknHetz07-19" parent="gir83x334TMPknHetz07-17" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" value="PROPRIETAIRE" vertex="1">
           <mxGeometry height="30" width="110" y="56" as="geometry" />
-        </mxCell>
-        <mxCell id="OMuf1vzZNHt8WzEnDoGx-0" parent="gir83x334TMPknHetz07-17" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" value="ADMIN" vertex="1">
-          <mxGeometry height="30" width="110" y="86" as="geometry" />
         </mxCell>
         <mxCell id="gir83x334TMPknHetz07-29" parent="WIyWlLk6GJQsqaUBKTNV-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Bien" vertex="1">
           <mxGeometry height="216" width="160" x="-500" y="729" as="geometry" />
@@ -163,7 +160,7 @@
           <mxGeometry height="30" width="130" y="86" as="geometry" />
         </mxCell>
         <mxCell id="OMuf1vzZNHt8WzEnDoGx-1" parent="WIyWlLk6GJQsqaUBKTNV-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="ContratBail" vertex="1">
-          <mxGeometry height="398" width="210" x="190" y="370" as="geometry" />
+          <mxGeometry height="320" width="210" x="190" y="370" as="geometry" />
         </mxCell>
         <mxCell id="OMuf1vzZNHt8WzEnDoGx-2" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ id: Long" vertex="1">
           <mxGeometry height="26" width="210" y="26" as="geometry" />
@@ -183,32 +180,23 @@
         <mxCell id="OMuf1vzZNHt8WzEnDoGx-44" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ loyer : decimal" vertex="1">
           <mxGeometry height="26" width="210" y="156" as="geometry" />
         </mxCell>
-        <mxCell id="OMuf1vzZNHt8WzEnDoGx-11" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ jour_envoie_notification : Integer" vertex="1">
+        <mxCell id="OMuf1vzZNHt8WzEnDoGx-45" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ jour_echeance : Integer" vertex="1">
           <mxGeometry height="26" width="210" y="182" as="geometry" />
         </mxCell>
-        <mxCell id="OMuf1vzZNHt8WzEnDoGx-45" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ jour_echeance : Integer" vertex="1">
+        <mxCell id="OMuf1vzZNHt8WzEnDoGx-15" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ statut : BailEnum" vertex="1">
           <mxGeometry height="26" width="210" y="208" as="geometry" />
         </mxCell>
-        <mxCell id="OMuf1vzZNHt8WzEnDoGx-6" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ date_renouvellement : Date" vertex="1">
+        <mxCell id="OMuf1vzZNHt8WzEnDoGx-7" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ conditions : text" vertex="1">
           <mxGeometry height="26" width="210" y="234" as="geometry" />
         </mxCell>
-        <mxCell id="OMuf1vzZNHt8WzEnDoGx-15" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ statut : BailEnum" vertex="1">
-          <mxGeometry height="26" width="210" y="260" as="geometry" />
-        </mxCell>
-        <mxCell id="OMuf1vzZNHt8WzEnDoGx-7" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ conditions : text" vertex="1">
-          <mxGeometry height="26" width="210" y="286" as="geometry" />
-        </mxCell>
         <mxCell id="OMuf1vzZNHt8WzEnDoGx-8" parent="OMuf1vzZNHt8WzEnDoGx-1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
-          <mxGeometry height="8" width="210" y="312" as="geometry" />
+          <mxGeometry height="8" width="210" y="260" as="geometry" />
         </mxCell>
         <mxCell id="OMuf1vzZNHt8WzEnDoGx-9" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ resilier(): void" vertex="1">
-          <mxGeometry height="26" width="210" y="320" as="geometry" />
-        </mxCell>
-        <mxCell id="OMuf1vzZNHt8WzEnDoGx-13" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ telecharger(uuid): void" vertex="1">
-          <mxGeometry height="26" width="210" y="346" as="geometry" />
+          <mxGeometry height="26" width="210" y="268" as="geometry" />
         </mxCell>
         <mxCell id="OMuf1vzZNHt8WzEnDoGx-14" parent="OMuf1vzZNHt8WzEnDoGx-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ consulter(uuid) : ContratBail" vertex="1">
-          <mxGeometry height="26" width="210" y="372" as="geometry" />
+          <mxGeometry height="26" width="210" y="294" as="geometry" />
         </mxCell>
         <mxCell id="OMuf1vzZNHt8WzEnDoGx-16" parent="WIyWlLk6GJQsqaUBKTNV-1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" value="BailEnum" vertex="1">
           <mxGeometry height="116" width="150" x="339" y="-20" as="geometry" />
