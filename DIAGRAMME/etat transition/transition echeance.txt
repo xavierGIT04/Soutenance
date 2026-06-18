@@ -1,0 +1,54 @@
+@startuml
+skinparam roundcorner 0
+skinparam conditionStyle diamond
+skinparam state {
+    BackgroundColor #FFFFFF
+    BorderColor #222222
+    ArrowColor #444444
+}
+
+title Etats : Echeance (StatutEcheance)
+
+[*] --> EN_ATTENTE : EcheanceService.creerEcheance() ou Scheduler mensuel\n/ Persistance Echeance en BD
+
+' ═══════════════════ DÉFINITION DES ÉTATS ET ACTIONS INTERNES ═══════════════════
+
+EN_ATTENTE : entry / montantDu ← loyer du contrat
+EN_ATTENTE : entry / montantRestant ← montantDu
+EN_ATTENTE : entry / Notification RELANCE_LOYER → locataire
+
+PARTIELLEMENT_PAYE : entry / montantRestant ← montantRestant − montantVersé
+PARTIELLEMENT_PAYE : entry / Notification CONFIRMATION_PAIEMENT → locataire
+
+EN_RETARD : entry / Notification ALERTE_RETARD → locataire
+EN_RETARD : do / Scheduler envoie relances périodiques
+
+PAYE : entry / montantRestant ← 0
+PAYE : entry / Notification CONFIRMATION_PAIEMENT → locataire
+
+' ═══════════════════ TRANSITIONS ENTRE LES ÉTATS ═══════════════════
+
+' Transitions depuis EN_ATTENTE
+EN_ATTENTE --> PARTIELLEMENT_PAYE : PaiementService.enregistrerPaiement()\n[montantVersé < montantRestant]\n/ EcheanceService.appliquerPaiement()
+EN_ATTENTE --> PAYE : PaiementService.enregistrerPaiement()\n[montantVersé = montantRestant]\n/ EcheanceService.appliquerPaiement()
+EN_ATTENTE --> EN_RETARD : Scheduler — EcheanceService.marquerEcheancesEnRetard()\n[dateEcheance < today]
+
+' Transitions depuis PARTIELLEMENT_PAYE
+PARTIELLEMENT_PAYE --> PAYE : PaiementService.enregistrerPaiement()\n[montantVersé = montantRestant]\n/ EcheanceService.appliquerPaiement()
+PARTIELLEMENT_PAYE --> EN_RETARD : Scheduler — EcheanceService.marquerEcheancesEnRetard()\n[dateEcheance < today]
+
+' Transitions depuis EN_RETARD
+EN_RETARD --> PARTIELLEMENT_PAYE : PaiementService.enregistrerPaiement()\n[montantVersé < montantRestant]\n/ EcheanceService.appliquerPaiement()
+EN_RETARD --> PAYE : PaiementService.enregistrerPaiement()\n[montantVersé = montantRestant]\n/ EcheanceService.appliquerPaiement()
+
+' Clôture
+PAYE --> [*] : Archivage / Clôture du contrat
+
+' ═══════════════════ NOTES ET CONTRAINTES ═══════════════════
+note as N1
+  <b>Contrainte de sécurité :</b>
+  Un paiement ne peut pas dépasser montantRestant.
+  EcheanceService lève IllegalArgumentException
+  si montantVersé > montantRestant.
+end note
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+skinparam roundcorner 0
+
+title SEQ 3 — Création d'un contrat de bail avec notification
+
+actor "Propriétaire" as S3_PROP
+participant "ContratBailController" as S3_CTR
+participant "ContratBailService" as S3_SRV
+database "BailRepository" as S3_BREP
+database "UniteRepository" as S3_UREP
+participant "NotificationService" as S3_NOT
+
+S3_PROP -> S3_CTR : POST /api/bail/add (BailRequestDto)
+activate S3_CTR
+
+S3_CTR -> S3_SRV : addContrat(dto, proprietaireConnecte)
+activate S3_SRV
+
+S3_SRV -> S3_UREP : findById(dto.uniteUuid)
+activate S3_UREP
+S3_UREP --> S3_SRV : Unite (statut)
+deactivate S3_UREP
+
+S3_SRV -> S3_SRV : validerDisponibiliteUnite()\n[statut == LIBRE]
+
+S3_SRV -> S3_UREP : save(unite.setStatut(OCCUPEE))
+
+S3_SRV -> S3_BREP : save(new ContratBail(dto, statut=ACTIF))
+activate S3_BREP
+S3_BREP --> S3_SRV : ContratBail (persiste)
+deactivate S3_BREP
+
+S3_SRV -> S3_NOT : envoyerNotification(dto.locataireUuid, INFO, "Contrat créé...")
+activate S3_NOT
+S3_NOT --> S3_SRV : NotificationResponse
+deactivate S3_NOT
+
+S3_SRV --> S3_CTR : ContratBailResponseDto
+deactivate S3_SRV
+
+S3_CTR --> S3_PROP : 201 Created (ContratBail créé avec succès)
+deactivate S3_CTR
+
+@enduml

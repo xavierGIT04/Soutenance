@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DIAGRAMME D'ACTIVITÉ — RentalAPI
+  Flux modélisés :
+    1. Initiation d'un paiement Mobile Money (Locataire + FedaPay + Webhook)
+    2. Génération mensuelle des échéances (Scheduler)
+-->
+<activityDiagram name="Paiement Mobile Money et Génération des Échéances — RentalAPI">
+
+  <!-- ═══════════════════════════════════════════════════════
+       FLUX 1 : Initiation et confirmation du paiement Mobile Money
+       Swimlanes : Locataire | API Backend | FedaPay
+       ═══════════════════════════════════════════════════════ -->
+  <activity name="Paiement Mobile Money (Flooz / TMoney via FedaPay)">
+
+    <swimlanes>
+      <swimlane id="SL_LOC"     name="Locataire (Application mobile)"/>
+      <swimlane id="SL_API"     name="Backend RentalAPI"/>
+      <swimlane id="SL_FEDAPAY" name="FedaPay"/>
+    </swimlanes>
+
+    <nodes>
+      <!-- ── Déclencheur ── -->
+      <initialNode id="A_START" swimlane="SL_LOC"/>
+
+      <!-- ── Locataire ── -->
+      <action id="A01" swimlane="SL_LOC"
+              name="Consulter ses échéances"
+              description="GET /api/bail/echeances/{contratUuid}"/>
+      <action id="A02" swimlane="SL_LOC"
+              name="Sélectionner une échéance à payer"
+              description="Choisir une échéance EN_ATTENTE ou PARTIELLEMENT_PAYE"/>
+      <action id="A03" swimlane="SL_LOC"
+              name="Initier le paiement Mobile Money"
+              description="POST /api/bail/initier_paiement_mobile {echeanceUuid, telephone}"/>
+
+      <!-- ── Backend — vérification ── -->
+      <action id="A04" swimlane="SL_API"
+              name="Vérifier le token JWT du locataire"
+              description="JwtAuthenticationFilter — rôle LOCATAIRE requis"/>
+      <decision id="D01" swimlane="SL_API"
+                name="Token valide ?"/>
+      <action id="A05" swimlane="SL_API"
+              name="Retourner 401 Unauthorized"
+              description="Fin du flux — accès refusé"/>
+      <finalNode id="A_END_401" swimlane="SL_API"/>
+
+      <!-- ── Backend — préparation FedaPay ── -->
+      <action id="A06" swimlane="SL_API"
+              name="Charger l'échéance depuis la BD"
+              description="EcheanceRepository.findByUuid(echeanceUuid)"/>
+      <decision id="D02" swimlane="SL_API"
+                name="Échéance introuvable ?"/>
+      <action id="A07" swimlane="SL_API"
+              name="Retourner 404 Not Found"
+              description="RuntimeException : Échéance introuvable"/>
+      <finalNode id="A_END_404" swimlane="SL_API"/>
+
+      <action id="A08" swimlane="SL_API"
+              name="Construire la requête FedaPay"
+              description="montant = montantRestant, currency = XOF,
+                           custom_metadata = {echeance_uuid, locataire_uuid},
+                           callback_url, customer.phone_number"/>
+
+      <!-- ── FedaPay ── -->
+      <action id="A09" swimlane="SL_FEDAPAY"
+              name="POST /v1/transactions"
+              description="Créer la transaction et retourner un id"/>
+      <action id="A10" swimlane="SL_FEDAPAY"
+              name="GET /v1/transactions/{id}/token"
+              description="Récupérer le token de paiement one-time"/>
+      <action id="A11" swimlane="SL_FEDAPAY"
+              name="Construire l'URL de paiement checkout"
+              description="https://sandbox-checkout.fedapay.com/v1/pay/{token}"/>
+
+      <!-- ── Backend — réponse ── -->
+      <action id="A12" swimlane="SL_API"
+              name="Retourner InitPaiementMobileResponse"
+              description="{echeanceUuid, montant, paymentUrl, message}"/>
+
+      <!-- ── Locataire — paiement ── -->
+      <action id="A13" swimlane="SL_LOC"
+              name="Ouvrir le lien de paiement FedaPay"
+              description="Redirigé vers la page checkout FedaPay"/>
+      <action id="A14" swimlane="SL_LOC"
+              name="Saisir son code Mobile Money"
+              description="Flooz (Moov) ou TMoney (Togocel)"/>
+      <action id="A15" swimlane="SL_FEDAPAY"
+              name="Traiter le paiement chez l'opérateur"
+              description="Appel USSD / API opérateur"/>
+      <decision id="D03" swimlane="SL_FEDAPAY"
+                name="Paiement approuvé ?"/>
+
+      <!-- ── Webhook — succès ── -->
+      <action id="A16" swimlane="SL_FEDAPAY"
+              name="Envoyer webhook transaction.approved"
+              description="POST /api/bail/webhook/fedapay — header X-FedaPay-Signature"/>
+      <action id="A17" swimlane="SL_API"
+              name="Vérifier la signature HMAC-SHA256"
+              description="FedaPaySignatureVerifier.verifier(rawBody, sigHeader)
+                           — bypass en mode sandbox"/>
+      <decision id="D04" swimlane="SL_API"
+                name="Signature valide ?"/>
+      <action id="A18" swimlane="SL_API"
+              name="Retourner 400 signature_invalide"
+              description="FedaPaySignatureException"/>
+      <finalNode id="A_END_SIG" swimlane="SL_API"/>
+
+      <action id="A19" swimlane="SL_API"
+              name="Répondre 200 OK immédiatement"
+              description="WebhookAck{status=received} — avant tout traitement lourd"/>
+      <action id="A20" swimlane="SL_API"
+              name="Vérifier l'idempotence"
+              description="PaiementRepository.findByReferencePaiement(reference)
+                           → skip si déjà traité"/>
+      <decision id="D05" swimlane="SL_API"
+                name="Déjà traité ?"/>
+      <action id="A21" swimlane="SL_API"
+              name="Skip — log idempotence"
+              description="Paiement déjà enregistré, ignorer le retry FedaPay"/>
+      <finalNode id="A_END_IDEM" swimlane="SL_API"/>
+
+      <action id="A22" swimlane="SL_API"
+              name="Enregistrer le paiement"
+              description="PaiementService.enregistrerPaiement(
+                             echeanceUuid, montant, MOBILE_MONEY, reference)"/>
+      <action id="A23" swimlane="SL_API"
+              name="Appliquer le paiement sur l'échéance"
+              description="EcheanceService.appliquerPaiement(echeanceUuid, montant)
+                           → mise à jour montantRestant + statut (PAYE / PARTIELLEMENT_PAYE)"/>
+      <action id="A24" swimlane="SL_API"
+              name="Envoyer notification CONFIRMATION_PAIEMENT"
+              description="NotificationService.creerNotification(locataire, titre, message)"/>
+      <finalNode id="A_END_OK" swimlane="SL_API"/>
+
+      <!-- ── Webhook — échec ── -->
+      <action id="A25" swimlane="SL_FEDAPAY"
+              name="Envoyer webhook transaction.declined ou .canceled"
+              description="POST /api/bail/webhook/fedapay"/>
+      <action id="A26" swimlane="SL_API"
+              name="Envoyer notification ALERTE_RETARD"
+              description="Message : paiement refusé/annulé — inviter à réessayer"/>
+      <finalNode id="A_END_KO" swimlane="SL_API"/>
+    </nodes>
+
+    <transitions>
+      <transition from="A_START" to="A01"/>
+      <transition from="A01"    to="A02"/>
+      <transition from="A02"    to="A03"/>
+      <transition from="A03"    to="A04"/>
+      <transition from="A04"    to="D01"/>
+      <transition from="D01"    to="A05"    guard="Non"/>
+      <transition from="A05"    to="A_END_401"/>
+      <transition from="D01"    to="A06"    guard="Oui"/>
+      <transition from="A06"    to="D02"/>
+      <transition from="D02"    to="A07"    guard="Oui"/>
+      <transition from="A07"    to="A_END_404"/>
+      <transition from="D02"    to="A08"    guard="Non"/>
+      <transition from="A08"    to="A09"/>
+      <transition from="A09"    to="A10"/>
+      <transition from="A10"    to="A11"/>
+      <transition from="A11"    to="A12"/>
+      <transition from="A12"    to="A13"/>
+      <transition from="A13"    to="A14"/>
+      <transition from="A14"    to="A15"/>
+      <transition from="A15"    to="D03"/>
+      <transition from="D03"    to="A16"    guard="Oui — approved"/>
+      <transition from="D03"    to="A25"    guard="Non — declined/canceled"/>
+      <!-- Flux succès -->
+      <transition from="A16"    to="A17"/>
+      <transition from="A17"    to="D04"/>
+      <transition from="D04"    to="A18"    guard="Non"/>
+      <transition from="A18"    to="A_END_SIG"/>
+      <transition from="D04"    to="A19"    guard="Oui"/>
+      <transition from="A19"    to="A20"/>
+      <transition from="A20"    to="D05"/>
+      <transition from="D05"    to="A21"    guard="Oui"/>
+      <transition from="A21"    to="A_END_IDEM"/>
+      <transition from="D05"    to="A22"    guard="Non"/>
+      <transition from="A22"    to="A23"/>
+      <transition from="A23"    to="A24"/>
+      <transition from="A24"    to="A_END_OK"/>
+      <!-- Flux échec -->
+      <transition from="A25"    to="A26"/>
+      <transition from="A26"    to="A_END_KO"/>
+    </transitions>
+
+  </activity>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FLUX 2 : Génération automatique des échéances mensuelles
+       Swimlanes : Scheduler | Backend | Base de données
+       ═══════════════════════════════════════════════════════ -->
+  <activity name="Génération mensuelle des échéances (Scheduler)">
+
+    <swimlanes>
+      <swimlane id="SL_SCH" name="Scheduler Spring"/>
+      <swimlane id="SL_SVC" name="Services Backend"/>
+      <swimlane id="SL_DB"  name="Base de données"/>
+    </swimlanes>
+
+    <nodes>
+      <initialNode id="B_START" swimlane="SL_SCH"/>
+
+      <action id="B01" swimlane="SL_SCH"
+              name="Déclenchement @Scheduled"
+              description="Tâche cron mensuelle — premier jour du mois"/>
+      <action id="B02" swimlane="SL_SVC"
+              name="Charger les contrats actifs"
+              description="ContratBailService.getContratsActifs()
+                           → ContratBailRepository.findByStatut(BailEnum.ACTIF)"/>
+      <action id="B03" swimlane="SL_SCH"
+              name="Itérer sur chaque contrat actif"
+              description="Pour chaque ContratBail trouvé"/>
+      <decision id="B_D01" swimlane="SL_SVC"
+                name="Échéance déjà créée ce mois ?"/>
+      <action id="B04" swimlane="SL_SCH"
+              name="Passer au contrat suivant (idempotence)"
+              description="EcheanceRepository.existsForContratAndMois(uuid, annee, mois) = true"/>
+      <action id="B05" swimlane="SL_SVC"
+              name="Calculer la date d'échéance"
+              description="LocalDate : 1er du mois courant + jourEcheance du contrat"/>
+      <action id="B06" swimlane="SL_DB"
+              name="Créer l'entité Echeance"
+              description="montantDu = loyer, montantRestant = loyer,
+                           statut = EN_ATTENTE"/>
+      <action id="B07" swimlane="SL_SVC"
+              name="Persister l'échéance"
+              description="EcheanceRepository.save(echeance)"/>
+      <action id="B08" swimlane="SL_SVC"
+              name="Envoyer notification RELANCE_LOYER"
+              description="NotificationService.creerNotification(
+                             locataire, 'Rappel de loyer — MOIS', message)"/>
+      <decision id="B_D02" swimlane="SL_SCH"
+                name="Autres contrats à traiter ?"/>
+      <action id="B09" swimlane="SL_SVC"
+              name="Marquer les échéances en retard"
+              description="EcheanceService.marquerEcheancesEnRetard()
+                           → statut EN_RETARD pour dateEcheance &lt; aujourd'hui"/>
+      <action id="B10" swimlane="SL_SVC"
+              name="Envoyer notifications ALERTE_RETARD"
+              description="Pour chaque locataire avec échéance en retard"/>
+      <finalNode id="B_END" swimlane="SL_SCH"/>
+    </nodes>
+
+    <transitions>
+      <transition from="B_START"  to="B01"/>
+      <transition from="B01"      to="B02"/>
+      <transition from="B02"      to="B03"/>
+      <transition from="B03"      to="B_D01"/>
+      <transition from="B_D01"    to="B04"    guard="Oui — doublon"/>
+      <transition from="B04"      to="B_D02"/>
+      <transition from="B_D01"    to="B05"    guard="Non — à créer"/>
+      <transition from="B05"      to="B06"/>
+      <transition from="B06"      to="B07"/>
+      <transition from="B07"      to="B08"/>
+      <transition from="B08"      to="B_D02"/>
+      <transition from="B_D02"    to="B03"    guard="Oui — boucle"/>
+      <transition from="B_D02"    to="B09"    guard="Non — fin des contrats"/>
+      <transition from="B09"      to="B10"/>
+      <transition from="B10"      to="B_END"/>
+    </transitions>
+
+  </activity>
+
+</activityDiagram>

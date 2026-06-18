@@ -1,0 +1,54 @@
+@startuml
+skinparam roundcorner 0
+skinparam boxPadding 10
+
+
+title SEQ 4.1 — Génération automatique mensuelle des échéances
+
+actor "Scheduler" as S_CRON
+participant "EcheanceScheduler" as S_SCH
+participant "ContratBailService" as S_BAIL
+database "BailRepository" as S_BREP
+participant "EcheanceService" as S_ECH
+database "EcheanceRepository" as S_EREP
+participant "NotificationService" as S_NOT
+
+S_CRON -> S_SCH : exécuterTraitementMensuel()
+activate S_SCH
+
+S_SCH -> S_BAIL : genererEcheancesDuMois(LocalDate.now())
+activate S_BAIL
+
+S_BAIL -> S_BREP : findAllByStatut(BailEnum.ACTIF)
+activate S_BREP
+S_BREP --> S_BAIL : List<ContratBail> actifs
+deactivate S_BREP
+
+loop Pour chaque contrat de la liste "actifs"
+    S_BAIL -> S_ECH : creerEcheancePourContrat(contrat, date)
+    activate S_ECH
+    
+    S_ECH -> S_EREP : existsByContratAndPeriode(contrat, periode)
+    activate S_EREP
+    S_EREP --> S_ECH : boolean (doublon ?)
+    deactivate S_EREP
+    
+    alt doublon == false
+        S_ECH -> S_EREP : save(new Echeance(montantDu, statut=EN_ATTENTE))
+        S_ECH -> S_NOT : envoyerNotification(locataire, RELANCE_LOYER)
+        activate S_NOT
+        S_NOT --> S_ECH : NotificationResponse
+        deactivate S_NOT
+        S_ECH --> S_BAIL : EcheanceResponse
+    else doublon == true
+        S_ECH --> S_BAIL : Log unique / Ignorer le contrat
+    end
+    deactivate S_ECH
+end
+
+S_BAIL --> S_SCH : Fin de la génération des échéances
+deactivate S_BAIL
+S_SCH --> S_CRON : Tâche terminée
+deactivate S_SCH
+
+@enduml

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mxfile host="app.diagrams.net" version="24.0.0" type="device">
+  
+  
+  <diagram id="usecase-locatif" name="Cas d'utilisation">
+    
+    
+    <mxGraphModel dx="800" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1190" pageHeight="900" math="0" shadow="0">
+      
+      
+      <root>
+        
+        
+        <mxCell id="0"/>
+        
+        
+        <mxCell id="1" parent="0"/>
+        
+        
+        <mxCell id="2" value="Plateforme de gestion locative" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fillColor=none;strokeColor=#000000;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="120" y="30" width="760" height="770" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="3" value="S'authentifier" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="380" y="70" width="240" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="4" value="PROPRIETAIRE" style="shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="10" y="420" width="40" height="70" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="5" value="Gerer les biens" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="150" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="6" value="Gerer les unites" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="220" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="7" value="Gerer les locataires" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="290" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="8" value="Gerer les contrats de bail" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="360" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="9" value="Resilier un contrat" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="430" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="10" value="Gerer les echeances" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="500" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="11" value="Enregistrer un paiement (especes)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="570" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="12" value="Consulter l'historique des paiements" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="640" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="13" value="Gerer les biens de sejour (Airbnb)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="160" y="710" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="14" value="LOCATAIRE" style="shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="920" y="350" width="40" height="70" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="15" value="Consulter mes contrats" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="150" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="16" value="Consulter mes echeances" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="220" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="17" value="Effectuer un paiement Mobile Money" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="290" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="18" value="Consulter mes notifications" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="360" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="19" value="Marquer une notification comme lue" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="430" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="20" value="Mettre a jour mon profil" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="500" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="21" value="Confirmer le paiement (webhook)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="640" width="230" height="50" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="22" value="Systeme FedaPay" style="shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="920" y="630" width="40" height="70" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="7">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="8">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="9">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="10">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="11">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="12">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="4" target="13">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="14" target="3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="14" target="15">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="35" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="14" target="16">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="36" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="14" target="17">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="37" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="14" target="18">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="14" target="19">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="14" target="20">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=none;dashed=0;" edge="1" parent="1" source="22" target="21">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        
+        <mxCell id="41" value="&lt;&lt;include&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=10;endArrow=open;dashed=1;" edge="1" parent="1" source="17" target="21">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+      
+      </root>
+      
+    
+    </mxGraphModel>
+    
+  
+  </diagram>
+  
+
+</mxfile>

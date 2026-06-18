@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DIAGRAMME DE SÉQUENCE — RentalAPI
+  Scénarios modélisés :
+    SEQ1 — Initiation d'un paiement Mobile Money (Locataire → FedaPay)
+    SEQ2 — Réception et traitement du webhook FedaPay (transaction.approved)
+    SEQ3 — Création d'un contrat de bail avec notification
+    SEQ4 — Génération automatique mensuelle des échéances (Scheduler)
+-->
+<sequenceDiagram name="Diagrammes de séquence — RentalAPI">
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SEQ 1 — Initiation d'un paiement Mobile Money
+       Acteurs : Locataire (app mobile) | ContratBailController |
+                 FedaPayService | FedaPay API (externe)
+       ══════════════════════════════════════════════════════════════════ -->
+  <sequence id="SEQ1" name="Initiation d'un paiement Mobile Money">
+
+    <lifelines>
+      <lifeline id="LL_LOC"  name="Locataire"               type="actor"/>
+      <lifeline id="LL_CTR"  name="ContratBailController"   type="boundary"/>
+      <lifeline id="LL_AUTH" name="JwtAuthenticationFilter" type="control"/>
+      <lifeline id="LL_FED"  name="FedaPayService"          type="control"/>
+      <lifeline id="LL_ECHO" name="EcheanceRepository"      type="entity"/>
+      <lifeline id="LL_API"  name="FedaPay API (externe)"   type="actor"/>
+    </lifelines>
+
+    <messages>
+      <!-- 1. Requête HTTP -->
+      <message seq="1"  from="LL_LOC"  to="LL_CTR"
+               type="synchronous"
+               label="POST /api/bail/initier_paiement_mobile"
+               params="{echeanceUuid, telephone}"/>
+
+      <!-- 2. Filtre JWT -->
+      <message seq="2"  from="LL_CTR"  to="LL_AUTH"
+               type="synchronous"
+               label="Valider le token JWT"
+               note="@PreAuthorize('hasRole(LOCATAIRE)')"/>
+      <message seq="3"  from="LL_AUTH" to="LL_CTR"
+               type="return"
+               label="Authentication OK — principal = Utilisateur"/>
+
+      <!-- 3. Résolution du téléphone -->
+      <message seq="4"  from="LL_CTR"  to="LL_CTR"
+               type="self"
+               label="telephone = request.telephone ?? authUtils.getTelephone()"/>
+
+      <!-- 4. Appel service FedaPay -->
+      <message seq="5"  from="LL_CTR"  to="LL_FED"
+               type="synchronous"
+               label="fedaPayService.initierPaiement(echeanceUuid, telephone)"/>
+
+      <!-- 5. Chargement de l'échéance -->
+      <message seq="6"  from="LL_FED"  to="LL_ECHO"
+               type="synchronous"
+               label="findByUuid(echeanceUuid)"/>
+      <message seq="7"  from="LL_ECHO" to="LL_FED"
+               type="return"
+               label="Echeance{montantRestant, locataire, unite}"/>
+
+      <!-- 6. POST /v1/transactions vers FedaPay -->
+      <message seq="8"  from="LL_FED"  to="LL_API"
+               type="synchronous"
+               label="POST /v1/transactions"
+               params="{amount, currency:XOF, description, callback_url,
+                        custom_metadata:{echeance_uuid, locataire_uuid},
+                        customer:{firstname, phone_number:{number, country:TG}}}"/>
+      <message seq="9"  from="LL_API"  to="LL_FED"
+               type="return"
+               label="HTTP 201 — {id: transactionId, ...}"/>
+
+      <!-- 7. GET /v1/transactions/{id}/token -->
+      <message seq="10" from="LL_FED"  to="LL_API"
+               type="synchronous"
+               label="GET /v1/transactions/{transactionId}/token"/>
+      <message seq="11" from="LL_API"  to="LL_FED"
+               type="return"
+               label="HTTP 200 — {token: 'tok_xxx'}"/>
+
+      <!-- 8. Construction de l'URL de paiement -->
+      <message seq="12" from="LL_FED"  to="LL_FED"
+               type="self"
+               label="paymentUrl = sandbox-checkout.fedapay.com/v1/pay/{token}"/>
+
+      <!-- 9. Retour au controller -->
+      <message seq="13" from="LL_FED"  to="LL_CTR"
+               type="return"
+               label="PaiementInitResult{paymentUrl, montant}"/>
+
+      <!-- 10. Réponse HTTP -->
+      <message seq="14" from="LL_CTR"  to="LL_LOC"
+               type="return"
+               label="HTTP 200 — InitPaiementMobileResponse{echeanceUuid, montant, paymentUrl, message}"/>
+
+      <!-- Fragment alternatif : Échéance introuvable -->
+      <combinedFragment type="alt" label="[Échéance introuvable]">
+        <operand guard="echeance == null">
+          <message seq="6b" from="LL_ECHO" to="LL_FED"
+                   type="return" label="Optional.empty()"/>
+          <message seq="6c" from="LL_FED"  to="LL_CTR"
+                   type="exception"
+                   label="RuntimeException : Échéance introuvable"/>
+          <message seq="6d" from="LL_CTR"  to="LL_LOC"
+                   type="return" label="HTTP 500 Internal Server Error"/>
+        </operand>
+      </combinedFragment>
+
+    </messages>
+
+  </sequence>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SEQ 2 — Réception du webhook FedaPay (transaction.approved)
+       Acteurs : FedaPay (externe) | FedaPayWebhookController |
+                 FedaPaySignatureVerifier | FedaPayService |
+                 PaiementService | EcheanceService | NotificationService
+       ══════════════════════════════════════════════════════════════════ -->
+  <sequence id="SEQ2" name="Réception et traitement du webhook FedaPay (transaction.approved)">
+
+    <lifelines>
+      <lifeline id="W_API"   name="FedaPay (externe)"           type="actor"/>
+      <lifeline id="W_FILTER" name="RawBodyCachingFilter"       type="control"/>
+      <lifeline id="W_CTR"   name="FedaPayWebhookController"    type="boundary"/>
+      <lifeline id="W_SIG"   name="FedaPaySignatureVerifier"    type="control"/>
+      <lifeline id="W_SVC"   name="FedaPayService"              type="control"/>
+      <lifeline id="W_PAY"   name="PaiementService"             type="control"/>
+      <lifeline id="W_ECH"   name="EcheanceService"             type="control"/>
+      <lifeline id="W_PDBR"  name="PaiementRepository"          type="entity"/>
+      <lifeline id="W_ECHDB" name="EcheanceRepository"          type="entity"/>
+      <lifeline id="W_NOTIF" name="NotificationService"         type="control"/>
+      <lifeline id="W_NDB"   name="NotificationRepository"      type="entity"/>
+    </lifelines>
+
+    <messages>
+      <!-- 1. Webhook FedaPay -->
+      <message seq="1"  from="W_API"    to="W_FILTER"
+               type="synchronous"
+               label="POST /api/bail/webhook/fedapay"
+               note="Header X-FedaPay-Signature: t=...,v=..."/>
+      <message seq="2"  from="W_FILTER" to="W_FILTER"
+               type="self"
+               label="body = request.getInputStream().readAllBytes()
+                      → ReReadableRequestWrapper(request, body)"/>
+      <message seq="3"  from="W_FILTER" to="W_CTR"
+               type="synchronous"
+               label="doFilter(wrappedRequest, response)"/>
+
+      <!-- 2. Vérification signature -->
+      <message seq="4"  from="W_CTR"    to="W_CTR"
+               type="self"
+               label="rawBody = wrapper.getCachedBody()
+                      sigHeader = request.getHeader('X-FedaPay-Signature')"/>
+      <message seq="5"  from="W_CTR"    to="W_SIG"
+               type="synchronous"
+               label="signatureVerifier.verifier(rawBody, sigHeader)"/>
+
+      <!-- Fragment alt : signature invalide -->
+      <combinedFragment type="alt" label="Vérification de signature">
+        <operand guard="[mode SANDBOX]">
+          <message seq="5a" from="W_SIG" to="W_CTR"
+                   type="return" label="bypass — log WARN"/>
+        </operand>
+        <operand guard="[mode LIVE — signature valide]">
+          <message seq="5b" from="W_SIG" to="W_CTR"
+                   type="return" label="void — OK"/>
+        </operand>
+        <operand guard="[mode LIVE — signature invalide]">
+          <message seq="5c" from="W_SIG" to="W_CTR"
+                   type="exception"
+                   label="FedaPaySignatureException"/>
+          <message seq="5d" from="W_CTR" to="W_API"
+                   type="return"
+                   label="HTTP 400 — {status:'signature_invalide'}"/>
+        </operand>
+      </combinedFragment>
+
+      <!-- 3. Parsing et réponse immédiate -->
+      <message seq="6"  from="W_CTR"    to="W_CTR"
+               type="self"
+               label="payload = objectMapper.readValue(rawBody, FedaPayWebhookPayload.class)"/>
+      <message seq="7"  from="W_CTR"    to="W_API"
+               type="asynchronous"
+               label="HTTP 200 — WebhookAck{status:'received'}
+                      ← Réponse envoyée IMMÉDIATEMENT avant traitement"/>
+
+      <!-- 4. Traitement asynchrone -->
+      <message seq="8"  from="W_CTR"    to="W_SVC"
+               type="asynchronous"
+               label="fedaPayService.traiterWebhook(payload)"
+               note="Appel après envoi de la réponse 200"/>
+
+      <!-- 5. Dispatch sur l'événement -->
+      <message seq="9"  from="W_SVC"    to="W_SVC"
+               type="self"
+               label="switch(payload.eventName())
+                      → case 'transaction.approved'"/>
+
+      <!-- 6. Idempotence -->
+      <message seq="10" from="W_SVC"    to="W_PDBR"
+               type="synchronous"
+               label="findByReferencePaiement(reference)"/>
+      <message seq="11" from="W_PDBR"   to="W_SVC"
+               type="return"
+               label="Optional&lt;Paiement&gt;"/>
+
+      <!-- Fragment alt : idempotence -->
+      <combinedFragment type="alt" label="Idempotence webhook">
+        <operand guard="[paiement déjà présent]">
+          <message seq="11a" from="W_SVC" to="W_SVC"
+                   type="self" label="log INFO — skip (retry FedaPay)"/>
+        </operand>
+        <operand guard="[paiement absent — nouveau]">
+          <!-- 7. Enregistrement du paiement -->
+          <message seq="12" from="W_SVC"   to="W_PAY"
+                   type="synchronous"
+                   label="paiementService.enregistrerPaiement(
+                            {echeanceUuid, amount, MOBILE_MONEY, reference})"/>
+
+          <!-- 7a. Persistance Paiement -->
+          <message seq="13" from="W_PAY"   to="W_PDBR"
+                   type="synchronous"
+                   label="paiementRepository.save(paiement)"/>
+          <message seq="14" from="W_PDBR"  to="W_PAY"
+                   type="return" label="Paiement{uuid, ...}"/>
+
+          <!-- 7b. Mise à jour de l'échéance -->
+          <message seq="15" from="W_PAY"   to="W_ECH"
+                   type="synchronous"
+                   label="echeanceService.appliquerPaiement(echeanceUuid, montant)"/>
+          <message seq="16" from="W_ECH"   to="W_ECHDB"
+                   type="synchronous"
+                   label="findByUuid(echeanceUuid)"/>
+          <message seq="17" from="W_ECHDB" to="W_ECH"
+                   type="return" label="Echeance"/>
+          <message seq="18" from="W_ECH"   to="W_ECH"
+                   type="self"
+                   label="nouveauRestant = restant − montant
+                          statut ← PAYE ou PARTIELLEMENT_PAYE"/>
+          <message seq="19" from="W_ECH"   to="W_ECHDB"
+                   type="synchronous"
+                   label="echeanceRepository.save(echeance)"/>
+          <message seq="20" from="W_ECHDB" to="W_ECH"
+                   type="return" label="Echeance{statut mis à jour}"/>
+          <message seq="21" from="W_ECH"   to="W_PAY"
+                   type="return" label="void"/>
+
+          <!-- 7c. Notification de confirmation -->
+          <message seq="22" from="W_PAY"   to="W_NOTIF"
+                   type="synchronous"
+                   label="notificationService.creerNotification(
+                            {locataire, 'Paiement confirmé', message, CONFIRMATION_PAIEMENT})"/>
+          <message seq="23" from="W_NOTIF" to="W_NDB"
+                   type="synchronous"
+                   label="notificationRepository.save(notification)"/>
+          <message seq="24" from="W_NDB"   to="W_NOTIF"
+                   type="return" label="Notification{uuid, estLu:false}"/>
+          <message seq="25" from="W_NOTIF" to="W_PAY"
+                   type="return" label="NotificationResponse"/>
+          <message seq="26" from="W_PAY"   to="W_SVC"
+                   type="return" label="PaiementResponse"/>
+        </operand>
+      </combinedFragment>
+
+    </messages>
+
+  </sequence>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SEQ 3 — Création d'un contrat de bail
+       Acteurs : Propriétaire | ContratBailController | ContratBailService |
+                 UtilisateurRepository | UniteRepository |
+                 ContratBailRepository | NotificationService
+       ══════════════════════════════════════════════════════════════════ -->
+  <sequence id="SEQ3" name="Création d'un contrat de bail avec notification">
+
+    <lifelines>
+      <lifeline id="C_PROP" name="Propriétaire"            type="actor"/>
+      <lifeline id="C_CTR"  name="ContratBailController"  type="boundary"/>
+      <lifeline id="C_SVC"  name="ContratBailService"     type="control"/>
+      <lifeline id="C_URep" name="UtilisateurRepository"  type="entity"/>
+      <lifeline id="C_UREP" name="UniteRepository"        type="entity"/>
+      <lifeline id="C_CREP" name="ContratBailRepository"  type="entity"/>
+      <lifeline id="C_NOT"  name="NotificationService"    type="control"/>
+    </lifelines>
+
+    <messages>
+      <message seq="1"  from="C_PROP" to="C_CTR"
+               type="synchronous"
+               label="POST /api/bail/add"
+               params="{locataireUuid, uniteUuid, dateDebut, loyer, jourEcheance, conditions}"/>
+
+      <message seq="2"  from="C_CTR"  to="C_SVC"
+               type="synchronous"
+               label="contratBailService.addContrat(request)"/>
+
+      <!-- Chargement locataire -->
+      <message seq="3"  from="C_SVC"  to="C_URep"
+               type="synchronous"
+               label="findByUuid(locataireUuid)"/>
+      <message seq="4"  from="C_URep" to="C_SVC"
+               type="return"
+               label="Utilisateur{locataire}"/>
+
+      <!-- Chargement unité -->
+      <message seq="5"  from="C_SVC"  to="C_UREP"
+               type="synchronous"
+               label="findByUuid(uniteUuid)"/>
+      <message seq="6"  from="C_UREP" to="C_SVC"
+               type="return"
+               label="Unite{statut:LIBRE, ...}"/>
+
+      <!-- Construction et persistance du bail -->
+      <message seq="7"  from="C_SVC"  to="C_SVC"
+               type="self"
+               label="bail = new ContratBail()
+                      bail.setLocataire(locataire)
+                      bail.setUnite(unite)
+                      bail.setLoyer(request.loyer())
+                      bail.setJourEcheance(request.jourEcheance())
+                      bail.setStatut(ACTIF)
+                      unite.setStatut(OCCUPEE)"/>
+
+      <message seq="8"  from="C_SVC"  to="C_CREP"
+               type="synchronous"
+               label="contratBailRepository.save(bail)"/>
+      <message seq="9"  from="C_CREP" to="C_SVC"
+               type="return"
+               label="ContratBail{uuid, statut:ACTIF}"/>
+
+      <!-- Notification de bienvenue -->
+      <message seq="10" from="C_SVC"  to="C_NOT"
+               type="synchronous"
+               label="notificationService.creerNotification(
+                        {locataire, 'Contrat de bail créé',
+                         'Bonjour {nom}, votre contrat ... loyer {x} FCFA', INFO})"/>
+      <message seq="11" from="C_NOT"  to="C_SVC"
+               type="return"
+               label="NotificationResponse{estLu:false}"/>
+
+      <!-- Réponse finale -->
+      <message seq="12" from="C_SVC"  to="C_CTR"
+               type="return"
+               label="BailResponse{uuid, locataireNom, codeUnite, statut:ACTIF, ...}"/>
+      <message seq="13" from="C_CTR"  to="C_PROP"
+               type="return"
+               label="HTTP 200 — BailResponse"/>
+    </messages>
+
+  </sequence>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       SEQ 4 — Génération automatique mensuelle des échéances (Scheduler)
+       Acteurs : Spring Scheduler | EcheanceScheduler (supposé) |
+                 ContratBailService | EcheanceService |
+                 EcheanceRepository | NotificationService
+       ══════════════════════════════════════════════════════════════════ -->
+  <sequence id="SEQ4" name="Génération automatique mensuelle des échéances">
+
+    <lifelines>
+      <lifeline id="S_SCH"  name="Spring Scheduler (@Scheduled)" type="actor"/>
+      <lifeline id="S_BAIL" name="ContratBailService"             type="control"/>
+      <lifeline id="S_ECH"  name="EcheanceService"               type="control"/>
+      <lifeline id="S_CREP" name="ContratBailRepository"          type="entity"/>
+      <lifeline id="S_EREP" name="EcheanceRepository"             type="entity"/>
+      <lifeline id="S_NOT"  name="NotificationService"            type="control"/>
+    </lifelines>
+
+    <messages>
+      <!-- Déclenchement -->
+      <message seq="1"  from="S_SCH"  to="S_BAIL"
+               type="asynchronous"
+               label="[Cron mensuel] getContratsActifs()"/>
+      <message seq="2"  from="S_BAIL"  to="S_CREP"
+               type="synchronous"
+               label="findByStatut(BailEnum.ACTIF)"/>
+      <message seq="3"  from="S_CREP"  to="S_BAIL"
+               type="return"
+               label="List&lt;ContratBail&gt;"/>
+
+      <!-- Boucle sur les contrats -->
+      <combinedFragment type="loop" label="Pour chaque ContratBail actif">
+
+        <!-- Vérification idempotence -->
+        <message seq="4"  from="S_BAIL" to="S_ECH"
+                 type="synchronous"
+                 label="echeanceExisteDeja(contrat.uuid, annee, mois)"/>
+        <message seq="5"  from="S_ECH"  to="S_EREP"
+                 type="synchronous"
+                 label="existsForContratAndMois(uuid, annee, mois)"/>
+        <message seq="6"  from="S_EREP" to="S_ECH"
+                 type="return" label="boolean"/>
+        <message seq="7"  from="S_ECH"  to="S_BAIL"
+                 type="return" label="boolean"/>
+
+        <!-- Fragment alt : idempotence -->
+        <combinedFragment type="alt" label="Idempotence échéance">
+          <operand guard="[existe déjà — doublon]">
+            <message seq="8a" from="S_BAIL" to="S_BAIL"
+                     type="self" label="skip contrat — log"/>
+          </operand>
+          <operand guard="[à créer]">
+            <!-- Calcul de la date d'échéance -->
+            <message seq="8" from="S_BAIL" to="S_ECH"
+                     type="synchronous"
+                     label="creerEcheance({contrat.uuid, dateEcheance})"/>
+            <!-- Création de l'échéance -->
+            <message seq="9" from="S_ECH"  to="S_ECH"
+                     type="self"
+                     label="echeance = new Echeance()
+                            montantDu ← contrat.loyer
+                            montantRestant ← contrat.loyer
+                            statut ← EN_ATTENTE"/>
+            <message seq="10" from="S_ECH"  to="S_EREP"
+                     type="synchronous"
+                     label="echeanceRepository.save(echeance)"/>
+            <message seq="11" from="S_EREP" to="S_ECH"
+                     type="return" label="Echeance{uuid, statut:EN_ATTENTE}"/>
+            <!-- Notification RELANCE_LOYER -->
+            <message seq="12" from="S_ECH"  to="S_NOT"
+                     type="synchronous"
+                     label="creerNotification(
+                              {locataire, 'Rappel de loyer — MOIS',
+                               'loyer {x} FCFA à régler avant le {date}', RELANCE_LOYER})"/>
+            <message seq="13" from="S_NOT"  to="S_ECH"
+                     type="return" label="NotificationResponse"/>
+            <message seq="14" from="S_ECH"  to="S_BAIL"
+                     type="return" label="EcheanceResponse"/>
+          </operand>
+        </combinedFragment>
+
+      </combinedFragment>
+
+      <!-- Marquer les retards -->
+      <message seq="15" from="S_BAIL" to="S_ECH"
+               type="synchronous"
+               label="echeanceService.marquerEcheancesEnRetard()"/>
+      <message seq="16" from="S_ECH"  to="S_EREP"
+               type="synchronous"
+               label="findEcheancesEnRetard(LocalDate.now())
+                      — WHERE statut IN (EN_ATTENTE, PARTIELLEMENT_PAYE)
+                        AND dateEcheance &lt; today"/>
+      <message seq="17" from="S_EREP" to="S_ECH"
+               type="return" label="List&lt;Echeance&gt; enRetard"/>
+      <message seq="18" from="S_ECH"  to="S_EREP"
+               type="synchronous"
+               label="saveAll(enRetard) — statut ← EN_RETARD"/>
+      <message seq="19" from="S_EREP" to="S_ECH"
+               type="return" label="List&lt;Echeance&gt;"/>
+      <message seq="20" from="S_ECH"  to="S_BAIL"
+               type="return" label="int — nombre d'échéances en retard marquées"/>
+
+    </messages>
+
+  </sequence>
+
+</sequenceDiagram>

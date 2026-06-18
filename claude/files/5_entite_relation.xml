@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DIAGRAMME ENTITÉ-RELATION — RentalAPI
+  Modèle conceptuel complet des entités persistées en base de données.
+  Sources : entités JPA Utilisateur, Bien, Unite, ContratBail, Echeance, Paiement, Notification
+-->
+<erDiagram name="Modèle entité-relation — RentalAPI">
+
+  <!-- ════════════════════════════════════════════════
+       ENTITÉS
+       ════════════════════════════════════════════════ -->
+
+  <entity name="Utilisateur" table="utilisateur">
+    <attribute name="id"            type="BIGINT"       constraint="PK, AUTO_INCREMENT"/>
+    <attribute name="uuid"          type="UUID"         constraint="NOT NULL, UNIQUE"/>
+    <attribute name="nomComplet"    type="VARCHAR(255)"  constraint=""/>
+    <attribute name="telephone"     type="VARCHAR(50)"   constraint="NOT NULL, UNIQUE"/>
+    <attribute name="codeProprietaire" type="VARCHAR(255)" constraint="NOT NULL (hash BCrypt)"/>
+    <attribute name="profil"        type="ENUM"         constraint="LOCATION_CLASSIQUE | LOCATION_SEJOUR | USER | NULL"/>
+    <attribute name="role"          type="ENUM"         constraint="NOT NULL — ADMIN | LOCATAIRE | PROPRIETAIRE"/>
+    <attribute name="avatar"        type="VARCHAR(500)"  constraint="NULL — URL image"/>
+    <attribute name="created_by_id" type="BIGINT"        constraint="FK → Utilisateur(id), NULL"/>
+  </entity>
+
+  <entity name="Bien" table="bien">
+    <attribute name="id"            type="BIGINT"       constraint="PK, AUTO_INCREMENT"/>
+    <attribute name="uuid"          type="UUID"         constraint="NOT NULL, UNIQUE"/>
+    <attribute name="libelle"       type="VARCHAR(255)"  constraint="NOT NULL"/>
+    <attribute name="type"          type="ENUM"         constraint="NOT NULL — IMMEUBLE | COUR_COMMUNE | VILLA"/>
+    <attribute name="ville"         type="VARCHAR(255)"  constraint=""/>
+    <attribute name="quartier"      type="VARCHAR(255)"  constraint=""/>
+    <attribute name="proprietaire_id" type="BIGINT"     constraint="FK → Utilisateur(id), NOT NULL"/>
+    <!-- Colonnes héritées de BaseEntity -->
+    <attribute name="createDate"    type="TIMESTAMP"    constraint="NOT NULL, updatable=false"/>
+    <attribute name="updateDate"    type="TIMESTAMP"    constraint=""/>
+  </entity>
+
+  <entity name="Unite" table="unite">
+    <attribute name="id"               type="BIGINT"      constraint="PK, AUTO_INCREMENT"/>
+    <attribute name="uuid"             type="UUID"         constraint="NOT NULL, UNIQUE"/>
+    <attribute name="code_unite"       type="VARCHAR(50)"  constraint="UNIQUE, NULL pour Airbnb"/>
+    <attribute name="description"      type="VARCHAR(500)" constraint=""/>
+    <attribute name="type"             type="ENUM"         constraint="APPARTEMENT | VILLA | STUDIO | BOUTIQUE"/>
+    <attribute name="statut"           type="ENUM"         constraint="NOT NULL — LIBRE | OCCUPEE | MAINTENANCE"/>
+    <attribute name="loyer_reference"  type="DECIMAL(10,2)" constraint="NULL pour Airbnb"/>
+    <attribute name="prix_nuite"       type="DECIMAL(10,2)" constraint="NULL pour location classique"/>
+    <attribute name="bien_id"          type="BIGINT"       constraint="FK → Bien(id), NOT NULL"/>
+    <!-- Colonnes héritées de BaseEntity -->
+    <attribute name="createDate"       type="TIMESTAMP"    constraint="NOT NULL, updatable=false"/>
+    <attribute name="updateDate"       type="TIMESTAMP"    constraint=""/>
+  </entity>
+
+  <entity name="ContratBail" table="contrats_bail">
+    <attribute name="id"           type="BIGINT"        constraint="PK, AUTO_INCREMENT"/>
+    <attribute name="uuid"         type="UUID"          constraint="NOT NULL, UNIQUE"/>
+    <attribute name="dateDebut"    type="DATE"          constraint="NOT NULL"/>
+    <attribute name="dateSortie"   type="DATE"          constraint="NULL — bail indéterminé"/>
+    <attribute name="duree"        type="INTEGER"       constraint="NULL ou 0 si indéterminé (en mois)"/>
+    <attribute name="loyer"        type="DECIMAL(10,2)" constraint="NOT NULL"/>
+    <attribute name="jourEcheance" type="INTEGER"       constraint="NOT NULL — ex : 5 pour le 5 du mois"/>
+    <attribute name="statut"       type="ENUM"          constraint="NOT NULL — ACTIF | EN_COURS_DE_RESILIATION | TERMINE"/>
+    <attribute name="conditions"   type="TEXT"          constraint="NULL"/>
+    <attribute name="contrat_url"  type="VARCHAR(500)"  constraint="NULL — lien PDF futur"/>
+    <attribute name="locataire_id" type="BIGINT"        constraint="FK → Utilisateur(id), NOT NULL"/>
+    <attribute name="unite_id"     type="BIGINT"        constraint="FK → Unite(id), NOT NULL"/>
+  </entity>
+
+  <entity name="Echeance" table="echeances">
+    <attribute name="id"               type="BIGINT"        constraint="PK, AUTO_INCREMENT"/>
+    <attribute name="uuid"             type="UUID"          constraint="NOT NULL, UNIQUE"/>
+    <attribute name="dateEcheance"     type="DATE"          constraint="NOT NULL — date limite de paiement"/>
+    <attribute name="montantDu"        type="DECIMAL(10,2)" constraint="NOT NULL — loyer complet du mois"/>
+    <attribute name="montantRestant"   type="DECIMAL(10,2)" constraint="NOT NULL — décrémenté à chaque paiement"/>
+    <attribute name="statut"           type="ENUM"          constraint="NOT NULL — EN_ATTENTE | PARTIELLEMENT_PAYE | PAYE | EN_RETARD"/>
+    <attribute name="contrat_bail_id"  type="BIGINT"        constraint="FK → ContratBail(id), NOT NULL"/>
+  </entity>
+
+  <entity name="Paiement" table="paiements">
+    <attribute name="id"                  type="BIGINT"        constraint="PK, AUTO_INCREMENT"/>
+    <attribute name="uuid"                type="UUID"          constraint="NOT NULL, UNIQUE"/>
+    <attribute name="datePaiement"        type="TIMESTAMP"     constraint="NOT NULL"/>
+    <attribute name="montant"             type="DECIMAL(10,2)" constraint="NOT NULL"/>
+    <attribute name="modePaiement"        type="ENUM"          constraint="NOT NULL — ESPECES | MOBILE_MONEY"/>
+    <attribute name="referencePaiement"   type="VARCHAR(255)"  constraint="NULL — ref transaction Mobile Money ou chèque"/>
+    <attribute name="recu_url"            type="VARCHAR(500)"  constraint="NULL — PDF quittance futur"/>
+    <attribute name="echeance_id"         type="BIGINT"        constraint="FK → Echeance(id), NOT NULL"/>
+  </entity>
+
+  <entity name="Notification" table="notifications">
+    <attribute name="id"                type="BIGINT"       constraint="PK, AUTO_INCREMENT"/>
+    <attribute name="uuid"              type="UUID"         constraint="NOT NULL, UNIQUE"/>
+    <attribute name="titre"             type="VARCHAR(255)" constraint="NOT NULL"/>
+    <attribute name="message"           type="TEXT"         constraint="NOT NULL"/>
+    <attribute name="dateEnvoi"         type="TIMESTAMP"    constraint="NOT NULL"/>
+    <attribute name="typeNotification"  type="ENUM"         constraint="NOT NULL — RELANCE_LOYER | CONFIRMATION_PAIEMENT | ALERTE_RETARD | INFO"/>
+    <attribute name="estLu"             type="BOOLEAN"      constraint="NOT NULL, DEFAULT false"/>
+    <attribute name="locataire_id"      type="BIGINT"       constraint="FK → Utilisateur(id), NOT NULL"/>
+  </entity>
+
+  <!-- ════════════════════════════════════════════════
+       RELATIONS
+       Notation : cardinalité source → cible
+         ONE_AND_ONLY_ONE   = "1"   (exactement un)
+         ZERO_OR_ONE        = "0..1"
+         ONE_OR_MORE        = "1..*"
+         ZERO_OR_MORE       = "0..*"
+       ════════════════════════════════════════════════ -->
+
+  <relations>
+
+    <!-- Un propriétaire crée zéro ou plusieurs locataires -->
+    <relation name="crée"
+              sourceEntity="Utilisateur" sourceRole="propriétaire (createdBy)"
+              sourceCardinality="0..1"
+              targetEntity="Utilisateur" targetRole="locataire"
+              targetCardinality="0..*"
+              jpa="@ManyToOne createdBy / @OneToMany locatairesCrees"
+              note="Auto-référence : un PROPRIETAIRE crée ses locataires"/>
+
+    <!-- Un propriétaire possède zéro ou plusieurs biens -->
+    <relation name="possède"
+              sourceEntity="Utilisateur" sourceRole="propriétaire"
+              sourceCardinality="1"
+              targetEntity="Bien"        targetRole="bien"
+              targetCardinality="0..*"
+              jpa="@ManyToOne proprietaire / @OneToMany biens"/>
+
+    <!-- Un bien contient une ou plusieurs unités -->
+    <relation name="contient"
+              sourceEntity="Bien"   sourceRole="bien"
+              sourceCardinality="1"
+              targetEntity="Unite"  targetRole="unité"
+              targetCardinality="1..*"
+              jpa="@ManyToOne bien / @OneToMany unites"
+              note="CascadeType.ALL — suppression du bien supprime ses unités"/>
+
+    <!-- Une unité est liée à zéro ou plusieurs contrats de bail (historique) -->
+    <relation name="fait l'objet de"
+              sourceEntity="Unite"      sourceRole="unité"
+              sourceCardinality="1"
+              targetEntity="ContratBail" targetRole="contrat"
+              targetCardinality="0..*"
+              jpa="@ManyToOne unite / @OneToMany contrats"
+              note="Une unité OCCUPEE a exactement 1 contrat ACTIF.
+                    Vérification métier dans ContratBailService."/>
+
+    <!-- Un locataire est lié à zéro ou plusieurs contrats de bail -->
+    <relation name="est titulaire de"
+              sourceEntity="Utilisateur" sourceRole="locataire"
+              sourceCardinality="1"
+              targetEntity="ContratBail" targetRole="bail"
+              targetCardinality="0..*"
+              jpa="@ManyToOne locataire / @OneToMany bails"/>
+
+    <!-- Un contrat génère une ou plusieurs échéances -->
+    <relation name="génère"
+              sourceEntity="ContratBail" sourceRole="contrat"
+              sourceCardinality="1"
+              targetEntity="Echeance"    targetRole="échéance"
+              targetCardinality="1..*"
+              jpa="@ManyToOne contratBail / @OneToMany echeances"
+              note="CascadeType.ALL — Scheduler génère 1 échéance/mois par contrat actif.
+                    Idempotence : existsForContratAndMois() avant création."/>
+
+    <!-- Une échéance reçoit zéro ou plusieurs paiements -->
+    <relation name="est soldée par"
+              sourceEntity="Echeance" sourceRole="échéance"
+              sourceCardinality="1"
+              targetEntity="Paiement" targetRole="paiement"
+              targetCardinality="0..*"
+              jpa="@ManyToOne echeance / @OneToMany paiements"
+              note="CascadeType.ALL — Un paiement partiel génère statut PARTIELLEMENT_PAYE.
+                    Montant total des paiements ≤ montantDu (contrainte métier)."/>
+
+    <!-- Un locataire reçoit zéro ou plusieurs notifications -->
+    <relation name="reçoit"
+              sourceEntity="Utilisateur"   sourceRole="locataire"
+              sourceCardinality="1"
+              targetEntity="Notification"  targetRole="notification"
+              targetCardinality="0..*"
+              jpa="@ManyToOne locataire / @OneToMany notifications"
+              note="CascadeType.ALL — Notifications créées par ContratBailService,
+                    EcheanceService, PaiementService, FedaPayService."/>
+
+  </relations>
+
+  <!-- ════════════════════════════════════════════════
+       CONTRAINTES MÉTIER (non exprimables en DDL standard)
+       ════════════════════════════════════════════════ -->
+  <businessRules>
+
+    <rule id="BR01"
+          entity="ContratBail"
+          description="Une unité ne peut avoir qu'un seul ContratBail avec statut ACTIF à la fois.
+                       Vérification : getUniteLibre() retourne uniquement les unités LIBRE."/>
+
+    <rule id="BR02"
+          entity="Echeance"
+          description="La somme des montants versés sur une échéance ne peut pas dépasser montantDu.
+                       EcheanceService.appliquerPaiement() lève IllegalArgumentException si dépassement."/>
+
+    <rule id="BR03"
+          entity="Echeance"
+          description="Idempotence de création : une seule échéance par (contratBail, année, mois).
+                       Vérifiée par EcheanceRepository.existsForContratAndMois()."/>
+
+    <rule id="BR04"
+          entity="Paiement"
+          description="Idempotence des webhooks FedaPay : une seule ligne Paiement par referencePaiement.
+                       Vérifiée par PaiementRepository.findByReferencePaiement() avant enregistrement."/>
+
+    <rule id="BR05"
+          entity="Utilisateur"
+          description="Un locataire (role=LOCATAIRE) doit avoir un createdBy non null
+                       pointant vers un propriétaire (role=PROPRIETAIRE)."/>
+
+    <rule id="BR06"
+          entity="Unite"
+          description="Le code_unite est UNIQUE dans toute la base.
+                       Pour les unités Airbnb, code_unite peut être NULL."/>
+
+  </businessRules>
+
+</erDiagram>

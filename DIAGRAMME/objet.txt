@@ -1,0 +1,100 @@
+@startuml
+skinparam objectAttributeFontSize 11
+skinparam objectFontSize 12
+skinparam nodesep 50
+skinparam ranksep 40
+
+title Exemple d'une Structure des Instances (01 Juin 2025)
+
+' ═══════════════════ COUCHE HAUTE : ADMINISTRATEUR & PATRIMOINE ═══════════════════
+
+object "kofiAgbenou : Utilisateur" as obj_proprio {
+    uuid = "a1b2c3d4-0001-0000..."
+    nomComplet = "Kofi Agbénou"
+    telephone = "+22890112233"
+    role = "PROPRIETAIRE"
+    profil = "LOCATION_CLASSIQUE"
+}
+
+object "immeubleAgbenou : BienImmobilier" as obj_bien {
+    uuid = "b1c2d3e4-0001-0000..."
+    titre = "Immeuble Agbénou Hédranawoé"
+    adresse = "Rue des Cocotiers, Lomé, Togo"
+    typeBien = "IMMEUBLE"
+}
+
+object "uniteA01 : UniversPhysique" as obj_unite_A01 {
+    uuid = "c1d2e3f4-0001-0000..."
+    codeUnite = "A01"
+    typeUnite = "APPARTEMENT_T3"
+    prixMensuel = 50000
+    statutOccupation = "OCCUPE"
+}
+
+' ═══════════════════ COUCHE MÉDIANE : CONTRAT & FACTURATION ═══════════════════
+
+object "bailAma : ContratBail" as obj_bail {
+    uuid = "d1e2f3a4-0001-0000..."
+    dateDebut = "01/03/2025"
+    dateFin = "28/02/2026"
+    loyerBase = 50000
+    cautionVersee = 150000
+    statutContrat = "ACTIF"
+}
+
+object "echeanceJuin2025 : Echeance" as obj_echeance_juin {
+    uuid = "e1f2a3b4-0001-0000..."
+    periodeMois = "06/2025"
+    montantDu = 50000
+    montantPaye = 30000
+    statutEcheance = "PARTIELLEMENT_PAYEE"
+    dateLimite = "10/06/2025"
+}
+
+' ═══════════════════ COUCHE BASSE : LOCATAIRE, TRANSACTION & ALERTE ═══════════════════
+
+object "amaDossou : Utilisateur" as obj_locataire {
+    uuid = "a1b2c3d4-0002-0000..."
+    nomComplet = "Ama Dossou"
+    telephone = "+22892556677"
+    role = "LOCATAIRE"
+    profil = "LOCATION_CLASSIQUE"
+}
+
+object "payMobileMoney1 : Paiement" as obj_paiement1 {
+    uuid = "f1a2b3c4-0001-0000..."
+    montantVerse = 30000
+    modePaiement = "MOBILE_MONEY"
+    dateTransaction = "05/06/2025 14:23"
+    referenceFedaPay = "transaction_fp_998877"
+    statutPaiement = "SUCCESS"
+}
+
+object "notifConfirmLoyer : Notification" as obj_notif_confirm {
+    uuid = "a9b8c7d6-0001-0000..."
+    canal = "PUSH"
+    titre = "Paiement partiel reçu"
+    contenu = "Votre paiement de 30 000 FCFA a été validé. Reste dû : 20 000 FCFA."
+    estLu = false
+    dateEnvoi = "05/06/2025 14:24"
+}
+
+' ═══════════════════ LIENS ET RELATIONS FLUIDIFIÉS ═══════════════════
+
+' Organisation verticale Propriété
+obj_bien -down-> obj_proprio : "proprietaire >"
+obj_unite_A01 -down-> obj_bien : "bien >"
+
+' Pivot du Contrat de Bail
+obj_bail -up-> obj_unite_A01 : "unite >"
+obj_bail -down-> obj_locataire : "locataire >"
+obj_locataire -right-> obj_proprio : "createdBy >"
+
+' Flux de Règlement de l'échéance
+obj_echeance_juin -left-> obj_bail : "contratBail >"
+obj_paiement1 -up-> obj_echeance_juin : "echeance >"
+
+' Notification de clôture de flux
+obj_notif_confirm -left-> obj_locataire : "destinataire >"
+
+@enduml

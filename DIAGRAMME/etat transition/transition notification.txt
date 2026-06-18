@@ -1,0 +1,33 @@
+@startuml
+skinparam roundcorner 0
+skinparam state {
+    BackgroundColor #FFFFFF
+    BorderColor #222222
+    ArrowColor #444444
+}
+
+title  états : Notification (estLu : boolean)
+
+[*] --> NON_LUE : NotificationService.creerNotification()\n/ Persistance en BD — estLu = false
+
+' ═══════════════════ DÉFINITION DES ÉTATS ET ACTIONS INTERNES ═══════════════════
+
+NON_LUE : entry / estLu ← false
+NON_LUE : entry / dateEnvoi ← LocalDateTime.now()
+NON_LUE : description / Apparaît dans GET /api/bail/notifications/non-lues.
+
+LUE : entry / estLu ← true
+LUE : description / Marquée comme lue. N'apparaît plus dans les non-lues.
+
+' ═══════════════════ TRANSITIONS ENTRE LES ÉTATS ═══════════════════
+
+NON_LUE --> LUE : PATCH /api/bail/notifications/{uuid}/lire\n[rôle LOCATAIRE — uuid appartient au locataire connecté]\n/ NotificationService.marquerCommeLu() -> notif.setEstLu(true)
+
+LUE --> [*] : Suppression ou archivage [extension future]
+
+' ═══════════════════ NOTES ET CONTRAINTES ═══════════════════
+note as N1
+  <b>Règle unidirectionnelle :</b>
+  Une notification ne peut pas repasser de LUE à NON_LUE.
+end note
+@enduml

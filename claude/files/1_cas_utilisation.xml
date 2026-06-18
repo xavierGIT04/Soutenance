@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DIAGRAMME DE CAS D'UTILISATION — RentalAPI
+  Acteurs : PROPRIETAIRE, LOCATAIRE
+  Système : Gestion Locative (Bails, Paiements, Notifications)
+-->
+<useCaseDiagram name="Système de Gestion Locative — RentalAPI">
+
+  <!-- ═══════════════════ ACTEURS ═══════════════════ -->
+  <actors>
+    <actor id="PROPRIETAIRE" name="Propriétaire" type="primary"/>
+    <actor id="LOCATAIRE"    name="Locataire"    type="primary"/>
+    <actor id="FEDAPAY"      name="FedaPay"      type="external"/>
+    <actor id="SCHEDULER"    name="Scheduler"    type="system"/>
+  </actors>
+
+  <!-- ═══════════════════ SYSTÈME ═══════════════════ -->
+  <system name="RentalAPI">
+
+    <!-- ── Sous-système : Authentification ── -->
+    <package name="Authentification">
+      <useCase id="UC01" name="S'inscrire"/>
+      <useCase id="UC02" name="Se connecter"/>
+      <useCase id="UC03" name="Rafraîchir le token"/>
+      <useCase id="UC04" name="Mettre à jour son profil"/>
+      <useCase id="UC05" name="Changer son avatar"/>
+    </package>
+
+    <!-- ── Sous-système : Gestion des biens ── -->
+    <package name="Gestion des biens immobiliers">
+      <useCase id="UC06" name="Créer un bien"/>
+      <useCase id="UC07" name="Consulter ses biens"/>
+      <useCase id="UC08" name="Modifier un bien"/>
+      <useCase id="UC09" name="Ajouter une unité"/>
+      <useCase id="UC10" name="Modifier une unité"/>
+      <useCase id="UC11" name="Changer le statut d'une unité"/>
+      <useCase id="UC12" name="Consulter les unités libres"/>
+      <useCase id="UC13" name="Gérer un bien Airbnb"/>
+    </package>
+
+    <!-- ── Sous-système : Gestion des baux ── -->
+    <package name="Gestion des baux">
+      <useCase id="UC14" name="Créer un locataire"/>
+      <useCase id="UC15" name="Consulter ses locataires"/>
+      <useCase id="UC16" name="Créer un contrat de bail"/>
+      <useCase id="UC17" name="Consulter ses contrats"/>
+      <useCase id="UC18" name="Résilier un contrat"/>
+    </package>
+
+    <!-- ── Sous-système : Gestion des échéances ── -->
+    <package name="Gestion des échéances">
+      <useCase id="UC19" name="Créer une échéance manuellement"/>
+      <useCase id="UC20" name="Générer les échéances automatiquement"/>
+      <useCase id="UC21" name="Consulter les échéances d'un contrat"/>
+      <useCase id="UC22" name="Consulter les échéances en retard"/>
+      <useCase id="UC23" name="Marquer les échéances en retard"/>
+    </package>
+
+    <!-- ── Sous-système : Paiements ── -->
+    <package name="Paiements">
+      <useCase id="UC24" name="Enregistrer un paiement (espèces)"/>
+      <useCase id="UC25" name="Initier un paiement Mobile Money"/>
+      <useCase id="UC26" name="Consulter l'historique des paiements"/>
+      <useCase id="UC27" name="Recevoir le webhook FedaPay"/>
+      <useCase id="UC28" name="Confirmer / Rejeter un paiement Mobile"/>
+    </package>
+
+    <!-- ── Sous-système : Notifications ── -->
+    <package name="Notifications">
+      <useCase id="UC29" name="Consulter ses notifications non lues"/>
+      <useCase id="UC30" name="Marquer une notification comme lue"/>
+      <useCase id="UC31" name="Recevoir une notification système"/>
+    </package>
+
+  </system>
+
+  <!-- ═══════════════════ ASSOCIATIONS ═══════════════════ -->
+  <associations>
+
+    <!-- PROPRIETAIRE -->
+    <association actor="PROPRIETAIRE" useCase="UC01"/>
+    <association actor="PROPRIETAIRE" useCase="UC02"/>
+    <association actor="PROPRIETAIRE" useCase="UC03"/>
+    <association actor="PROPRIETAIRE" useCase="UC04"/>
+    <association actor="PROPRIETAIRE" useCase="UC05"/>
+
+    <association actor="PROPRIETAIRE" useCase="UC06"/>
+    <association actor="PROPRIETAIRE" useCase="UC07"/>
+    <association actor="PROPRIETAIRE" useCase="UC08"/>
+    <association actor="PROPRIETAIRE" useCase="UC09"/>
+    <association actor="PROPRIETAIRE" useCase="UC10"/>
+    <association actor="PROPRIETAIRE" useCase="UC11"/>
+    <association actor="PROPRIETAIRE" useCase="UC12"/>
+    <association actor="PROPRIETAIRE" useCase="UC13"/>
+
+    <association actor="PROPRIETAIRE" useCase="UC14"/>
+    <association actor="PROPRIETAIRE" useCase="UC15"/>
+    <association actor="PROPRIETAIRE" useCase="UC16"/>
+    <association actor="PROPRIETAIRE" useCase="UC17"/>
+    <association actor="PROPRIETAIRE" useCase="UC18"/>
+
+    <association actor="PROPRIETAIRE" useCase="UC19"/>
+    <association actor="PROPRIETAIRE" useCase="UC21"/>
+    <association actor="PROPRIETAIRE" useCase="UC22"/>
+
+    <association actor="PROPRIETAIRE" useCase="UC24"/>
+    <association actor="PROPRIETAIRE" useCase="UC26"/>
+
+    <!-- LOCATAIRE -->
+    <association actor="LOCATAIRE" useCase="UC02"/>
+    <association actor="LOCATAIRE" useCase="UC03"/>
+    <association actor="LOCATAIRE" useCase="UC04"/>
+    <association actor="LOCATAIRE" useCase="UC05"/>
+
+    <association actor="LOCATAIRE" useCase="UC17"/>
+    <association actor="LOCATAIRE" useCase="UC21"/>
+    <association actor="LOCATAIRE" useCase="UC26"/>
+
+    <association actor="LOCATAIRE" useCase="UC25"/>
+    <association actor="LOCATAIRE" useCase="UC29"/>
+    <association actor="LOCATAIRE" useCase="UC30"/>
+    <association actor="LOCATAIRE" useCase="UC31"/>
+
+    <!-- FEDAPAY (acteur externe) -->
+    <association actor="FEDAPAY" useCase="UC27"/>
+    <association actor="FEDAPAY" useCase="UC28"/>
+
+    <!-- SCHEDULER (acteur système) -->
+    <association actor="SCHEDULER" useCase="UC20"/>
+    <association actor="SCHEDULER" useCase="UC23"/>
+
+  </associations>
+
+  <!-- ═══════════════════ RELATIONS ENTRE CAS D'UTILISATION ═══════════════════ -->
+  <useCaseRelations>
+
+    <!-- <<include>> : comportements obligatoires -->
+    <include base="UC16" included="UC14"
+             note="Créer un bail nécessite un locataire existant"/>
+    <include base="UC16" included="UC12"
+             note="Créer un bail nécessite une unité libre"/>
+    <include base="UC25" included="UC02"
+             note="Initier un paiement MM nécessite d'être authentifié (LOCATAIRE)"/>
+    <include base="UC24" included="UC02"
+             note="Enregistrer un paiement espèces nécessite d'être authentifié (PROPRIETAIRE)"/>
+
+    <!-- <<extend>> : comportements optionnels -->
+    <extend   base="UC27" extension="UC31"
+             condition="Webhook transaction.approved → notification confirmation"
+             note="Après approbation FedaPay, une notification de confirmation est envoyée"/>
+    <extend   base="UC27" extension="UC31"
+             condition="Webhook transaction.declined → notification échec"
+             note="Après refus FedaPay, une notification d'alerte est envoyée"/>
+    <extend   base="UC16" extension="UC31"
+             condition="Création du bail → notification de bienvenue"
+             note="À la création du bail, le locataire est notifié"/>
+    <extend   base="UC18" extension="UC31"
+             condition="Résiliation → notification au locataire"/>
+    <extend   base="UC20" extension="UC31"
+             condition="Nouvelle échéance générée → relance loyer"/>
+    <extend   base="UC23" extension="UC31"
+             condition="Échéance en retard → alerte retard au locataire"/>
+
+  </useCaseRelations>
+
+</useCaseDiagram>

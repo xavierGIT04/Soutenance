@@ -1,0 +1,55 @@
+@startuml
+skinparam conditionStyle diamond
+|Locataire (Application mobile)|
+start
+:Consulter ses échéances;
+:Sélectionner une échéance à payer;
+:Initier le paiement MM;
+
+|Backend Rental|
+:Générer une transaction en attente\n(Paiement status=PENDING, ref=UUID);
+:Créer la requête de paiement FedaPay;
+
+|FedaPay|
+:Générer le lien/token de paiement;
+
+|Backend Rental|
+:Retourner l'URL FedaPay au mobile;
+
+|Locataire (Application mobile)|
+:Redirection vers la page FedaPay;
+:Saisir le numéro (Flooz/TMoney) et valider;
+:Confirmer le code OTP USSD sur son téléphone;
+
+|FedaPay|
+:Traiter la transaction financière;
+if (Transaction réussie ?) then (Oui)
+  :Générer l'événement transaction.approved;
+  :Envoyer le Webhook (POST /api/payments/webhook);
+else (Non)
+  :Générer l'événement transaction.declined;
+  :Envoyer le Webhook (POST /api/payments/webhook);
+endif
+
+|Backend Rental|
+:Recevoir et intercepter le Webhook;
+:Vérifier l'authenticité de la signature;
+if (Signature valide ?) then (Oui)
+  :Extraire l'ID de transaction et le statut;
+  if (Statut == "approved" ?) then (Oui)
+    :Mettre à jour le statut du paiement (SUCCESS);
+    :Mettre à jour le statut de l'échéance (PAYEE);
+    :Envoyer une notification de confirmation\n(Push via NotificationService);
+  else (Non / "declined")
+    :Mettre à jour le statut du paiement (FAILED);
+    :Envoyer une notification d'échec au locataire;
+  endif
+else (Non)
+  :Rejeter la requête (401 Unauthorized);
+  stop
+endif
+
+|Locataire (Application mobile)|
+:Recevoir la notification;
+stop
+@enduml

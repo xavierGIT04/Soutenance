@@ -1,0 +1,49 @@
+@startuml
+skinparam roundcorner 0
+skinparam boxPadding 10
+
+
+title SEQ 4.2 — Vérification et marquage automatique des retards
+
+actor "Scheduler" as S_CRON
+participant "EcheanceScheduler" as S_SCH
+participant "ContratBailService" as S_BAIL
+participant "EcheanceService" as S_ECH
+database "EcheanceRepository" as S_EREP
+participant "NotificationService" as S_NOT
+
+S_CRON -> S_SCH : exécuterTraitementRetards()
+activate S_SCH
+
+S_SCH -> S_BAIL : marquerEcheancesEnRetard()
+activate S_BAIL
+
+S_BAIL -> S_ECH : marquerEcheancesEnRetard()
+activate S_ECH
+
+S_ECH -> S_EREP : findEcheancesEnRetard(LocalDate.now())
+activate S_EREP
+S_EREP --> S_ECH : List<Echeance> enRetard
+deactivate S_EREP
+
+S_ECH -> S_EREP : saveAll(enRetard) -> statut ← EN_RETARD
+activate S_EREP
+S_EREP --> S_ECH : Confirmation
+deactivate S_EREP
+
+loop Pour chaque échéance passée en retard
+    S_ECH -> S_NOT : envoyerNotification(locataire, ALERTE_RETARD)
+    activate S_NOT
+    S_NOT --> S_ECH : NotificationResponse
+    deactivate S_NOT
+end
+
+S_ECH --> S_BAIL : Fin du traitement des retards
+deactivate S_ECH
+
+S_BAIL --> S_SCH : Fin de tâche globale
+deactivate S_BAIL
+
+S_SCH --> S_CRON : Tâche terminée avec succès
+deactivate S_SCH
+@enduml

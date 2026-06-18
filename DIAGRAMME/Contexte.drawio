@@ -1,0 +1,22 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.2.9 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.2.9">
+  <diagram name="Page-1" id="7a5kKdBCHnG5pHjYjE9c">
+    <mxGraphModel dx="1111" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="84cl8wxCgdzw1XY0QbFj-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fillColor=none;strokeColor=#000000;fontStyle=1;fontSize=13;" value="Plateforme de gestion locative" vertex="1">
+          <mxGeometry height="390" width="400" x="530" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="84cl8wxCgdzw1XY0QbFj-2" parent="1" style="shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;" value="PROPRIETAIRE" vertex="1">
+          <mxGeometry height="70" width="40" x="394" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="84cl8wxCgdzw1XY0QbFj-3" parent="1" style="shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;" value="LOCATAIRE" vertex="1">
+          <mxGeometry height="70" width="40" x="1010" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="84cl8wxCgdzw1XY0QbFj-4" parent="1" style="shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;" value="Systeme FedaPay" vertex="1">
+          <mxGeometry height="70" width="40" x="710" y="800" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

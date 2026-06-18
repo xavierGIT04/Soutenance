@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DIAGRAMME ÉTATS-TRANSITIONS — RentalAPI
+  Machines à états modélisées :
+    1. ContratBail        (BailEnum)
+    2. Echeance           (StatutEcheance)
+    3. Unite              (StatutUnite)
+    4. Notification       (estLu : boolean)
+-->
+<stateTransitionDiagram name="Machines à états — RentalAPI">
+
+  <!-- ══════════════════════════════════════════════════════
+       MACHINE 1 : ContratBail — cycle de vie d'un bail
+       Enum : BailEnum { ACTIF, EN_COURS_DE_RESILIATION, TERMINE }
+       ══════════════════════════════════════════════════════ -->
+  <stateMachine id="SM_ContratBail" entity="ContratBail" enumType="BailEnum">
+
+    <pseudoInitialState id="SM1_INIT"/>
+
+    <state id="SM1_ACTIF"
+           name="ACTIF"
+           description="Contrat en vigueur. Échéances générées mensuellement.
+                        Le locataire peut payer ses loyers.">
+      <entryAction>Notification INFO → locataire : 'Contrat de bail créé'</entryAction>
+      <entryAction>Unité associée → statut OCCUPEE</entryAction>
+      <doActivity>Génération mensuelle des échéances via Scheduler</doActivity>
+      <doActivity>Relances automatiques et alertes de retard</doActivity>
+    </state>
+
+    <state id="SM1_RESILIATION"
+           name="EN_COURS_DE_RESILIATION"
+           description="Résiliation initiée par le propriétaire.
+                        Le contrat n'est pas encore soldé.">
+      <entryAction>Notification ALERTE_RETARD → locataire : 'Résiliation en cours'</entryAction>
+      <entryAction>dateSortie ← LocalDate.now()</entryAction>
+      <entryAction>Unité associée → statut LIBRE</entryAction>
+    </state>
+
+    <state id="SM1_TERMINE"
+           name="TERMINE"
+           description="Contrat définitivement clôturé.
+                        Toutes les échéances soldées.">
+      <entryAction>Archive du contrat — plus aucune échéance créée</entryAction>
+    </state>
+
+    <pseudoFinalState id="SM1_END"/>
+
+    <!-- ── Transitions ── -->
+    <transitions>
+      <transition from="SM1_INIT"       to="SM1_ACTIF"
+                  trigger="POST /api/bail/add"
+                  guard="locataire + unité valides, unité LIBRE"
+                  action="ContratBailService.addContrat()"/>
+
+      <transition from="SM1_ACTIF"      to="SM1_RESILIATION"
+                  trigger="PATCH /api/bail/resilier/{uuid}"
+                  guard="rôle PROPRIETAIRE"
+                  action="ContratBailService.resilierContrat()
+                          → statut ← EN_COURS_DE_RESILIATION"/>
+
+      <transition from="SM1_RESILIATION" to="SM1_TERMINE"
+                  trigger="Toutes les échéances soldées [futur]"
+                  guard="Aucune échéance EN_ATTENTE ni PARTIELLEMENT_PAYE"
+                  action="[Extension prévue] Clôture automatique"/>
+
+      <transition from="SM1_TERME"       to="SM1_END"
+                  trigger="Fin de durée légale de conservation"/>
+    </transitions>
+
+  </stateMachine>
+
+  <!-- ══════════════════════════════════════════════════════
+       MACHINE 2 : Echeance — cycle de vie d'une échéance
+       Enum : StatutEcheance { EN_ATTENTE, PARTIELLEMENT_PAYE, PAYE, EN_RETARD }
+       ══════════════════════════════════════════════════════ -->
+  <stateMachine id="SM_Echeance" entity="Echeance" enumType="StatutEcheance">
+
+    <pseudoInitialState id="SM2_INIT"/>
+
+    <state id="SM2_EN_ATTENTE"
+           name="EN_ATTENTE"
+           description="Échéance créée. Aucun paiement reçu.
+                        montantRestant = montantDu (loyer complet).">
+      <entryAction>montantDu ← loyer du contrat</entryAction>
+      <entryAction>montantRestant ← montantDu</entryAction>
+      <entryAction>Notification RELANCE_LOYER → locataire</entryAction>
+    </state>
+
+    <state id="SM2_PARTIELLEMENT_PAYE"
+           name="PARTIELLEMENT_PAYE"
+           description="Un ou plusieurs paiements reçus mais incomplets.
+                        0 &lt; montantRestant &lt; montantDu.">
+      <entryAction>montantRestant ← montantRestant − montantVersé</entryAction>
+      <entryAction>Notification CONFIRMATION_PAIEMENT → locataire</entryAction>
+    </state>
+
+    <state id="SM2_PAYE"
+           name="PAYE"
+           description="Échéance entièrement soldée. montantRestant = 0.">
+      <entryAction>montantRestant ← 0</entryAction>
+      <entryAction>Notification CONFIRMATION_PAIEMENT → locataire</entryAction>
+    </state>
+
+    <state id="SM2_EN_RETARD"
+           name="EN_RETARD"
+           description="Date d'échéance dépassée sans paiement complet.
+                        dateEcheance &lt; aujourd'hui AND montantRestant &gt; 0.">
+      <entryAction>Notification ALERTE_RETARD → locataire</entryAction>
+      <doActivity>Scheduler envoie relances périodiques</doActivity>
+    </state>
+
+    <pseudoFinalState id="SM2_END"/>
+
+    <!-- ── Transitions ── -->
+    <transitions>
+      <transition from="SM2_INIT"              to="SM2_EN_ATTENTE"
+                  trigger="EcheanceService.creerEcheance() ou Scheduler mensuel"
+                  action="Persistance Echeance en BD"/>
+
+      <transition from="SM2_EN_ATTENTE"        to="SM2_PARTIELLEMENT_PAYE"
+                  trigger="PaiementService.enregistrerPaiement()"
+                  guard="montantVersé &lt; montantRestant"
+                  action="EcheanceService.appliquerPaiement()
+                          → statut ← PARTIELLEMENT_PAYE"/>
+
+      <transition from="SM2_EN_ATTENTE"        to="SM2_PAYE"
+                  trigger="PaiementService.enregistrerPaiement()"
+                  guard="montantVersé = montantRestant"
+                  action="EcheanceService.appliquerPaiement()
+                          → statut ← PAYE"/>
+
+      <transition from="SM2_EN_ATTENTE"        to="SM2_EN_RETARD"
+                  trigger="Scheduler — EcheanceService.marquerEcheancesEnRetard()"
+                  guard="dateEcheance &lt; today AND statut = EN_ATTENTE"/>
+
+      <transition from="SM2_PARTIELLEMENT_PAYE" to="SM2_PAYE"
+                  trigger="PaiementService.enregistrerPaiement()"
+                  guard="montantVersé = montantRestant"
+                  action="EcheanceService.appliquerPaiement()
+                          → statut ← PAYE"/>
+
+      <transition from="SM2_PARTIELLEMENT_PAYE" to="SM2_EN_RETARD"
+                  trigger="Scheduler — EcheanceService.marquerEcheancesEnRetard()"
+                  guard="dateEcheance &lt; today AND statut = PARTIELLEMENT_PAYE"/>
+
+      <transition from="SM2_EN_RETARD"          to="SM2_PARTIELLEMENT_PAYE"
+                  trigger="PaiementService.enregistrerPaiement()"
+                  guard="montantVersé &lt; montantRestant"
+                  action="EcheanceService.appliquerPaiement()
+                          → statut ← PARTIELLEMENT_PAYE"/>
+
+      <transition from="SM2_EN_RETARD"          to="SM2_PAYE"
+                  trigger="PaiementService.enregistrerPaiement()"
+                  guard="montantVersé = montantRestant"
+                  action="EcheanceService.appliquerPaiement()
+                          → statut ← PAYE"/>
+
+      <transition from="SM2_PAYE"               to="SM2_END"
+                  trigger="Archivage / Clôture du contrat"/>
+    </transitions>
+
+    <!-- Note : transition INTERDITE -->
+    <constraint type="forbidden"
+                description="Un paiement ne peut pas dépasser montantRestant.
+                             EcheanceService lève IllegalArgumentException si
+                             montantVersé &gt; montantRestant."/>
+
+  </stateMachine>
+
+  <!-- ══════════════════════════════════════════════════════
+       MACHINE 3 : Unite — disponibilité d'une unité
+       Enum : StatutUnite { LIBRE, OCCUPEE, MAINTENANCE }
+       ══════════════════════════════════════════════════════ -->
+  <stateMachine id="SM_Unite" entity="Unite" enumType="StatutUnite">
+
+    <pseudoInitialState id="SM3_INIT"/>
+
+    <state id="SM3_LIBRE"
+           name="LIBRE"
+           description="Unité disponible à la location.
+                        Apparaît dans /api/bail/unite_libre.">
+    </state>
+
+    <state id="SM3_OCCUPEE"
+           name="OCCUPEE"
+           description="Unité sous contrat de bail actif.
+                        Non disponible à la location.">
+      <entryAction>Associée à un ContratBail ACTIF</entryAction>
+    </state>
+
+    <state id="SM3_MAINTENANCE"
+           name="MAINTENANCE"
+           description="Unité temporairement indisponible pour travaux.">
+    </state>
+
+    <transitions>
+      <transition from="SM3_INIT"        to="SM3_LIBRE"
+                  trigger="UniteService.create()"
+                  action="Unité créée avec statut LIBRE par défaut"/>
+
+      <transition from="SM3_LIBRE"       to="SM3_OCCUPEE"
+                  trigger="ContratBailService.addContrat()"
+                  action="unite.setStatut(StatutUnite.OCCUPEE)"/>
+
+      <transition from="SM3_OCCUPEE"     to="SM3_LIBRE"
+                  trigger="ContratBailService.resilierContrat()"
+                  action="unite.setStatut(StatutUnite.LIBRE)"/>
+
+      <transition from="SM3_LIBRE"       to="SM3_MAINTENANCE"
+                  trigger="PATCH /api/unite/changer_statut ?statut=MAINTENANCE"
+                  guard="rôle PROPRIETAIRE"/>
+
+      <transition from="SM3_MAINTENANCE" to="SM3_LIBRE"
+                  trigger="PATCH /api/unite/changer_statut ?statut=LIBRE"
+                  guard="rôle PROPRIETAIRE"/>
+
+      <transition from="SM3_OCCUPEE"     to="SM3_MAINTENANCE"
+                  trigger="PATCH /api/unite/changer_statut ?statut=MAINTENANCE"
+                  guard="rôle PROPRIETAIRE — après résiliation préalable recommandée"/>
+    </transitions>
+
+    <constraint type="business"
+                description="Une unité OCCUPEE ne peut pas être attribuée à un nouveau bail
+                             sans résiliation préalable du bail en cours.
+                             ContratBailService vérifie la disponibilité via getUniteLibre()."/>
+
+  </stateMachine>
+
+  <!-- ══════════════════════════════════════════════════════
+       MACHINE 4 : Notification — lecture par le locataire
+       Attribut : estLu (boolean)
+       ══════════════════════════════════════════════════════ -->
+  <stateMachine id="SM_Notification" entity="Notification" attributeType="boolean" attribute="estLu">
+
+    <pseudoInitialState id="SM4_INIT"/>
+
+    <state id="SM4_NON_LUE"
+           name="NON_LUE (estLu = false)"
+           description="Notification créée et non encore lue par le locataire.
+                        Apparaît dans GET /api/bail/notifications/non-lues.">
+      <entryAction>estLu ← false</entryAction>
+      <entryAction>dateEnvoi ← LocalDateTime.now()</entryAction>
+    </state>
+
+    <state id="SM4_LUE"
+           name="LUE (estLu = true)"
+           description="Notification marquée comme lue.
+                        N'apparaît plus dans les non-lues.">
+      <entryAction>estLu ← true</entryAction>
+    </state>
+
+    <pseudoFinalState id="SM4_END"/>
+
+    <transitions>
+      <transition from="SM4_INIT"    to="SM4_NON_LUE"
+                  trigger="NotificationService.creerNotification()"
+                  action="Persistance en BD — estLu = false"/>
+
+      <transition from="SM4_NON_LUE" to="SM4_LUE"
+                  trigger="PATCH /api/bail/notifications/{uuid}/lire"
+                  guard="rôle LOCATAIRE — uuid appartient au locataire connecté"
+                  action="NotificationService.marquerCommeLu()
+                          → notif.setEstLu(true)"/>
+
+      <transition from="SM4_LUE"     to="SM4_END"
+                  trigger="Suppression ou archivage [extension future]"/>
+    </transitions>
+
+    <constraint type="business"
+                description="Une notification ne peut pas repasser de LUE à NON_LUE.
+                             La transition est unidirectionnelle."/>
+
+  </stateMachine>
+
+</stateTransitionDiagram>

@@ -1,0 +1,57 @@
+@startuml
+skinparam roundcorner 0
+
+title SEQ 2 — Réception et traitement du webhook FedaPay
+
+actor "FedaPay API (externe)" as S2_FED
+participant "PaiementController" as S2_CTR
+participant "PaiementService" as S2_SRV
+database "PaiementRepository" as S2_PREP
+database "EcheanceRepository" as S2_EREP
+participant "NotificationService" as S2_NOT
+
+S2_FED -> S2_CTR : POST /api/payments/webhook\nX-FedaPay-Signature: <hash>
+activate S2_CTR
+
+S2_CTR -> S2_CTR : verifierSignatureWebhook()\n[Signature Valide]
+
+S2_CTR -> S2_SRV : traiterEvenementWebhook(payload)
+activate S2_SRV
+
+alt evenement.type == "transaction.approved"
+    S2_SRV -> S2_PREP : findByReferenceFedaPay(transactionId)
+    activate S2_PREP
+    S2_PREP --> S2_SRV : Paiement (status=PENDING)
+    deactivate S2_PREP
+    
+    S2_SRV -> S2_PREP : save(paiement.setStatus(SUCCESS))
+    
+    S2_SRV -> S2_EREP : findByPaiementId(paiementId)
+    activate S2_EREP
+    S2_EREP --> S2_SRV : Echeance
+    deactivate S2_EREP
+    
+    S2_SRV -> S2_SRV : recalculerSoldeEcheance()
+    
+    alt montantTotalVerse >= montantDu
+        S2_SRV -> S2_EREP : save(echeance.setStatut(PAYE))
+    else montantTotalVerse < montantDu
+        S2_SRV -> S2_EREP : save(echeance.setStatut(PARTIELLEMENT_PAYE))
+    end
+    
+    S2_SRV -> S2_NOT : envoyerNotification(locataire, CONFIRMATION_PAIEMENT)
+    activate S2_NOT
+    S2_NOT --> S2_SRV : void
+    deactivate S2_NOT
+    
+else evenement.type == "transaction.declined"
+    S2_SRV -> S2_PREP : save(paiement.setStatus(FAILED))
+    S2_SRV -> S2_NOT : envoyerNotification(locataire, ALERTE_ECHEC_PAIEMENT)
+end
+
+S2_SRV --> S2_CTR : Traitement réussi
+deactivate S2_SRV
+
+S2_CTR --> S2_FED : 200 OK
+deactivate S2_CTR
+@enduml

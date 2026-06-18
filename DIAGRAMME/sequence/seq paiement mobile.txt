@@ -1,0 +1,44 @@
+@startuml
+skinparam roundcorner 0
+skinparam boxPadding 10
+
+
+title SEQ 1 — Initiation d'un paiement Mobile Money
+
+actor "Locataire" as LL_LOC
+participant "ContratBailController" as LL_CTR
+participant "JwtAuthenticationFilter" as LL_AUTH
+participant "FedaPayService" as LL_FED
+database "EcheanceRepository" as LL_ECHO
+actor "FedaPay API (externe)" as LL_API
+
+LL_LOC -> LL_CTR : POST /api/bail/echeances/{uuid}/payer\nAuthorization: Bearer <token>
+activate LL_CTR
+
+LL_CTR -> LL_AUTH : doFilter(request, response)
+activate LL_AUTH
+LL_AUTH -> LL_AUTH : validerToken() & extraireUtilisateur()
+LL_AUTH --> LL_CTR : Authentifié (rôle LOCATAIRE)
+deactivate LL_AUTH
+
+LL_CTR -> LL_FED : initierTransactionMobileMoney(echeanceUuid)
+activate LL_FED
+
+LL_FED -> LL_ECHO : findById(echeanceUuid)
+activate LL_ECHO
+LL_ECHO --> LL_FED : Echeance (montantDu, statut)
+deactivate LL_ECHO
+
+LL_FED -> LL_FED : verifierEligibilitePaiement()\n[statut != PAYE]
+
+LL_FED -> LL_API : Créer transaction (montant, clientEmail, callbackUrl)
+activate LL_API
+LL_API --> LL_FED : TransactionResponse (id, url_paiement, token)
+deactivate LL_API
+
+LL_FED --> LL_CTR : FedaPayRedirectDto (url_paiement)
+deactivate LL_FED
+
+LL_CTR --> LL_LOC : 200 OK — { redirectionUrl: "https://..." }
+deactivate LL_CTR
+@enduml

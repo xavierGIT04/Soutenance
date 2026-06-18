@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  DIAGRAMME D'OBJETS — RentalAPI
+  Snapshot d'un scénario concret :
+    - Un propriétaire "Kofi Agbénou" gère un immeuble à Lomé
+    - Unité A01 louée au locataire "Ama Dossou" depuis mars 2025
+    - Échéance de juin 2025 partiellement payée (30 000 sur 50 000 FCFA)
+    - Notification non lue envoyée au locataire
+    - Transaction FedaPay approuvée pour les 30 000 FCFA
+-->
+<objectDiagram name="Snapshot d'un bail actif — juin 2025">
+
+  <!-- ══════════════════════════════════════════
+       INSTANCE : Propriétaire
+       Classe d'origine : Utilisateur
+       ══════════════════════════════════════════ -->
+  <object id="obj_proprio" class="Utilisateur" instanceName="kofiAgbenou">
+    <slot attribute="uuid"        value="a1b2c3d4-0001-0000-0000-000000000001" type="UUID"/>
+    <slot attribute="nomComplet"  value="Kofi Agbénou"                         type="String"/>
+    <slot attribute="telephone"   value="+22890112233"                         type="String"/>
+    <slot attribute="role"        value="PROPRIETAIRE"                         type="RoleEnum"/>
+    <slot attribute="profil"      value="LOCATION_CLASSIQUE"                   type="ProfilEnum"/>
+    <slot attribute="avatar"      value="https://cdn.example.com/avatars/kofi.jpg" type="String"/>
+  </object>
+
+  <!-- ══════════════════════════════════════════
+       INSTANCE : Locataire (créé par kofiAgbenou)
+       Classe d'origine : Utilisateur
+       ══════════════════════════════════════════ -->
+  <object id="obj_locataire" class="Utilisateur" instanceName="amaDossou">
+    <slot attribute="uuid"        value="b2c3d4e5-0002-0000-0000-000000000002" type="UUID"/>
+    <slot attribute="nomComplet"  value="Ama Dossou"                           type="String"/>
+    <slot attribute="telephone"   value="+22891556677"                         type="String"/>
+    <slot attribute="role"        value="LOCATAIRE"                            type="RoleEnum"/>
+    <slot attribute="profil"      value="LOCATION_CLASSIQUE"                   type="ProfilEnum"/>
+    <slot attribute="createdBy"   value="ref:obj_proprio"                      type="ref"/>
+  </object>
+
+  <!-- ══════════════════════════════════════════
+       INSTANCE : Bien immobilier
+       Classe d'origine : Bien
+       ══════════════════════════════════════════ -->
+  <object id="obj_bien" class="Bien" instanceName="immeubleKofiLome">
+    <slot attribute="uuid"        value="c3d4e5f6-0003-0000-0000-000000000003" type="UUID"/>
+    <slot attribute="libelle"     value="Immeuble Agbénou"                     type="String"/>
+    <slot attribute="type"        value="IMMEUBLE"                             type="BienEnum"/>
+    <slot attribute="ville"       value="Lomé"                                 type="String"/>
+    <slot attribute="quartier"    value="Bè Kpota"                             type="String"/>
+    <slot attribute="proprietaire" value="ref:obj_proprio"                     type="ref"/>
+  </object>
+
+  <!-- ══════════════════════════════════════════
+       INSTANCE : Unité A01 — appartement loué
+       Classe d'origine : Unite
+       ══════════════════════════════════════════ -->
+  <object id="obj_unite_A01" class="Unite" instanceName="uniteA01">
+    <slot attribute="uuid"             value="d4e5f6a7-0004-0000-0000-000000000004" type="UUID"/>
+    <slot attribute="code_unite"       value="A01"                                  type="String"/>
+    <slot attribute="description"      value="Appartement 2 pièces — 1er étage"     type="String"/>
+    <slot attribute="type"             value="APPARTEMENT"                          type="TypeUnite"/>
+    <slot attribute="statut"           value="OCCUPEE"                              type="StatutUnite"/>
+    <slot attribute="loyer_reference"  value="50000.00"                             type="BigDecimal"/>
+    <slot attribute="prix_nuite"       value="null"                                 type="BigDecimal"/>
+    <slot attribute="bien"             value="ref:obj_bien"                         type="ref"/>
+  </object>
+
+  <!-- ══════════════════════════════════════════
+       INSTANCE : Contrat de bail actif
+       Classe d'origine : ContratBail
+       ══════════════════════════════════════════ -->
+  <object id="obj_bail" class="ContratBail" instanceName="bailAmaMars2025">
+    <slot attribute="uuid"         value="e5f6a7b8-0005-0000-0000-000000000005" type="UUID"/>
+    <slot attribute="dateDebut"    value="2025-03-01"                           type="LocalDate"/>
+    <slot attribute="dateSortie"   value="null"                                 type="LocalDate"
+          note="Bail à durée indéterminée"/>
+    <slot attribute="duree"        value="null"                                 type="Integer"/>
+    <slot attribute="loyer"        value="50000.00"                             type="BigDecimal"/>
+    <slot attribute="jourEcheance" value="5"                                    type="Integer"
+          note="Paiement attendu avant le 5 de chaque mois"/>
+    <slot attribute="statut"       value="ACTIF"                                type="BailEnum"/>
+    <slot attribute="conditions"   value="Pas d'animaux. Préavis 1 mois."       type="String"/>
+    <slot attribute="locataire"    value="ref:obj_locataire"                    type="ref"/>
+    <slot attribute="unite"        value="ref:obj_unite_A01"                    type="ref"/>
+  </object>
+
+  <!-- ══════════════════════════════════════════
+       INSTANCE : Échéance juin 2025 (partiellement payée)
+       Classe d'origine : Echeance
+       ══════════════════════════════════════════ -->
+  <object id="obj_echeance_juin" class="Echeance" instanceName="echeanceJuin2025">
+    <slot attribute="uuid"            value="f6a7b8c9-0006-0000-0000-000000000006" type="UUID"/>
+    <slot attribute="dateEcheance"    value="2025-06-05"                           type="LocalDate"/>
+    <slot attribute="montantDu"       value="50000.00"                             type="BigDecimal"/>
+    <slot attribute="montantRestant"  value="20000.00"                             type="BigDecimal"
+          note="30 000 FCFA déjà versés via Mobile Money"/>
+    <slot attribute="statut"          value="PARTIELLEMENT_PAYE"                   type="StatutEcheance"/>
+    <slot attribute="contratBail"     value="ref:obj_bail"                         type="ref"/>
+  </object>
+
+  <!-- ══════════════════════════════════════════
+       INSTANCE : Paiement Mobile Money de 30 000 FCFA
+       Classe d'origine : Paiement
+       ══════════════════════════════════════════ -->
+  <object id="obj_paiement1" class="Paiement" instanceName="paiementMobileMoney30k">
+    <slot attribute="uuid"               value="a7b8c9d0-0007-0000-0000-000000000007" type="UUID"/>
+    <slot attribute="datePaiement"       value="2025-06-03T14:22:11"                  type="LocalDateTime"/>
+    <slot attribute="montant"            value="30000.00"                             type="BigDecimal"/>
+    <slot attribute="modePaiement"       value="MOBILE_MONEY"                        type="ModePaiement"/>
+    <slot attribute="referencePaiement"  value="TXN-FEDAPAY-20250603-XAA9"           type="String"/>
+    <slot attribute="recuUrl"            value="null"                                 type="String"/>
+    <slot attribute="echeance"           value="ref:obj_echeance_juin"               type="ref"/>
+  </object>
+
+  <!-- ══════════════════════════════════════════
+       INSTANCE : Notification de confirmation envoyée à Ama
+       Classe d'origine : Notification
+       ══════════════════════════════════════════ -->
+  <object id="obj_notif_confirm" class="Notification" instanceName="notifConfirmPaiement">
+    <slot attribute="uuid"             value="b8c9d0e1-0008-0000-0000-000000000008" type="UUID"/>
+    <slot attribute="titre"            value="Paiement confirmé"                    type="String"/>
+    <slot attribute="message"          value="Bonjour Ama Dossou, votre paiement de 30 000 FCFA pour l'unité A01 a bien été enregistré. Référence : TXN-FEDAPAY-20250603-XAA9." type="String"/>
+    <slot attribute="dateEnvoi"        value="2025-06-03T14:22:12"                  type="LocalDateTime"/>
+    <slot attribute="typeNotification" value="CONFIRMATION_PAIEMENT"                type="TypeNotification"/>
+    <slot attribute="estLu"            value="false"                                type="boolean"
+          note="Non encore lue par la locataire"/>
+    <slot attribute="locataire"        value="ref:obj_locataire"                    type="ref"/>
+  </object>
+
+  <!-- ══════════════════════════════════════════
+       INSTANCE : Notification de rappel de loyer (échéance juillet, générée par le scheduler)
+       Classe d'origine : Notification
+       ══════════════════════════════════════════ -->
+  <object id="obj_notif_rappel" class="Notification" instanceName="notifRappelLoyer">
+    <slot attribute="uuid"             value="c9d0e1f2-0009-0000-0000-000000000009" type="UUID"/>
+    <slot attribute="titre"            value="Rappel de loyer — JUNE"               type="String"/>
+    <slot attribute="message"          value="Bonjour Ama Dossou, votre loyer de 50 000 FCFA pour l'unité A01 est à régler avant le 2025-06-05." type="String"/>
+    <slot attribute="dateEnvoi"        value="2025-06-01T07:00:00"                  type="LocalDateTime"/>
+    <slot attribute="typeNotification" value="RELANCE_LOYER"                        type="TypeNotification"/>
+    <slot attribute="estLu"            value="true"                                 type="boolean"/>
+    <slot attribute="locataire"        value="ref:obj_locataire"                    type="ref"/>
+  </object>
+
+  <!-- ═════════════════════════════════════════════
+       LIENS ENTRE OBJETS (liens d'association UML)
+       ═════════════════════════════════════════════ -->
+  <links>
+    <link from="obj_locataire"       to="obj_proprio"          role="createdBy"
+          note="Ama a été créée par Kofi"/>
+    <link from="obj_bien"            to="obj_proprio"          role="proprietaire"
+          note="L'immeuble appartient à Kofi"/>
+    <link from="obj_unite_A01"       to="obj_bien"             role="bien"
+          note="L'unité A01 est dans l'immeuble Agbénou"/>
+    <link from="obj_bail"            to="obj_locataire"        role="locataire"
+          note="Le bail est pour Ama"/>
+    <link from="obj_bail"            to="obj_unite_A01"        role="unite"
+          note="Le bail concerne l'unité A01"/>
+    <link from="obj_echeance_juin"   to="obj_bail"             role="contratBail"
+          note="L'échéance appartient au bail d'Ama"/>
+    <link from="obj_paiement1"       to="obj_echeance_juin"    role="echeance"
+          note="Le paiement Mobile Money solde partiellement l'échéance de juin"/>
+    <link from="obj_notif_confirm"   to="obj_locataire"        role="locataire"
+          note="Notification de confirmation envoyée à Ama"/>
+    <link from="obj_notif_rappel"    to="obj_locataire"        role="locataire"
+          note="Rappel de loyer envoyé à Ama (déjà lu)"/>
+  </links>
+
+</objectDiagram>
