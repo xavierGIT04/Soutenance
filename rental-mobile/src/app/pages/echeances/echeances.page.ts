@@ -1,5 +1,6 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   IonContent,
   IonHeader,
@@ -39,6 +40,7 @@ import { FcfaPipe } from '../../pipes/fcfa-pipe-pipe';
     IonChip,
     IonBadge,
     FcfaPipe,
+  NgTemplateOutlet,
   ],
   templateUrl: './echeances.page.html',
   styleUrl: './echeances.page.scss',
