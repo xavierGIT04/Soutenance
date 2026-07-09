@@ -1,11 +1,11 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.2.9 Chrome/140.0.7339.249 Electron/38.7.2 Safari/537.36" version="29.2.9">
   <diagram id="hw-architecture" name="Architecture Materielle">
-    <mxGraphModel dx="2011" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1000" math="0" shadow="0">
+    <mxGraphModel dx="2230" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="hw_title" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;fontStyle=1;" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;Architecture Materielle - Plateforme&lt;/font&gt;" vertex="1">
-          <mxGeometry height="30" width="620" x="-50" y="20" as="geometry" />
+        <mxCell id="hw_title" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;fontStyle=1;" value="&lt;font style=&quot;font-size: 36px;&quot;&gt;Architecture Materielle - Plateforme&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="620" x="40" y="10" as="geometry" />
         </mxCell>
         <mxCell id="hw_mobile" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=13;align=center;verticalAlign=middle;arcSize=10;" value="Smartphone Locataire&#xa;(Android / iOS)&#xa;&#xa;App Mobile &quot;rental-mobile&quot;&#xa;Ionic 8 + Angular + Capacitor" vertex="1">
           <mxGeometry height="130" width="260" x="40" y="70" as="geometry" />
