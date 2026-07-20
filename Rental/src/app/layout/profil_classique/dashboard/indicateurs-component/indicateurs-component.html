@@ -1,0 +1,160 @@
+<div class="row g-3 mb-2">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-body d-flex flex-wrap align-items-center gap-2">
+        <select
+          class="form-select form-select-sm bg-light border-0 shadow-none"
+          style="min-width: 220px;"
+          [value]="bienUuidFiltre()"
+          (change)="bienUuidFiltre.set($any($event.target).value); onFiltreChange()"
+        >
+          <option value="">— Tous les immeubles —</option>
+          @for (b of biens(); track b.uuid) {
+            <option [value]="b.uuid">{{ b.libelle }}</option>
+          }
+        </select>
+
+        <select
+          class="form-select form-select-sm bg-light border-0 shadow-none"
+          style="min-width: 120px;"
+          [value]="anneeFiltre()"
+          (change)="anneeFiltre.set(+$any($event.target).value); onFiltreChange()"
+        >
+          @for (a of annees(); track a) {
+            <option [value]="a">{{ a }}</option>
+          }
+        </select>
+
+        <select
+          class="form-select form-select-sm bg-light border-0 shadow-none"
+          style="min-width: 160px;"
+          [value]="moisFiltre()"
+          (change)="moisFiltre.set(+$any($event.target).value); onFiltreChange()"
+        >
+          <option value="0">— Année entière —</option>
+          @for (m of mois; track m.value) {
+            <option [value]="m.value">{{ m.label }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+}
+
+@if (erreur()) {
+  <div class="alert alert-danger border-0">{{ erreur() }}</div>
+}
+
+@if (!loading() && data(); as d) {
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3 col-sm-6">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body">
+          <small class="text-muted d-block mb-1">Taux d'occupation</small>
+          <span class="fw-bold fs-3 text-dark">{{ d.tauxOccupation | number:'1.0-2' }}%</span>
+          <div class="text-muted small mt-1">
+            {{ d.unitesOccupees }} occupée(s) / {{ d.totalUnites }} unité(s)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body">
+          <small class="text-muted d-block mb-1">Revenu encaissé</small>
+          <span class="fw-bold fs-3 text-success">{{ +d.revenuEncaisse | number }} F</span>
+          <div class="text-muted small mt-1">
+            Attendu : {{ +d.revenuAttendu | number }} F
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body">
+          <small class="text-muted d-block mb-1">Impayés en cours</small>
+          <span class="fw-bold fs-3 text-danger">{{ +d.montantImpaye | number }} F</span>
+          <div class="text-muted small mt-1">
+            {{ d.nombreImpayes }} échéance(s)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body">
+          <small class="text-muted d-block mb-1">Unités libres / maintenance</small>
+          <span class="fw-bold fs-3 text-dark">{{ d.unitesLibres }} / {{ d.unitesMaintenance }}</span>
+          <div class="text-muted small mt-1">
+            Sur {{ d.totalUnites }} unité(s)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">Impayés en cours</h6>
+
+          @if (d.impayes.length === 0) {
+            <div class="text-center py-5">
+              <i class="ri-checkbox-circle-line text-success" style="font-size: 48px;"></i>
+              <p class="text-muted mt-3 mb-0">Aucun impayé en cours pour ce périmètre.</p>
+            </div>
+          }
+
+          @if (d.impayes.length > 0) {
+            <div class="table-responsive">
+              <table class="table align-middle table-hover table-nowrap mb-0">
+                <thead class="table-light">
+                <tr>
+                  <th>Locataire</th>
+                  <th>Unité</th>
+                  <th>Échéance</th>
+                  <th>Reste dû</th>
+                  <th>Jours de retard</th>
+                  <th>Statut</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (i of d.impayes; track i.echeanceUuid) {
+                    <tr>
+                      <td>
+                        <span class="fw-semibold text-dark">{{ i.locataireNom }}</span>
+                        <div class="text-muted small">{{ i.locataireTelephone }}</div>
+                      </td>
+                      <td>{{ i.codeUnite }}</td>
+                      <td>{{ i.dateEcheance | date:'dd/MM/yyyy' }}</td>
+                      <td>
+                        <span class="fw-bold text-danger">{{ +i.montantRestant | number }} F</span>
+                      </td>
+                      <td>{{ i.joursDeRetard }} j</td>
+                      <td>
+                        <span class="badge border fw-bold rounded-pill" [ngClass]="getStatutClass(i.statut)">
+                          {{ getStatutLabel(i.statut) }}
+                        </span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

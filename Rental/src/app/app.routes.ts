@@ -12,6 +12,7 @@ import {ListeComponent as classique} from './layout/profil_classique/biens/liste
 import {ListeComponent as airbn } from './layout/profil_airbn/airbn/liste-component/liste-component';
 import {UniteComponent} from './layout/profil_classique/biens/unite-component/unite-component';
 import {BailComponent} from './layout/profil_classique/bails/bail-component/bail-component';
+import {IndicateursComponent} from './layout/profil_classique/dashboard/indicateurs-component/indicateurs-component';
 
 export const routes: Routes = [
   {
@@ -53,7 +54,8 @@ export const routes: Routes = [
           {
             path: 'baux',
             component: BailComponent
-          }
+          },
+          { path: '', component: IndicateursComponent },
         ]
       },
       {
