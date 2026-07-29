@@ -8,16 +8,16 @@
           <mxGeometry height="390" width="400" x="530" y="340" as="geometry" />
         </mxCell>
         <mxCell id="84cl8wxCgdzw1XY0QbFj-2" parent="1" style="shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;" value="PROPRIETAIRE" vertex="1">
-          <mxGeometry height="70" width="40" x="394" y="460" as="geometry" />
+          <mxGeometry height="70" width="40" x="394" y="380" as="geometry" />
         </mxCell>
         <mxCell id="84cl8wxCgdzw1XY0QbFj-3" parent="1" style="shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;" value="LOCATAIRE" vertex="1">
-          <mxGeometry height="70" width="40" x="1010" y="400" as="geometry" />
+          <mxGeometry height="70" width="40" x="394" y="610" as="geometry" />
         </mxCell>
         <mxCell id="84cl8wxCgdzw1XY0QbFj-4" parent="1" style="shape=umlActor;whiteSpace=wrap;html=1;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
-          <mxGeometry height="70" width="40" x="710" y="800" as="geometry" />
+          <mxGeometry height="70" width="40" x="1020" y="480" as="geometry" />
         </mxCell>
         <mxCell id="XLn4FLVkwIwIPenPSxQ4-2" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt; API &amp;gt;&amp;gt;&lt;div&gt;Systeme FedaPay&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="110" x="675" y="870" as="geometry" />
+          <mxGeometry height="60" width="110" x="985" y="550" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
