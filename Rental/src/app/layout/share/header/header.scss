@@ -1,0 +1,24 @@
+
+
+.app-header-brand {
+  display: flex !important;
+
+  .visible-light {
+    display: none !important;
+  }
+  .visible-dark {
+    display: flex !important;
+  }
+}
+
+.app-header-inner {
+  background-color: #0b0e11 !important;
+}
+
+.header-user-name {
+  color: #ffffff;
+}
+
+.header-user-role {
+  color: rgba(255, 255, 255, 0.65);
+}

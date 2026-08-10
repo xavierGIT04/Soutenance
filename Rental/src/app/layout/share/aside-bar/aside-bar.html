@@ -1,22 +1,17 @@
-<aside class="app-menubar" id="menubar">
-  <button class="app-toggler" type="button">
-    <i class="fi fi-br-angle-small-left"></i>
-  </button>
-  <div class="app-navbar-brand" style="margin-left: -40px;">
-    <a class="navbar-brand-logo" href="index.html">
-      <img src="/assets/images/logo-text.svg" alt="Rental Admin Dashboard">
-    </a>
-  </div>
-  <nav class="app-navbar" data-simplebar>
-    <ul class="menubar">
-      @for (item of filteredMenu(); track item.label) {
-        <li class="menu-item">
-          <a class="menu-link" [routerLink]="item.link">
-            <i [class]="item.icon"></i>
-            <span class="menu-label">{{ item.label }}</span>
-          </a>
-        </li>
-      }
-    </ul></nav>
-</aside>
-
+<nav class="app-tabbar">
+  <ul class="tabbar-list">
+    @for (item of filteredMenu(); track item.link) {
+      <li class="tabbar-item">
+        <a
+          class="tabbar-link"
+          [routerLink]="item.link"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+        >
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+        </a>
+      </li>
+    }
+  </ul>
+</nav>

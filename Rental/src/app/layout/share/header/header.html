@@ -1,13 +1,7 @@
 <header class="app-header">
   <div class="app-header-inner">
     <div class="app-header-start">
-      <button class="app-toggler" type="button">
-        <i class="fi fi-br-angle-small-left"></i>
-      </button>
       <div class="app-header-brand">
-        <a class="navbar-brand-logo">
-          <img src="/assets/images/logo.svg" alt="UrbanHub Admin Dashboard">
-        </a>
         <a class="navbar-brand-mini visible-light">
           <img src="/assets/images/logo-text.svg" alt="UrbanHub Admin Dashboard">
         </a>
@@ -16,7 +10,7 @@
         </a>
       </div>
       <form class="d-none d-xl-flex align-items-center h-100 w-lg-250px w-xxl-300px position-relative" action="#">
-        <input type="text" class="form-control px-sm-3 bg-light" placeholder="Search anything">
+        <input type="text" class="form-control px-sm-3 bg-light" placeholder="Faites une recherche">
         <button type="button" class="btn btn-sm text-primary border-0 position-absolute end-0 me-3 p-0">
           <i class="fi fi-rr-search"></i>
         </button>
@@ -25,18 +19,14 @@
     <div class="app-header-end">
       <div class="d-flex align-items-center gap-sm-2 gap-0 px-lg-2 px-sm-2 px-1">
         <div class="dropdown text-end">
-          <a (click)="toggleDropdown()" class="d-flex align-items-center py-2" style="cursor: pointer;">
+          <a (click)="toggleDropdown()" class="d-flex align-items-center py-2 header-user-toggle" style="cursor: pointer;">
             <div class="text-end me-2 d-none d-lg-inline-block">
-              <div class="fw-bold text-dark">
-                @if(infos(); as userInfos){
-                  {{ (userInfos.nom)  | titlecase}}
-                }
+              <div class="fw-bold header-user-name">
+                @if(infos(); as userInfos){ {{ (userInfos.nom) | titlecase }} }
               </div>
-              <small class="text-body d-block lh-sm">
+              <small class="header-user-role d-block lh-sm">
                 <i class="fi fi-rr-angle-down text-3xs me-1"></i>
-                @if(infos(); as userInfos){
-                  {{ (userInfos.role)  | titlecase}}
-                }
+                @if(infos(); as userInfos){ {{ (userInfos.role) | titlecase }} }
               </small>
             </div>
             <div class="avatar avatar-sm rounded-circle avatar-status-success">

@@ -1,0 +1,8 @@
+.page-layout {
+  --app-sidebar-width: 0px;
+  --app-tabbar-height: 56px;
+}
+
+.app-wrapper {
+  margin-top: calc(var(--app-header-height) + var(--app-tabbar-height));
+}
