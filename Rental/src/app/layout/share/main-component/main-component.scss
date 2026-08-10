@@ -1,0 +1,20 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 90% 20%, rgba(47, 143, 130, 0.08), transparent 28rem), #f7faf9;
+}
+
+.page-layout {
+  min-height: 100vh;
+}
+
+.app-wrapper {
+  padding-top: 34px;
+}
+
+@media (max-width: 768px) {
+  .app-wrapper {
+    padding-top: 22px;
+  }
+}
