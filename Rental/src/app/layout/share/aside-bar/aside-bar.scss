@@ -1,0 +1,117 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  margin-top: -1px;
+}
+
+.app-tabbar {
+  width: 100%;
+  padding: 0 18px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.app-tabbar-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: stretch;
+  max-width: 1120px;
+  min-height: 78px;
+  padding: 0;
+  margin: 0 auto;
+  list-style: none;
+}
+
+.app-tabbar-item {
+  display: flex;
+  min-width: 0;
+}
+
+.app-tabbar-link {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 18px 18px;
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-left: 1px solid rgba(16, 24, 40, 0.08);
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.app-tabbar-item:first-child .app-tabbar-link {
+  border-left: 0;
+}
+
+.app-tabbar-link i {
+  color: #7b8490;
+  font-size: 1.1rem;
+  transition: color 180ms ease;
+}
+
+.app-tabbar-link::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  content: '';
+  background: #2f8f82;
+  opacity: 0;
+  transform: scaleX(0.35);
+  transform-origin: center;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.app-tabbar-link:hover,
+.app-tabbar-link.active {
+  color: #2d766c;
+  background: linear-gradient(180deg, rgba(47, 143, 130, 0.08), rgba(47, 143, 130, 0));
+}
+
+.app-tabbar-link:hover i,
+.app-tabbar-link.active i {
+  color: #2f8f82;
+}
+
+.app-tabbar-link.active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+@media (max-width: 768px) {
+  :host {
+    position: static;
+  }
+
+  .app-tabbar {
+    padding: 0 10px;
+    overflow-x: auto;
+    border-radius: 0 0 18px 18px;
+  }
+
+  .app-tabbar-list {
+    display: flex;
+    min-width: max-content;
+    min-height: 64px;
+  }
+
+  .app-tabbar-link {
+    min-width: 150px;
+    padding: 16px 14px 14px;
+    font-size: 0.92rem;
+  }
+}
